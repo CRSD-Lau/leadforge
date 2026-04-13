@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-dark: #003F2D;
+  --color-gold: #C5A55A;
+  --color-accent: #54B848;
+  --color-bg: #FAF8F5;
+  --color-light-gold: #F5F0E6;
+
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #1a1a1a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+@layer base {
+  ::selection {
+    background-color: #C5A55A;
+    color: #003F2D;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-brand-dark text-white px-6 py-3 font-sans font-medium text-sm tracking-wide transition-all duration-200 hover:bg-opacity-90 hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 border border-brand-gold text-brand-dark px-6 py-3 font-sans font-medium text-sm tracking-wide transition-all duration-200 hover:bg-brand-light-gold;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center gap-2 bg-brand-gold text-brand-dark px-6 py-3 font-sans font-semibold text-sm tracking-wide transition-all duration-200 hover:brightness-105 hover:shadow-lg;
+  }
+
+  .section-label {
+    @apply text-brand-gold font-mono text-xs tracking-widest uppercase;
+  }
+
+  .gold-underline {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-brand-gold;
+  }
+
+  .card-base {
+    @apply bg-white border border-brand-light-gold p-6 transition-all duration-200 hover:shadow-md hover:border-brand-gold/30;
+  }
+}

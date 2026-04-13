@@ -1,0 +1,81 @@
+name: LeadForge AI — Daily Agent
+
+on:
+  schedule:
+    # Mon–Fri at 6:00 AM Atlantic Time (UTC-3 in summer / UTC-4 in winter)
+    # 6:00 AM ADT  = 09:00 UTC
+    # 6:00 AM AST  = 10:00 UTC
+    # Using 09:00 UTC — fires at 6 AM in summer, adjust to 10:00 for winter if needed
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions UI for testing
+
+jobs:
+  run-agent:
+    name: Run LeadForge Agent
+    runs-on: ubuntu-latest
+
+    # Hard 15-minute cap — the agent enforces its own 14-min internal budget
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: agent
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: agent/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Restore the SQLite database from the previous run (persists leads across runs)
+      - name: Restore leads database
+        uses: actions/cache@v4
+        with:
+          path: agent/leads.db
+          key: leads-db-${{ github.run_id }}
+          restore-keys: |
+            leads-db-
+
+      # Restore mockups directory
+      - name: Restore mockups cache
+        uses: actions/cache@v4
+        with:
+          path: agent/mockups
+          key: mockups-${{ github.run_id }}
+          restore-keys: |
+            mockups-
+
+      # Restore Gmail token (OAuth token, not credentials)
+      - name: Write Gmail token file
+        if: ${{ secrets.GMAIL_TOKEN_JSON != '' }}
+        run: echo '${{ secrets.GMAIL_TOKEN_JSON }}' > token.json
+
+      - name: Run agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          GMAIL_CREDENTIALS_PATH: credentials.json
+          GMAIL_TOKEN_PATH: token.json
+          DB_PATH: leads.db
+          MOCKUPS_DIR: mockups
+        run: python agent.py
+
+      # Upload agent.log as an artifact for every run
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-log-${{ github.run_id }}
+          path: agent/agent.log
+          retention-days: 30

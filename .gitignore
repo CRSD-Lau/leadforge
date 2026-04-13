@@ -1,0 +1,45 @@
+# ── Node / Next.js ────────────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+dist/
+.vercel/
+*.local
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.production
+agent/.env
+
+# ── Google OAuth tokens — NEVER commit these ──────────────────────────────────
+agent/credentials.json
+agent/token.json
+
+# ── Agent runtime data ────────────────────────────────────────────────────────
+agent/leads.db
+agent/agent.log
+agent/mockups/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
