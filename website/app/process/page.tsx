@@ -29,7 +29,7 @@ const timeline = [
     title: 'You Review',
     subtitle: 'Vercel preview link shared',
     description:
-      'You visit your preview site on any device and send feedback by email or phone. One full revision round is included. Note what you'd like changed — copy, colours, layout, images.',
+      "You visit your preview site on any device and send feedback by email or phone. One full revision round is included. Note what you'd like changed — copy, colours, layout, images.",
     detail: 'Additional revisions beyond round 1: $75/hr, prorated to 10-min.',
   },
   {
