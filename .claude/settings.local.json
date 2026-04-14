@@ -13,7 +13,8 @@
       "Bash(vercel --yes --name leadforge-ai)",
       "Bash(git commit:*)",
       "Bash(vercel project:*)",
-      "Bash(vercel --prod)"
+      "Bash(vercel --prod)",
+      "Bash(vercel alias:*)"
     ]
   }
 }

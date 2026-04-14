@@ -117,7 +117,7 @@ export default function Navbar() {
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className="md:hidden overflow-hidden border-t border-navy-700"
             >
-              <div className="py-3 flex flex-col gap-1">
+              <div className="bg-navy-900/98 backdrop-blur-md py-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
