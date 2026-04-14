@@ -11,7 +11,9 @@
       "Bash(npm run:*)",
       "Bash(vercel whoami:*)",
       "Bash(vercel --yes --name leadforge-ai)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(vercel project:*)",
+      "Bash(vercel --prod)"
     ]
   }
 }

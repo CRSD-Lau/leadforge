@@ -1,250 +1,199 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Our Process',
-  description:
-    'From discovery call to live site in 5 days. See exactly how LeadForge AI builds your website — and how the AI agent found you.',
+import Link from 'next/link'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+
+function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
+      {children}
+    </motion.div>
+  )
 }
 
 const timeline = [
-  {
-    day: 'Day 0',
-    title: 'Discovery Call',
-    subtitle: '15–20 minutes · Call 506-639-9083',
-    description:
-      'We get on a quick call to discuss your business goals, design preferences, required pages, and branding assets. No lengthy brief, no complicated forms — just a conversation. By the end we know everything needed to start building.',
-    detail: 'Call 506-639-9083 or respond to the outreach email to book.',
-  },
-  {
-    day: 'Day 1–2',
-    title: 'We Build',
-    subtitle: 'Claude Code scaffolds your site',
-    description:
-      'Claude Code scaffolds the entire Next.js project — page components, Tailwind styling, mobile layout, and contact form. Once built, your site deploys automatically to Vercel and you receive a preview URL to review.',
-    detail: 'Tech: Next.js 14 · Tailwind CSS · Vercel · React',
-  },
-  {
-    day: 'Day 3',
-    title: 'You Review',
-    subtitle: 'Vercel preview link shared',
-    description:
-      "You visit your preview site on any device and send feedback by email or phone. One full revision round is included. Note what you'd like changed — copy, colours, layout, images.",
-    detail: 'Additional revisions beyond round 1: $75/hr, prorated to 10-min.',
-  },
-  {
-    day: 'Day 4',
-    title: 'Revisions',
-    subtitle: 'Feedback implemented',
-    description:
-      'We implement your changes, verify mobile responsiveness across breakpoints, confirm the contact form works, and finalise all copy. Updated preview link sent for final sign-off.',
-    detail: 'Mobile, tablet, and desktop verified before final approval.',
-  },
-  {
-    day: 'Day 5',
-    title: 'Launch',
-    subtitle: 'Payment · Domain · Handoff',
-    description:
-      'You pay $650. We connect your domain, push the site live, and transfer the GitHub repo and Vercel project to you. You own the code and hosting — we hand over everything.',
-    detail: 'Domain purchase: you buy it (~$15/yr), we configure DNS for free.',
-  },
+  { day: 'Day 0', title: 'Discovery Call', subtitle: '15–20 min · 506-639-9083',
+    description: "We get on a quick call to discuss your business goals, design preferences, required pages, and branding assets. No lengthy brief — just a conversation. By the end we know everything needed to start.",
+    detail: 'Call or reply to our outreach email to book.' },
+  { day: 'Day 1–2', title: 'We Build', subtitle: 'Claude Code scaffolds your site',
+    description: 'Claude Code scaffolds the entire Next.js project — page components, Tailwind styling, mobile layout, contact form. Once built, your site deploys to Vercel and you get a preview URL.',
+    detail: 'Stack: Next.js 14 · Tailwind CSS · Vercel · React' },
+  { day: 'Day 3', title: 'You Review', subtitle: 'Vercel preview link shared',
+    description: "Visit your preview site on any device and send feedback by email or phone. One full revision round is included. Note what you'd like changed — copy, colours, layout, images.",
+    detail: 'Additional revisions beyond round 1: $75/hr, prorated to 10-min.' },
+  { day: 'Day 4', title: 'Revisions', subtitle: 'Feedback implemented',
+    description: 'We implement your changes, verify mobile responsiveness across breakpoints, confirm the contact form works, and finalise copy. Updated preview link sent for final sign-off.',
+    detail: 'Mobile, tablet, and desktop verified before final approval.' },
+  { day: 'Day 5', title: '🚀 Launch', subtitle: 'Payment · Domain · Handoff',
+    description: 'You pay $650. We connect your domain, push the site live, and transfer the GitHub repo and Vercel project to you. You own the code and hosting.',
+    detail: 'Domain: you buy it (~$15/yr), we configure DNS for free.' },
 ]
 
 const agentSteps = [
-  {
-    num: '01',
-    title: 'Lead Discovery',
-    desc: 'Queries Google Maps using category-based searches across the Saint John region. Detects businesses with no website, broken URL, or social-only presence.',
-  },
-  {
-    num: '02',
-    title: 'Cold Outreach',
-    desc: 'Crafts and sends a personalised email using your business name and category. Low-friction, direct — the goal is a reply, not a hard sell.',
-  },
-  {
-    num: '03',
-    title: 'Lead Tracking',
-    desc: 'Every outreach event is recorded to a structured database. Statuses track the full funnel: Sent → Replied → Interested → Closed Won.',
-  },
-  {
-    num: '04',
-    title: 'Reply Handling',
-    desc: 'Reads inbound replies, classifies intent (interested, question, price objection, unsure, not interested), and generates an appropriate response.',
-  },
-  {
-    num: '05',
-    title: 'Mockup Generation',
-    desc: 'Generates a rough HTML mockup — hero, services, contact — tailored to your business category for interested leads.',
-  },
-  {
-    num: '06',
-    title: 'Close Flow',
-    desc: 'Sends a closing message routing directly to a discovery call: 506-639-9083.',
-  },
-  {
-    num: '07',
-    title: 'Terms Explanation',
-    desc: 'Communicates ownership, delivery timeline, and pricing clearly. React/Next.js build, Vercel deployment, code transfer on payment.',
-  },
+  { num: '01', title: 'Lead Discovery', desc: 'Queries Google Maps for businesses with no website, broken URL, or social-only presence.' },
+  { num: '02', title: 'Cold Outreach', desc: 'Personalised email sent using your business name and category. Low friction — the goal is a reply.' },
+  { num: '03', title: 'Lead Tracking', desc: 'Every event recorded to SQLite. Status tracks: Sent → Replied → Interested → Closed Won.' },
+  { num: '04', title: 'Reply Handling', desc: 'Claude classifies intent into 5 buckets and generates an appropriate conversational response.' },
+  { num: '05', title: 'Mockup Generation', desc: 'Tailored HTML preview — hero, services, contact — built for your business category in minutes.' },
+  { num: '06', title: 'Close Flow', desc: 'Booking message sent routing to 506-639-9083 for a discovery call.' },
+  { num: '07', title: 'Terms Explanation', desc: 'Communicates ownership, delivery, and pricing clearly before Neil gets involved.' },
 ]
 
 const stack = [
   { name: 'Claude AI (Anthropic)', role: 'Agent runtime + site builds' },
-  { name: 'Google Maps API', role: 'Lead discovery — finds businesses without websites' },
-  { name: 'Resend', role: 'Outbound email — free tier, 3,000 sends/month' },
-  { name: 'SQLite', role: 'Lead database — no hosting cost' },
+  { name: 'Google Maps API', role: 'Lead discovery — no-website detection' },
+  { name: 'Resend', role: 'Outbound email — 3,000/month free tier' },
+  { name: 'SQLite', role: 'Lead database — zero hosting cost' },
   { name: 'Next.js 14', role: 'Client deliverable tech stack' },
   { name: 'Tailwind CSS', role: 'Styling for all client sites' },
-  { name: 'Vercel', role: 'Deployment — free tier, CDN + SSL included' },
-  { name: 'GitHub Actions', role: 'Cron scheduler — fires Mon–Fri 6:00 AM' },
+  { name: 'Vercel', role: 'Deployment — CDN + SSL included' },
+  { name: 'GitHub Actions', role: 'Cron scheduler — Mon–Fri 6:00 AM' },
 ]
 
 export default function ProcessPage() {
   return (
     <>
       {/* Header */}
-      <section className="bg-brand-dark pt-32 pb-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="section-label block mb-4">How It Works</span>
-          <h1 className="font-serif text-5xl sm:text-6xl font-light text-white leading-tight mb-6">
-            Discovery call to live site{' '}
-            <span className="text-brand-gold italic">in five days.</span>
-          </h1>
-          <p className="font-sans text-base text-white/60 max-w-2xl leading-relaxed">
-            A transparent, step-by-step process. No surprises, no scope creep — just a professional
-            site delivered fast.
-          </p>
+      <section className="relative bg-navy-900 pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-60" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-orange-500/6 rounded-full blur-3xl" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="section-tag mb-4 block">How It Works</span>
+            <h1 className="font-sans font-extrabold text-5xl sm:text-6xl text-white leading-tight mb-5">
+              Call to launch{' '}
+              <span className="text-gradient-orange">in five days.</span>
+            </h1>
+            <p className="text-slate-400 text-lg max-w-xl">
+              A transparent, step-by-step process. No surprises, no scope creep — just a professional site delivered fast.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* 5-Day Timeline */}
-      <section className="py-24 bg-brand-bg">
+      <section className="py-24 bg-navy-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-[52px] top-0 bottom-0 w-px bg-brand-gold/20 hidden sm:block" />
+            {/* Vertical connector */}
+            <div className="absolute left-5 sm:left-6 top-6 bottom-6 w-px bg-gradient-to-b from-orange-500/60 via-navy-600 to-transparent hidden sm:block" />
 
-            <div className="space-y-0">
+            <div className="space-y-5">
               {timeline.map((step, i) => (
-                <div key={step.day} className="relative flex gap-8 sm:gap-12">
-                  {/* Day label */}
-                  <div className="flex-shrink-0 flex flex-col items-center gap-2">
-                    <div className="w-[104px] text-right">
-                      <span className="font-mono text-xs text-brand-gold tracking-widest uppercase">
-                        {step.day}
-                      </span>
-                    </div>
-                    {/* Dot on timeline */}
-                    <div className="w-3 h-3 rounded-full border-2 border-brand-gold bg-brand-bg hidden sm:block absolute left-[46px]" />
-                  </div>
-
-                  {/* Content */}
-                  <div className={`pb-12 flex-1 ${i === timeline.length - 1 ? 'pb-0' : ''}`}>
-                    <div className="bg-white border border-brand-light-gold p-8 hover:border-brand-gold/30 hover:shadow-sm transition-all duration-200">
-                      <h3 className="font-serif text-2xl font-medium text-brand-dark mb-1">
-                        {step.title}
-                      </h3>
-                      <p className="font-mono text-xs text-brand-gold mb-4">{step.subtitle}</p>
-                      <p className="font-sans text-sm text-neutral-600 leading-relaxed mb-4">
-                        {step.description}
-                      </p>
-                      <div className="border-t border-brand-light-gold pt-4">
-                        <p className="font-sans text-xs text-neutral-400">{step.detail}</p>
+                <FadeUp key={step.day} delay={i * 0.1}>
+                  <div className="flex gap-6 sm:gap-8 items-start">
+                    {/* Node */}
+                    <div className="flex-shrink-0 flex flex-col items-center">
+                      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-mono text-xs font-bold border ${
+                        i === 4
+                          ? 'bg-orange-500 border-orange-600 text-white shadow-orange-md'
+                          : 'bg-navy-800 border-navy-600 text-orange-500'
+                      }`}>
+                        {i + 1}
                       </div>
                     </div>
+
+                    {/* Content */}
+                    <div className="card-navy flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h3 className="font-sans font-bold text-white text-lg">{step.title}</h3>
+                          <p className="font-mono text-xs text-orange-500 mt-0.5">{step.subtitle}</p>
+                        </div>
+                        <span className="font-mono text-xs text-slate-600 bg-navy-700 border border-navy-600 px-2.5 py-1 rounded-lg flex-shrink-0 ml-4">{step.day}</span>
+                      </div>
+                      <p className="font-sans text-sm text-slate-400 leading-relaxed mb-3">{step.description}</p>
+                      <p className="font-sans text-xs text-slate-600 border-t border-navy-700 pt-3">{step.detail}</p>
+                    </div>
                   </div>
-                </div>
+                </FadeUp>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* How the agent found you */}
-      <section className="py-24 bg-brand-dark">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-14">
-            <span className="section-label block mb-4">Behind the Scenes</span>
-            <h2 className="font-serif text-4xl sm:text-5xl font-light text-white leading-tight">
-              How the agent <span className="text-brand-gold italic">found you.</span>
+      {/* Agent steps */}
+      <section className="py-24 bg-navy-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeUp className="mb-14">
+            <span className="section-tag mb-4 block">Behind The Scenes</span>
+            <h2 className="font-sans font-extrabold text-4xl sm:text-5xl text-white leading-tight">
+              How the agent <span className="text-gradient-orange">found you.</span>
             </h2>
-            <p className="font-sans text-base text-white/50 mt-4 max-w-2xl">
-              LeadForge AI runs a Claude-powered agent every weekday morning at 6:00 AM. It runs for
-              15 minutes and handles every step of the outbound sales cycle — automatically.
+            <p className="text-slate-400 text-base mt-4 max-w-2xl">
+              LeadForge AI runs a Claude-powered agent every weekday at 6:00 AM. It handles the entire outbound sales cycle — automatically, in 15 minutes.
             </p>
-          </div>
+          </FadeUp>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {agentSteps.map((step) => (
-              <div
-                key={step.num}
-                className="bg-white/5 border border-white/10 p-6 hover:border-brand-gold/30 transition-all duration-200"
-              >
-                <div className="font-mono text-2xl font-bold text-brand-gold/20 mb-3">
-                  {step.num}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {agentSteps.map((step, i) => (
+              <FadeUp key={step.num} delay={i * 0.08}>
+                <div className="card-navy group h-full">
+                  <div className="font-mono text-3xl font-bold text-orange-500/20 group-hover:text-orange-500/40 transition-colors mb-3">{step.num}</div>
+                  <h4 className="font-sans font-bold text-white text-sm mb-2">{step.title}</h4>
+                  <p className="font-sans text-xs text-slate-500 leading-relaxed">{step.desc}</p>
                 </div>
-                <h4 className="font-serif text-lg font-medium text-white mb-2">{step.title}</h4>
-                <p className="font-sans text-sm text-white/50 leading-relaxed">{step.desc}</p>
-              </div>
+              </FadeUp>
             ))}
-          </div>
 
-          <div className="mt-8 bg-brand-accent/10 border border-brand-accent/20 p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-2 h-2 rounded-full bg-brand-accent animate-pulse" />
-              <span className="font-mono text-xs text-brand-accent tracking-widest uppercase">
-                Agent Status
-              </span>
-            </div>
-            <p className="font-sans text-sm text-white/70">
-              Running Mon–Fri · 6:00 AM Atlantic · 15-minute window · Powered by Claude Sonnet
-            </p>
+            {/* Status card */}
+            <FadeUp delay={agentSteps.length * 0.08}>
+              <div className="card-navy h-full bg-orange-500/5 border-orange-500/20 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="dot-orange animate-pulse-slow" />
+                  <span className="font-mono text-xs text-orange-400 uppercase tracking-widest">Live</span>
+                </div>
+                <p className="font-sans text-xs text-slate-400 leading-relaxed">
+                  Running Mon–Fri · 6:00 AM Atlantic · 15-min window · Claude Sonnet
+                </p>
+              </div>
+            </FadeUp>
           </div>
         </div>
       </section>
 
-      {/* Tech Stack */}
-      <section className="py-20 bg-white border-y border-brand-light-gold">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-3xl font-light text-brand-dark mb-10">
-            Every layer <span className="text-brand-gold italic">purpose-built.</span>
-          </h2>
+      {/* Tech stack */}
+      <section className="py-20 bg-navy-800 border-y border-navy-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeUp className="mb-10">
+            <h2 className="font-sans font-bold text-2xl text-white">
+              Every layer <span className="text-gradient-orange">purpose-built.</span>
+            </h2>
+          </FadeUp>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {stack.map((item) => (
-              <div key={item.name} className="border-l-2 border-brand-gold/30 pl-4 py-1">
-                <div className="font-sans text-sm font-semibold text-brand-dark mb-1">
-                  {item.name}
+            {stack.map((item, i) => (
+              <FadeUp key={item.name} delay={i * 0.06}>
+                <div className="flex gap-3 items-start">
+                  <div className="w-1 h-12 bg-gradient-to-b from-orange-500 to-orange-500/0 rounded-full flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-sans text-sm font-semibold text-white mb-0.5">{item.name}</div>
+                    <div className="font-sans text-xs text-slate-500">{item.role}</div>
+                  </div>
                 </div>
-                <div className="font-sans text-xs text-neutral-500">{item.role}</div>
-              </div>
+              </FadeUp>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-brand-light-gold">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-serif text-4xl font-light text-brand-dark mb-4">
-            Ready to start?
-          </h2>
-          <p className="font-sans text-base text-neutral-600 mb-8">
-            Book a free discovery call — 15 minutes is all we need.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
-              className="bg-brand-dark text-white px-8 py-4 font-sans font-medium text-sm tracking-wide hover:bg-brand-dark/90 transition-all"
-            >
-              Book Discovery Call
-            </Link>
-            <a
-              href="tel:5066399083"
-              className="border border-brand-dark/30 text-brand-dark px-8 py-4 font-sans font-medium text-sm tracking-wide hover:border-brand-gold transition-all"
-            >
-              Call 506-639-9083
-            </a>
-          </div>
+      <section className="py-20 bg-navy-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <FadeUp>
+            <h2 className="font-sans font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              Ready to start?
+            </h2>
+            <p className="text-slate-400 mb-8">15-minute discovery call is all we need.</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/contact" className="btn-orange text-base px-8 py-4">Book Discovery Call</Link>
+              <a href="tel:5066399083" className="btn-outline text-base px-8 py-4">Call 506-639-9083</a>
+            </div>
+          </FadeUp>
         </div>
       </section>
     </>

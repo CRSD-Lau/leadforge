@@ -3,14 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --color-dark: #003F2D;
-  --color-gold: #C5A55A;
-  --color-accent: #54B848;
-  --color-bg: #FAF8F5;
-  --color-light-gold: #F5F0E6;
-
-  --font-serif: var(--font-cormorant), Georgia, serif;
+  --navy-950: #050A18;
+  --navy-900: #080D1A;
+  --navy-800: #0F1629;
+  --navy-700: #1A2236;
+  --navy-600: #1E2D4A;
+  --orange-500: #F97316;
+  --orange-600: #EA580C;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
   --font-mono: var(--font-jetbrains), monospace;
 }
 
@@ -22,49 +23,139 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 64px;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: #1a1a1a;
+  background-color: var(--navy-900);
+  color: #ffffff;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+::selection {
+  background-color: rgba(249, 115, 22, 0.35);
+  color: #fff;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy-900); }
+::-webkit-scrollbar-thumb { background: var(--navy-600); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--orange-500); }
 
 @layer base {
-  ::selection {
-    background-color: #C5A55A;
-    color: #003F2D;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
-  .btn-primary {
-    @apply inline-flex items-center gap-2 bg-brand-dark text-white px-6 py-3 font-sans font-medium text-sm tracking-wide transition-all duration-200 hover:bg-opacity-90 hover:shadow-lg;
+
+  /* ── Buttons ── */
+  .btn-orange {
+    @apply inline-flex items-center gap-2 bg-orange-500 text-white px-6 py-3 font-sans font-semibold text-sm tracking-wide rounded-lg transition-all duration-200 hover:bg-orange-600 hover:shadow-orange-md hover:-translate-y-0.5 active:translate-y-0;
   }
 
-  .btn-secondary {
-    @apply inline-flex items-center gap-2 border border-brand-gold text-brand-dark px-6 py-3 font-sans font-medium text-sm tracking-wide transition-all duration-200 hover:bg-brand-light-gold;
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border border-navy-600 text-slate-300 px-6 py-3 font-sans font-medium text-sm tracking-wide rounded-lg transition-all duration-200 hover:border-orange-500/50 hover:text-white hover:bg-navy-700 active:translate-y-0;
   }
 
-  .btn-gold {
-    @apply inline-flex items-center gap-2 bg-brand-gold text-brand-dark px-6 py-3 font-sans font-semibold text-sm tracking-wide transition-all duration-200 hover:brightness-105 hover:shadow-lg;
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 text-slate-400 px-4 py-2 font-sans font-medium text-sm transition-all duration-200 hover:text-white;
   }
 
-  .section-label {
-    @apply text-brand-gold font-mono text-xs tracking-widest uppercase;
+  /* ── Cards ── */
+  .card-navy {
+    @apply bg-navy-800 border border-navy-600 rounded-xl p-6 transition-all duration-300 hover:border-orange-500/30 hover:shadow-navy-card;
   }
 
-  .gold-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-brand-gold;
+  .card-glass {
+    @apply bg-navy-800/60 backdrop-blur-sm border border-white/5 rounded-xl transition-all duration-300 hover:border-orange-500/20;
   }
 
-  .card-base {
-    @apply bg-white border border-brand-light-gold p-6 transition-all duration-200 hover:shadow-md hover:border-brand-gold/30;
+  /* ── Section labels ── */
+  .section-tag {
+    @apply inline-flex items-center gap-2 text-orange-500 font-mono text-xs tracking-widest uppercase;
+  }
+
+  .section-tag::before {
+    content: '';
+    @apply block w-4 h-px bg-orange-500;
+  }
+
+  /* ── Orange glow text ── */
+  .text-glow {
+    text-shadow: 0 0 30px rgba(249, 115, 22, 0.4);
+  }
+
+  /* ── Gradient text ── */
+  .text-gradient-orange {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #F97316 0%, #FB923C 60%, #FDBA74 100%);
+  }
+
+  /* ── Grid background ── */
+  .bg-grid {
+    background-image: linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* ── Orange dot ── */
+  .dot-orange {
+    @apply w-2 h-2 rounded-full bg-orange-500;
+    box-shadow: 0 0 8px rgba(249, 115, 22, 0.8);
+  }
+
+  /* ── Feature pill ── */
+  .feature-pill {
+    @apply flex items-center gap-2.5 bg-navy-800 border border-navy-600 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition-all duration-200 hover:border-orange-500/40 hover:text-white;
+  }
+
+  /* ── Status badge ── */
+  .badge-active {
+    @apply inline-flex items-center gap-1.5 bg-orange-500/10 border border-orange-500/20 rounded-full px-3 py-1 text-xs font-mono text-orange-400;
   }
 }
+
+/* ── Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes scan-line {
+  0% { top: 0; opacity: 0.8; }
+  45% { opacity: 0.8; }
+  50% { top: 100%; opacity: 0; }
+  51% { top: 0; opacity: 0; }
+  55% { opacity: 0.8; }
+  100% { top: 0; opacity: 0.8; }
+}
+
+@keyframes type-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-delay { animation: float 6s ease-in-out 2s infinite; }
+.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-scan { animation: scan-line 4s ease-in-out infinite; }
+.animate-cursor { animation: type-cursor 1s step-end infinite; }
+.animate-count { animation: count-up 0.6s ease-out forwards; }

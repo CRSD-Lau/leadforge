@@ -1,17 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
-  const [form, setForm] = useState({
-    name: '',
-    business: '',
-    email: '',
-    phone: '',
-    message: '',
-  })
+  const [form, setForm] = useState({ name: '', business: '', email: '', phone: '', message: '' })
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -20,237 +16,156 @@ export default function ContactPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
-
-    // Build a mailto: link as the submission mechanism (no backend needed)
-    const subject = encodeURIComponent(
-      `Website enquiry — ${form.business || form.name}`
-    )
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nBusiness: ${form.business}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`
-    )
+    const subject = encodeURIComponent(`Website enquiry — ${form.business || form.name}`)
+    const body = encodeURIComponent(`Name: ${form.name}\nBusiness: ${form.business}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`)
     window.location.href = `mailto:neil@leadforge-ai.ca?subject=${subject}&body=${body}`
-
-    // Optimistically show success after a brief delay
-    setTimeout(() => {
-      setSending(false)
-      setSubmitted(true)
-    }, 800)
+    setTimeout(() => { setSending(false); setSubmitted(true) }, 800)
   }
 
   return (
     <>
       {/* Header */}
-      <section className="bg-brand-dark pt-32 pb-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="section-label block mb-4">Get In Touch</span>
-          <h1 className="font-serif text-5xl sm:text-6xl font-light text-white leading-tight mb-6">
-            Let's build your <span className="text-brand-gold italic">website.</span>
-          </h1>
-          <p className="font-sans text-base text-white/60 max-w-xl leading-relaxed">
-            Fill in the form and Neil will respond within one business day. Or skip the form and
-            call directly.
-          </p>
+      <section className="relative bg-navy-900 pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-60" />
+        <div className="absolute top-1/2 right-0 w-96 h-96 bg-orange-500/6 rounded-full blur-3xl" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="section-tag mb-4 block">Get In Touch</span>
+            <h1 className="font-sans font-extrabold text-5xl sm:text-6xl text-white leading-tight mb-5">
+              {"Let's build your"}{' '}
+              <span className="text-gradient-orange">website.</span>
+            </h1>
+            <p className="text-slate-400 text-lg max-w-xl">
+              Fill in the form and Neil will respond within one business day. Or skip it and call directly.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      <section className="py-24 bg-brand-bg">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section className="py-24 bg-navy-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
 
-            {/* Contact form */}
-            <div>
+            {/* Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="lg:col-span-3"
+            >
               {submitted ? (
-                <div className="bg-brand-accent/10 border border-brand-accent/30 p-10 text-center">
-                  <div className="w-12 h-12 rounded-full bg-brand-accent/20 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-brand-accent text-xl">✓</span>
+                <div className="card-navy bg-green-500/5 border-green-500/20 text-center py-16">
+                  <div className="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-green-400">
+                      <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </div>
-                  <h3 className="font-serif text-2xl text-brand-dark mb-2">Message sent!</h3>
-                  <p className="font-sans text-sm text-neutral-600">
-                    Neil will get back to you within one business day. You can also call{' '}
-                    <a href="tel:5066399083" className="text-brand-dark font-medium underline">
-                      506-639-9083
-                    </a>{' '}
-                    directly.
+                  <h3 className="font-sans font-bold text-xl text-white mb-2">Message sent!</h3>
+                  <p className="font-sans text-sm text-slate-400">
+                    Neil will get back to you within one business day.{' '}
+                    <a href="tel:5066399083" className="text-orange-400 hover:text-orange-300 underline">Call 506-639-9083</a> if urgent.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block font-sans text-xs font-semibold text-brand-dark tracking-wide uppercase mb-2">
-                        Your Name <span className="text-brand-gold">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        required
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder="Jane Smith"
-                        className="w-full border border-brand-light-gold bg-white px-4 py-3 font-sans text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand-gold transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-sans text-xs font-semibold text-brand-dark tracking-wide uppercase mb-2">
-                        Business Name <span className="text-brand-gold">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="business"
-                        required
-                        value={form.business}
-                        onChange={handleChange}
-                        placeholder="Smith Plumbing Co."
-                        className="w-full border border-brand-light-gold bg-white px-4 py-3 font-sans text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand-gold transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block font-sans text-xs font-semibold text-brand-dark tracking-wide uppercase mb-2">
-                        Email <span className="text-brand-gold">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="jane@smithplumbing.ca"
-                        className="w-full border border-brand-light-gold bg-white px-4 py-3 font-sans text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand-gold transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-sans text-xs font-semibold text-brand-dark tracking-wide uppercase mb-2">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={form.phone}
-                        onChange={handleChange}
-                        placeholder="506-555-0100"
-                        className="w-full border border-brand-light-gold bg-white px-4 py-3 font-sans text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand-gold transition-colors"
-                      />
-                    </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {[
+                      { name: 'name', label: 'Your Name', placeholder: 'Jane Smith', required: true, type: 'text' },
+                      { name: 'business', label: 'Business Name', placeholder: 'Smith Plumbing Co.', required: true, type: 'text' },
+                      { name: 'email', label: 'Email Address', placeholder: 'jane@smithplumbing.ca', required: true, type: 'email' },
+                      { name: 'phone', label: 'Phone (optional)', placeholder: '506-555-0100', required: false, type: 'tel' },
+                    ].map((field) => (
+                      <div key={field.name}>
+                        <label className="block font-mono text-xs text-slate-500 uppercase tracking-widest mb-2">
+                          {field.label}{field.required && <span className="text-orange-500 ml-1">*</span>}
+                        </label>
+                        <input
+                          type={field.type} name={field.name} required={field.required}
+                          value={form[field.name as keyof typeof form]} onChange={handleChange}
+                          placeholder={field.placeholder}
+                          className="w-full bg-navy-900 border border-navy-600 rounded-lg px-4 py-3 font-sans text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-500/60 focus:ring-1 focus:ring-orange-500/30 transition-all"
+                        />
+                      </div>
+                    ))}
                   </div>
 
                   <div>
-                    <label className="block font-sans text-xs font-semibold text-brand-dark tracking-wide uppercase mb-2">
-                      Tell us about your business
-                    </label>
+                    <label className="block font-mono text-xs text-slate-500 uppercase tracking-widest mb-2">Tell us about your business</label>
                     <textarea
-                      name="message"
-                      rows={5}
-                      value={form.message}
-                      onChange={handleChange}
+                      name="message" rows={5} value={form.message} onChange={handleChange}
                       placeholder="What does your business do? What pages do you need? Any design preferences?"
-                      className="w-full border border-brand-light-gold bg-white px-4 py-3 font-sans text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand-gold transition-colors resize-none"
+                      className="w-full bg-navy-900 border border-navy-600 rounded-lg px-4 py-3 font-sans text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-500/60 focus:ring-1 focus:ring-orange-500/30 transition-all resize-none"
                     />
                   </div>
 
                   <button
-                    type="submit"
-                    disabled={sending}
-                    className="w-full bg-brand-dark text-white py-4 font-sans font-semibold text-sm tracking-wide hover:bg-brand-dark/90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                    type="submit" disabled={sending}
+                    className="btn-orange w-full justify-center text-base py-4 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {sending ? 'Sending...' : 'Send Message'}
+                    {sending ? 'Opening email...' : 'Send Message →'}
                   </button>
 
-                  <p className="font-sans text-xs text-neutral-400 text-center">
-                    Or reply to our outreach email — we'll get the conversation going from there.
+                  <p className="font-sans text-xs text-slate-600 text-center">
+                    Or just reply to our outreach email — we will get the conversation going from there.
                   </p>
                 </form>
               )}
-            </div>
+            </motion.div>
 
-            {/* Contact info sidebar */}
-            <div className="space-y-8">
-              {/* Direct contact */}
-              <div className="bg-white border border-brand-light-gold p-8">
-                <h3 className="font-serif text-xl font-medium text-brand-dark mb-6">
-                  Prefer to call?
-                </h3>
+            {/* Sidebar */}
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="lg:col-span-2 space-y-5"
+            >
+              {/* Contact details */}
+              <div className="card-navy">
+                <h3 className="font-sans font-bold text-white text-base mb-5">Prefer to call?</h3>
                 <div className="space-y-4">
-                  <a
-                    href="tel:5066399083"
-                    className="flex items-center gap-4 group"
-                  >
-                    <div className="w-10 h-10 border border-brand-gold/30 flex items-center justify-center group-hover:bg-brand-light-gold transition-colors">
-                      <span className="font-mono text-brand-gold text-sm">☎</span>
-                    </div>
-                    <div>
-                      <div className="font-sans text-xs text-neutral-400 uppercase tracking-wide">Phone</div>
-                      <div className="font-sans text-sm font-semibold text-brand-dark group-hover:text-brand-gold transition-colors">
-                        506-639-9083
+                  {[
+                    { icon: '☎', label: 'Phone', value: '506-639-9083', href: 'tel:5066399083' },
+                    { icon: '@', label: 'Email', value: 'neil@leadforge-ai.ca', href: 'mailto:neil@leadforge-ai.ca' },
+                    { icon: '◎', label: 'Location', value: 'Saint John, NB, Canada', href: null },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center gap-3 group">
+                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0">
+                        <span className="font-mono text-orange-500 text-sm">{item.icon}</span>
+                      </div>
+                      <div>
+                        <div className="font-mono text-xs text-slate-600 uppercase tracking-wider">{item.label}</div>
+                        {item.href ? (
+                          <a href={item.href} className="font-sans text-sm font-medium text-slate-300 hover:text-orange-400 transition-colors">{item.value}</a>
+                        ) : (
+                          <span className="font-sans text-sm font-medium text-slate-300">{item.value}</span>
+                        )}
                       </div>
                     </div>
-                  </a>
-
-                  <a
-                    href="mailto:neil@leadforge-ai.ca"
-                    className="flex items-center gap-4 group"
-                  >
-                    <div className="w-10 h-10 border border-brand-gold/30 flex items-center justify-center group-hover:bg-brand-light-gold transition-colors">
-                      <span className="font-mono text-brand-gold text-sm">@</span>
-                    </div>
-                    <div>
-                      <div className="font-sans text-xs text-neutral-400 uppercase tracking-wide">Email</div>
-                      <div className="font-sans text-sm font-semibold text-brand-dark group-hover:text-brand-gold transition-colors">
-                        neil@leadforge-ai.ca
-                      </div>
-                    </div>
-                  </a>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 border border-brand-gold/30 flex items-center justify-center">
-                      <span className="font-mono text-brand-gold text-sm">◎</span>
-                    </div>
-                    <div>
-                      <div className="font-sans text-xs text-neutral-400 uppercase tracking-wide">Location</div>
-                      <div className="font-sans text-sm font-semibold text-brand-dark">
-                        Saint John, NB, Canada
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
-              {/* What to expect */}
-              <div className="bg-brand-light-gold border border-brand-gold/20 p-8">
-                <h3 className="font-serif text-xl font-medium text-brand-dark mb-4">
-                  What happens next?
-                </h3>
+              {/* What happens next */}
+              <div className="card-navy bg-orange-500/5 border-orange-500/20">
+                <h3 className="font-sans font-bold text-white text-base mb-4">What happens next?</h3>
                 <ol className="space-y-3">
-                  {[
-                    'Neil responds within 1 business day',
-                    'We schedule a 15-minute discovery call',
-                    'Build starts within 24 hours of the call',
-                    'You have a live site in 3–5 days',
-                  ].map((item, i) => (
+                  {['Neil responds within 1 business day', 'We schedule a 15-min discovery call', 'Build starts within 24hrs of the call', 'Live site in 3–5 days'].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="font-mono text-xs text-brand-gold mt-0.5 w-4 flex-shrink-0">
-                        0{i + 1}
-                      </span>
-                      <span className="font-sans text-sm text-neutral-700">{item}</span>
+                      <span className="font-mono text-xs text-orange-500 w-5 flex-shrink-0 mt-0.5">0{i + 1}</span>
+                      <span className="font-sans text-sm text-slate-400">{item}</span>
                     </li>
                   ))}
                 </ol>
               </div>
 
-              {/* Pricing reminder */}
-              <div className="bg-brand-dark p-6">
-                <div className="font-mono text-xs text-brand-gold tracking-widest uppercase mb-2">
-                  Pricing
-                </div>
-                <div className="font-serif text-3xl text-white font-light mb-1">$650</div>
-                <div className="font-sans text-sm text-white/50 mb-3">flat rate · one-time</div>
-                <div className="font-sans text-xs text-white/40">
-                  Post-launch updates: $75/hr · No minimum · Prorated to 10-min
-                </div>
+              {/* Price card */}
+              <div className="card-navy bg-navy-900 border-navy-600">
+                <div className="font-mono text-xs text-orange-500 tracking-widest uppercase mb-2">Pricing</div>
+                <div className="font-sans font-extrabold text-4xl text-white mb-1">$650</div>
+                <div className="font-sans text-sm text-slate-500 mb-3">flat rate · one-time</div>
+                <div className="font-sans text-xs text-slate-600">Post-launch: $75/hr · No minimum · 10-min prorate</div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>

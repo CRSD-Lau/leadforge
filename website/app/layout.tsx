@@ -6,14 +6,14 @@ import Footer from '@/components/Footer'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '600', '700'],
   variable: '--font-cormorant',
   display: 'swap',
 })
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-dm-sans',
   display: 'swap',
 })
@@ -31,14 +31,13 @@ export const metadata: Metadata = {
     template: '%s | LeadForge AI',
   },
   description:
-    'LeadForge AI builds professional websites for local businesses with no web presence. $650 flat rate. 3–5 day delivery. Powered by AI.',
+    'LeadForge AI builds professional websites for local businesses. $650 flat rate, 3–5 day delivery. Powered by AI. Saint John, NB.',
   keywords: [
-    'website design',
+    'website design Saint John NB',
     'local business websites',
-    'small business web design',
-    'affordable websites',
+    'affordable web design New Brunswick',
     'Next.js websites',
-    'Saint John New Brunswick',
+    'AI web agency',
   ],
   authors: [{ name: 'Neil Mitchell', url: 'https://neil-mitchell.vercel.app' }],
   openGraph: {
@@ -47,21 +46,17 @@ export const metadata: Metadata = {
     siteName: 'LeadForge AI',
     title: 'LeadForge AI — Websites for Local Businesses',
     description:
-      'Autonomous outbound lead generation, powered by Claude. We build professional websites for local businesses. $650 flat rate.',
+      'Professional websites built fast. $650 flat rate, 3–5 day delivery. Powered by Claude AI.',
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
       className={`${cormorant.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="font-sans bg-brand-bg text-neutral-900 antialiased">
+      <body className="font-sans bg-navy-900 text-white antialiased">
         <Navbar />
         <main>{children}</main>
         <Footer />
