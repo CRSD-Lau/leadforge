@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+        scrolled || isOpen
           ? 'bg-navy-900/95 backdrop-blur-md border-b border-navy-600/60 shadow-navy-lg'
           : 'bg-transparent'
       }`}
@@ -117,7 +117,7 @@ export default function Navbar() {
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className="md:hidden overflow-hidden border-t border-navy-700"
             >
-              <div className="bg-navy-900/98 backdrop-blur-md py-3 flex flex-col gap-1">
+              <div className="py-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
