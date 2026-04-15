@@ -7,31 +7,11 @@ import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-mot
 import * as THREE from 'three'
 
 // ---------------------------------------------------------------------------
-// Shared scroll progress – updated in React, read in R3F useFrame (no state)
+// Shared scroll progress
 // ---------------------------------------------------------------------------
 const scrollState = { progress: 0 }
-
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * t
-}
-
-// ---------------------------------------------------------------------------
-// Materials (shared instances for performance)
-// ---------------------------------------------------------------------------
-const MAT = {
-  skin:     { color: '#FDBCB4', roughness: 0.55, metalness: 0.0 },
-  hair:     { color: '#3D2214', roughness: 0.9,  metalness: 0.0 },
-  shirt:    { color: '#2A5080', roughness: 0.75, metalness: 0.0 },
-  pants:    { color: '#1A2A44', roughness: 0.85, metalness: 0.0 },
-  shoe:     { color: '#1A1A28', roughness: 0.9,  metalness: 0.05 },
-  eyes:     { color: '#111130', roughness: 0.3,  metalness: 0.1 },
-  desk:     { color: '#263650', roughness: 0.55, metalness: 0.05 },
-  deskLeg:  { color: '#1E2D44', roughness: 0.85, metalness: 0.1  },
-  monitor:  { color: '#1E2D44', roughness: 0.4,  metalness: 0.3  },
-  chair:    { color: '#141E30', roughness: 0.9,  metalness: 0.05 },
-  keyboard: { color: '#223050', roughness: 0.7,  metalness: 0.1  },
-  mug:      { color: '#F97316', roughness: 0.5,  metalness: 0.05 },
-}
+function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
+function clamp01(t: number) { return Math.max(0, Math.min(1, t)) }
 
 // ---------------------------------------------------------------------------
 // Desk + accessories
@@ -42,111 +22,238 @@ function Desk() {
       {/* Surface */}
       <RoundedBox args={[2.7, 0.07, 1.35]} radius={0.02} smoothness={2}
         position={[0, 0.98, 0]} castShadow receiveShadow>
-        <meshStandardMaterial {...MAT.desk} />
+        <meshStandardMaterial color="#243048" roughness={0.5} metalness={0.05} />
       </RoundedBox>
       {/* Legs */}
-      {([ [-1.2, 0.49, -0.58], [1.2, 0.49, -0.58], [-1.2, 0.49, 0.58], [1.2, 0.49, 0.58] ] as [number,number,number][]).map((pos, i) => (
+      {([ [-1.2, 0.49, -0.56], [1.2, 0.49, -0.56], [-1.2, 0.49, 0.56], [1.2, 0.49, 0.56] ] as [number,number,number][]).map((pos, i) => (
         <RoundedBox key={i} args={[0.055, 0.97, 0.055]} radius={0.015} smoothness={2}
           position={pos} castShadow>
-          <meshStandardMaterial {...MAT.deskLeg} />
+          <meshStandardMaterial color="#141E30" roughness={0.85} metalness={0.1} />
         </RoundedBox>
       ))}
       {/* Keyboard */}
-      <RoundedBox args={[0.62, 0.022, 0.26]} radius={0.01} smoothness={2}
-        position={[0, 1.025, 0.15]} castShadow>
-        <meshStandardMaterial {...MAT.keyboard} />
+      <RoundedBox args={[0.66, 0.022, 0.28]} radius={0.01} smoothness={2}
+        position={[0, 1.026, 0.14]} castShadow>
+        <meshStandardMaterial color="#1A2438" roughness={0.7} metalness={0.1} />
       </RoundedBox>
-      {/* Keyboard detail rows */}
-      {[-0.04, 0.04].map((z, i) => (
-        <RoundedBox key={i} args={[0.56, 0.008, 0.005]} radius={0.002} smoothness={2}
-          position={[0, 1.038, 0.15 + z]}>
+      {/* Key rows */}
+      {[-0.07, -0.01, 0.05, 0.11].map((z, i) => (
+        <RoundedBox key={i} args={[0.60, 0.007, 0.005]} radius={0.002} smoothness={1}
+          position={[0, 1.038, 0.14 + z]}>
           <meshStandardMaterial color="#263656" roughness={0.6} />
         </RoundedBox>
       ))}
+      {/* Mouse */}
+      <RoundedBox args={[0.09, 0.025, 0.14]} radius={0.04} smoothness={2}
+        position={[0.48, 1.023, 0.15]}>
+        <meshStandardMaterial color="#0E1624" roughness={0.6} metalness={0.1} />
+      </RoundedBox>
+      {/* Mouse scroll wheel */}
+      <Cylinder args={[0.012, 0.012, 0.008, 8]} position={[0.48, 1.036, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
+        <meshStandardMaterial color="#263656" />
+      </Cylinder>
       {/* Coffee mug */}
-      <group position={[0.9, 1.04, -0.12]}>
-        <Cylinder args={[0.055, 0.05, 0.14, 12]} castShadow>
-          <meshStandardMaterial {...MAT.mug} />
+      <group position={[0.9, 1.04, -0.1]}>
+        <Cylinder args={[0.055, 0.048, 0.13, 14]} castShadow>
+          <meshStandardMaterial color="#E8820C" roughness={0.5} />
         </Cylinder>
-        {/* Mug handle */}
-        <mesh position={[0.072, 0, 0]}>
-          <torusGeometry args={[0.04, 0.012, 6, 10, Math.PI]} />
-          <meshStandardMaterial {...MAT.mug} />
+        <mesh position={[0.072, -0.01, 0]}>
+          <torusGeometry args={[0.038, 0.011, 6, 10, Math.PI]} />
+          <meshStandardMaterial color="#E8820C" roughness={0.5} />
         </mesh>
-        {/* Coffee surface */}
-        <Cylinder args={[0.045, 0.045, 0.005, 12]} position={[0, 0.07, 0]}>
-          <meshStandardMaterial color="#2C1407" roughness={0.3} />
+        <Cylinder args={[0.044, 0.044, 0.004, 12]} position={[0, 0.067, 0]}>
+          <meshStandardMaterial color="#2C1407" roughness={0.2} />
         </Cylinder>
       </group>
       {/* Notepad */}
-      <RoundedBox args={[0.3, 0.01, 0.22]} radius={0.005} smoothness={2}
-        position={[-0.85, 1.016, 0.0]} rotation={[0, 0.1, 0]}>
-        <meshStandardMaterial color="#F8F4EC" roughness={0.95} />
+      <RoundedBox args={[0.28, 0.008, 0.20]} radius={0.004} smoothness={1}
+        position={[-0.82, 1.015, -0.02]} rotation={[0, 0.12, 0]}>
+        <meshStandardMaterial color="#F0EBE0" roughness={0.95} />
       </RoundedBox>
+      {/* Notepad lines */}
+      {[0, 0.038, 0.076, 0.114].map((dz, i) => (
+        <RoundedBox key={i} args={[0.22, 0.003, 0.004]} radius={0.001} smoothness={1}
+          position={[-0.82, 1.022, -0.05 + dz]} rotation={[0, 0.12, 0]}>
+          <meshStandardMaterial color="#C8C0B0" roughness={0.95} />
+        </RoundedBox>
+      ))}
+
+      {/* Pen on notepad */}
+      <Cylinder args={[0.006, 0.005, 0.24, 6]} position={[-0.72, 1.022, 0.05]} rotation={[0, -0.5, Math.PI / 2]}>
+        <meshStandardMaterial color="#1A2A8F" roughness={0.4} metalness={0.3} />
+      </Cylinder>
+      <Cylinder args={[0.006, 0.001, 0.018, 6]} position={[-0.61, 1.022, 0.05]} rotation={[0, -0.5, Math.PI / 2]}>
+        <meshStandardMaterial color="#888" roughness={0.3} metalness={0.5} />
+      </Cylinder>
+
+      {/* Small succulent plant — left back corner */}
+      <group position={[-0.98, 1.04, -0.42]}>
+        {/* Terracotta pot */}
+        <Cylinder args={[0.052, 0.044, 0.10, 12]} castShadow>
+          <meshStandardMaterial color="#A0522D" roughness={0.75} />
+        </Cylinder>
+        {/* Pot rim */}
+        <Cylinder args={[0.056, 0.056, 0.012, 12]} position={[0, 0.056, 0]}>
+          <meshStandardMaterial color="#8B4513" roughness={0.8} />
+        </Cylinder>
+        {/* Soil */}
+        <Cylinder args={[0.044, 0.044, 0.006, 10]} position={[0, 0.052, 0]}>
+          <meshStandardMaterial color="#2A1808" roughness={1.0} />
+        </Cylinder>
+        {/* Succulent leaves */}
+        {[0, 1.05, 2.09, 3.14, 4.19, 5.24].map((a, i) => (
+          <RoundedBox key={i} args={[0.038, 0.095, 0.022]} radius={0.012} smoothness={2}
+            position={[Math.sin(a) * 0.036, 0.10 + (i % 2) * 0.018, Math.cos(a) * 0.036]}
+            rotation={[Math.PI * 0.22, a, Math.PI * 0.05]}>
+            <meshStandardMaterial color={i % 2 === 0 ? '#2E7D32' : '#388E3C'} roughness={0.65} />
+          </RoundedBox>
+        ))}
+        {/* Centre bud */}
+        <Sphere args={[0.026, 8, 6]} position={[0, 0.128, 0]}>
+          <meshStandardMaterial color="#4CAF50" roughness={0.6} />
+        </Sphere>
+      </group>
+
+      {/* Small stack of books — right back corner */}
+      <group position={[0.94, 1.025, -0.44]} rotation={[0, -0.15, 0]}>
+        {[
+          { h: 0.032, color: '#1565C0', w: 0.16, d: 0.12 },
+          { h: 0.028, color: '#B71C1C', w: 0.14, d: 0.11 },
+          { h: 0.026, color: '#1B5E20', w: 0.13, d: 0.105 },
+        ].map((book, i) => {
+          const y = [0.016, 0.048, 0.075][i]
+          return (
+            <group key={i} position={[0, y, 0]}>
+              <RoundedBox args={[book.w, book.h, book.d]} radius={0.004} smoothness={1} castShadow>
+                <meshStandardMaterial color={book.color} roughness={0.8} />
+              </RoundedBox>
+              {/* Page edges */}
+              <RoundedBox args={[book.w - 0.018, book.h - 0.006, 0.003]} radius={0.001} smoothness={1}
+                position={[0, 0, book.d / 2 - 0.001]}>
+                <meshStandardMaterial color="#EEE8DC" roughness={0.95} />
+              </RoundedBox>
+            </group>
+          )
+        })}
+      </group>
+
+      {/* Phone face-down on desk — right of mouse */}
+      <group position={[0.75, 1.026, 0.36]} rotation={[0, 0.2, 0]}>
+        <RoundedBox args={[0.072, 0.014, 0.145]} radius={0.012} smoothness={2} castShadow>
+          <meshStandardMaterial color="#0A0E18" roughness={0.3} metalness={0.6} />
+        </RoundedBox>
+        {/* Camera bump */}
+        <RoundedBox args={[0.024, 0.005, 0.024]} radius={0.006} smoothness={2}
+          position={[0.018, 0.009, 0.048]}>
+          <meshStandardMaterial color="#1A1E28" roughness={0.2} metalness={0.8} />
+        </RoundedBox>
+        <Cylinder args={[0.006, 0.006, 0.006, 8]} position={[0.018, 0.013, 0.048]}>
+          <meshStandardMaterial color="#222" roughness={0.1} metalness={0.9} />
+        </Cylinder>
+      </group>
     </group>
   )
 }
 
 // ---------------------------------------------------------------------------
-// Monitor
+// Monitor + code screen
 // ---------------------------------------------------------------------------
-function Monitor({ screenRef }: { screenRef: React.MutableRefObject<THREE.Mesh | null> }) {
+const CODE_LINES = [
+  { color: '#61AFEF', w: 0.55, indent: 0.00 },   // blue - keyword
+  { color: '#98C379', w: 0.72, indent: 0.06 },   // green - string
+  { color: '#E5C07B', w: 0.45, indent: 0.06 },   // yellow - function
+  { color: '#56B6C2', w: 0.30, indent: 0.12 },   // cyan - type
+  { color: '#C678DD', w: 0.60, indent: 0.12 },   // purple - variable
+  { color: '#98C379', w: 0.82, indent: 0.06 },   // green - value
+  { color: '#ABB2BF', w: 0.38, indent: 0.00 },   // grey - punctuation
+  { color: '#E06C75', w: 0.50, indent: 0.06 },   // red - tag
+  { color: '#E5C07B', w: 0.65, indent: 0.12 },   // yellow - prop
+  { color: '#98C379', w: 0.42, indent: 0.18 },   // green - value
+  { color: '#61AFEF', w: 0.30, indent: 0.06 },   // blue
+  { color: '#ABB2BF', w: 0.55, indent: 0.00 },   // grey
+]
+
+function Monitor({ screenRef, codeOpacity }: {
+  screenRef: React.MutableRefObject<THREE.Mesh | null>
+  codeOpacity: React.MutableRefObject<number>
+}) {
+  const lineRefs = useRef<THREE.Mesh[]>([])
+
+  useFrame(() => {
+    lineRefs.current.forEach(mesh => {
+      if (mesh) (mesh.material as THREE.MeshStandardMaterial).opacity = codeOpacity.current
+    })
+  })
+
   return (
-    <group position={[0, 1.65, -0.3]}>
-      {/* Bezel */}
-      <RoundedBox args={[1.28, 0.90, 0.055]} radius={0.025} smoothness={2} castShadow>
-        <meshStandardMaterial {...MAT.monitor} />
+    <group position={[0, 1.66, -0.30]}>
+      {/* Outer bezel */}
+      <RoundedBox args={[1.32, 0.94, 0.058]} radius={0.022} smoothness={2} castShadow>
+        <meshStandardMaterial color="#141E30" roughness={0.4} metalness={0.3} />
       </RoundedBox>
-      {/* Screen face */}
-      <mesh ref={screenRef} position={[0, 0, 0.032]}>
-        <planeGeometry args={[1.14, 0.77]} />
+      {/* Screen */}
+      <mesh ref={screenRef} position={[0, 0.01, 0.034]}>
+        <planeGeometry args={[1.18, 0.80]} />
         <meshStandardMaterial color="#050A18" emissive="#050A18" emissiveIntensity={0.6} roughness={0.05} />
       </mesh>
-      {/* Thin bezel border */}
-      <RoundedBox args={[1.18, 0.81, 0.008]} radius={0.01} smoothness={2} position={[0, 0, 0.033]}>
-        <meshStandardMaterial color="#263656" roughness={0.3} metalness={0.2} />
+      {/* Code lines on screen */}
+      {CODE_LINES.map((line, i) => (
+        <mesh
+          key={i}
+          ref={el => { if (el) lineRefs.current[i] = el }}
+          position={[
+            -0.55 + line.indent * 1.1 + (line.w * 1.1) / 2,
+            0.29 - i * 0.052,
+            0.036
+          ]}
+        >
+          <planeGeometry args={[line.w * 1.1, 0.022]} />
+          <meshStandardMaterial color={line.color} emissive={line.color} emissiveIntensity={0.7}
+            transparent opacity={0} roughness={0.1} />
+        </mesh>
+      ))}
+      {/* Thin chrome border */}
+      <RoundedBox args={[1.22, 0.84, 0.006]} radius={0.01} smoothness={2} position={[0, 0.01, 0.033]}>
+        <meshStandardMaterial color="#1E3050" roughness={0.3} metalness={0.4} />
       </RoundedBox>
       {/* Stand neck */}
-      <Cylinder args={[0.025, 0.03, 0.22, 8]} position={[0, -0.56, 0]} castShadow>
-        <meshStandardMaterial color="#263656" roughness={0.4} metalness={0.3} />
+      <Cylinder args={[0.024, 0.03, 0.24, 8]} position={[0, -0.58, 0]} castShadow>
+        <meshStandardMaterial color="#243048" roughness={0.4} metalness={0.3} />
       </Cylinder>
       {/* Stand base */}
-      <RoundedBox args={[0.38, 0.035, 0.26]} radius={0.01} smoothness={2} position={[0, -0.68, 0.06]} castShadow>
-        <meshStandardMaterial color="#1E2A40" roughness={0.4} metalness={0.2} />
+      <RoundedBox args={[0.4, 0.034, 0.28]} radius={0.01} smoothness={2} position={[0, -0.70, 0.07]} castShadow>
+        <meshStandardMaterial color="#1A2638" roughness={0.4} metalness={0.2} />
       </RoundedBox>
     </group>
   )
 }
 
 // ---------------------------------------------------------------------------
-// Chair (better ergonomic shape)
+// Chair
 // ---------------------------------------------------------------------------
 function Chair() {
   return (
-    <group position={[0, 0, 0.9]}>
-      {/* Seat */}
-      <RoundedBox args={[0.74, 0.065, 0.70]} radius={0.025} smoothness={2}
+    <group position={[0, 0, 0.92]}>
+      <RoundedBox args={[0.76, 0.065, 0.72]} radius={0.025} smoothness={2}
         position={[0, 1.04, 0]} castShadow receiveShadow>
-        <meshStandardMaterial {...MAT.chair} />
+        <meshStandardMaterial color="#0E1420" roughness={0.9} />
       </RoundedBox>
-      {/* Back rest */}
-      <RoundedBox args={[0.72, 0.82, 0.065]} radius={0.025} smoothness={2}
-        position={[0, 1.49, 0.32]} castShadow>
-        <meshStandardMaterial {...MAT.chair} />
+      <RoundedBox args={[0.74, 0.86, 0.068]} radius={0.025} smoothness={2}
+        position={[0, 1.51, 0.34]} castShadow>
+        <meshStandardMaterial color="#0E1420" roughness={0.9} />
       </RoundedBox>
-      {/* Lumbar ridge */}
-      <RoundedBox args={[0.58, 0.12, 0.04]} radius={0.02} smoothness={2}
-        position={[0, 1.32, 0.36]}>
-        <meshStandardMaterial color="#0A1020" roughness={0.9} />
+      <RoundedBox args={[0.60, 0.13, 0.04]} radius={0.02} smoothness={2}
+        position={[0, 1.32, 0.38]}>
+        <meshStandardMaterial color="#080E18" roughness={0.9} />
       </RoundedBox>
       {/* Armrests */}
-      {([-0.4, 0.4] as number[]).map((x, i) => (
+      {([-0.41, 0.41] as number[]).map((x, i) => (
         <group key={i} position={[x, 1.22, 0.06]}>
-          <RoundedBox args={[0.07, 0.28, 0.07]} radius={0.02} smoothness={2} position={[0, 0, 0]}>
-            <meshStandardMaterial color="#111928" roughness={0.8} />
+          <RoundedBox args={[0.07, 0.3, 0.07]} radius={0.02} smoothness={2}>
+            <meshStandardMaterial color="#0A1018" roughness={0.8} />
           </RoundedBox>
-          <RoundedBox args={[0.08, 0.025, 0.22]} radius={0.012} smoothness={2} position={[0, 0.15, 0.08]}>
-            <meshStandardMaterial color="#111928" roughness={0.7} />
+          <RoundedBox args={[0.08, 0.024, 0.24]} radius={0.01} smoothness={2} position={[0, 0.162, 0.09]}>
+            <meshStandardMaterial color="#0A1018" roughness={0.6} />
           </RoundedBox>
         </group>
       ))}
@@ -154,24 +261,21 @@ function Chair() {
       {Array.from({ length: 5 }, (_, i) => {
         const a = (i / 5) * Math.PI * 2
         return (
-          <RoundedBox key={i} args={[0.36, 0.04, 0.05]} radius={0.01} smoothness={2}
-            position={[Math.cos(a) * 0.2, 0.04, Math.sin(a) * 0.2]}
+          <RoundedBox key={i} args={[0.38, 0.038, 0.052]} radius={0.01} smoothness={2}
+            position={[Math.cos(a) * 0.22, 0.04, Math.sin(a) * 0.22]}
             rotation={[0, -a, 0]}>
-            <meshStandardMaterial color="#141E30" roughness={0.7} metalness={0.2} />
+            <meshStandardMaterial color="#12192A" roughness={0.7} metalness={0.2} />
           </RoundedBox>
         )
       })}
-      {/* Center post */}
-      <Cylinder args={[0.025, 0.035, 0.88, 8]} position={[0, 0.5, 0]} castShadow>
+      <Cylinder args={[0.024, 0.034, 0.9, 8]} position={[0, 0.5, 0]} castShadow>
         <meshStandardMaterial color="#1A2436" roughness={0.4} metalness={0.3} />
       </Cylinder>
-      {/* Casters */}
       {Array.from({ length: 5 }, (_, i) => {
         const a = (i / 5) * Math.PI * 2
         return (
-          <Sphere key={i} args={[0.04, 8, 8]}
-            position={[Math.cos(a) * 0.34, 0.04, Math.sin(a) * 0.34]}>
-            <meshStandardMaterial color="#0A0E18" roughness={0.5} metalness={0.2} />
+          <Sphere key={i} args={[0.038, 8, 6]} position={[Math.cos(a) * 0.35, 0.04, Math.sin(a) * 0.35]}>
+            <meshStandardMaterial color="#090D16" roughness={0.5} metalness={0.2} />
           </Sphere>
         )
       })}
@@ -180,167 +284,154 @@ function Chair() {
 }
 
 // ---------------------------------------------------------------------------
-// Developer – realistic low-poly human with proper joint hierarchy
+// Developer – faces monitor (–Z), stands up and turns to camera at the end
 // ---------------------------------------------------------------------------
 function Developer({
-  torsoRef, headGroupRef, lArmGroupRef, rArmGroupRef, lLegGroupRef, rLegGroupRef,
+  rootRef, torsoRef, headGroupRef, lArmRef, rArmRef, lLegRef, rLegRef,
 }: {
+  rootRef:       React.MutableRefObject<THREE.Group | null>
   torsoRef:      React.MutableRefObject<THREE.Group | null>
   headGroupRef:  React.MutableRefObject<THREE.Group | null>
-  lArmGroupRef:  React.MutableRefObject<THREE.Group | null>
-  rArmGroupRef:  React.MutableRefObject<THREE.Group | null>
-  lLegGroupRef:  React.MutableRefObject<THREE.Group | null>
-  rLegGroupRef:  React.MutableRefObject<THREE.Group | null>
+  lArmRef:       React.MutableRefObject<THREE.Group | null>
+  rArmRef:       React.MutableRefObject<THREE.Group | null>
+  lLegRef:       React.MutableRefObject<THREE.Group | null>
+  rLegRef:       React.MutableRefObject<THREE.Group | null>
 }) {
   return (
-    /* Root group – Z offset so character is behind desk */
-    <group position={[0, 0, 0.38]}>
-      {/* ── TORSO (pivot = hip level) ─────────────────────────────── */}
+    /* Root — starts facing AWAY from camera (toward monitor at –Z).
+       At stage 4, rootRef.rotation.y animates from π → 0 to face camera. */
+    <group ref={rootRef} position={[0, 0, 0.36]} rotation={[0, Math.PI, 0]}>
       <group ref={torsoRef} position={[0, 1.62, 0]}>
 
-        {/* Upper body / shirt */}
+        {/* ── Torso / shirt ──────────────────────────────────────────── */}
         <RoundedBox args={[0.52, 0.62, 0.28]} radius={0.06} smoothness={2} position={[0, 0, 0]} castShadow>
-          <meshStandardMaterial {...MAT.shirt} />
+          <meshStandardMaterial color="#2A5080" roughness={0.78} />
         </RoundedBox>
-        {/* Shoulder width bump */}
+        {/* Shoulder width */}
         <RoundedBox args={[0.62, 0.12, 0.26]} radius={0.05} smoothness={2} position={[0, 0.22, 0]} castShadow>
-          <meshStandardMaterial {...MAT.shirt} />
+          <meshStandardMaterial color="#2A5080" roughness={0.78} />
         </RoundedBox>
 
-        {/* ── NECK ────────────────────────────────────────────────── */}
-        <Cylinder args={[0.065, 0.075, 0.14, 10]} position={[0, 0.38, 0.03]} castShadow>
-          <meshStandardMaterial {...MAT.skin} />
+        {/* ── Neck ───────────────────────────────────────────────────── */}
+        <Cylinder args={[0.062, 0.072, 0.14, 10]} position={[0, 0.38, 0.02]} castShadow>
+          <meshStandardMaterial color="#EDAA90" roughness={0.55} />
         </Cylinder>
 
-        {/* ── HEAD GROUP (pivot = base of head) ───────────────────── */}
+        {/* ── Head ───────────────────────────────────────────────────── */}
         <group ref={headGroupRef} position={[0, 0.55, 0.02]}>
-          {/* Head sphere */}
-          <Sphere args={[0.195, 16, 12]} position={[0, 0.19, 0]} castShadow>
-            <meshStandardMaterial {...MAT.skin} />
+          {/* Face / head sphere */}
+          <Sphere args={[0.192, 16, 12]} position={[0, 0.19, 0]} castShadow>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </Sphere>
-          {/* Jaw/chin — flatten the bottom */}
-          <RoundedBox args={[0.32, 0.09, 0.28]} radius={0.04} smoothness={2} position={[0, 0.06, 0.01]}>
-            <meshStandardMaterial {...MAT.skin} />
+          {/* Jaw strengthener */}
+          <RoundedBox args={[0.30, 0.09, 0.27]} radius={0.04} smoothness={2} position={[0, 0.07, 0]}>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </RoundedBox>
-          {/* Hair — cap on top of head */}
-          <Sphere args={[0.202, 16, 12]} position={[0, 0.24, -0.02]} castShadow>
-            <meshStandardMaterial {...MAT.hair} side={THREE.FrontSide} />
+          {/* Hair — cap */}
+          <Sphere args={[0.205, 14, 10]} position={[0, 0.24, -0.01]} castShadow>
+            <meshStandardMaterial color="#4A2810" roughness={0.88} side={THREE.FrontSide} />
           </Sphere>
-          {/* Hair front edge (fringe) */}
-          <RoundedBox args={[0.3, 0.075, 0.12]} radius={0.03} smoothness={2} position={[0, 0.36, 0.1]}>
-            <meshStandardMaterial {...MAT.hair} />
+          {/* Hair side-part ridge */}
+          <RoundedBox args={[0.08, 0.08, 0.18]} radius={0.03} smoothness={2} position={[0.14, 0.32, 0.12]} rotation={[0, -0.3, 0.2]}>
+            <meshStandardMaterial color="#4A2810" roughness={0.88} />
           </RoundedBox>
-          {/* Left eye */}
-          <Sphere args={[0.032, 8, 8]} position={[-0.072, 0.2, 0.175]}>
-            <meshStandardMaterial {...MAT.eyes} />
-          </Sphere>
-          {/* Right eye */}
-          <Sphere args={[0.032, 8, 8]} position={[0.072, 0.2, 0.175]}>
-            <meshStandardMaterial {...MAT.eyes} />
-          </Sphere>
-          {/* Eye whites (slightly larger, behind pupils) */}
-          <Sphere args={[0.042, 8, 8]} position={[-0.072, 0.2, 0.168]}>
-            <meshStandardMaterial color="#F0EBE3" roughness={0.3} />
-          </Sphere>
-          <Sphere args={[0.042, 8, 8]} position={[0.072, 0.2, 0.168]}>
-            <meshStandardMaterial color="#F0EBE3" roughness={0.3} />
-          </Sphere>
-          {/* Pupils on top */}
-          <Sphere args={[0.026, 8, 8]} position={[-0.072, 0.2, 0.178]}>
-            <meshStandardMaterial {...MAT.eyes} />
-          </Sphere>
-          <Sphere args={[0.026, 8, 8]} position={[0.072, 0.2, 0.178]}>
-            <meshStandardMaterial {...MAT.eyes} />
-          </Sphere>
+          {/* Hair fringe left */}
+          <RoundedBox args={[0.14, 0.07, 0.14]} radius={0.03} smoothness={2} position={[-0.08, 0.34, 0.13]} rotation={[0.1, 0.1, -0.1]}>
+            <meshStandardMaterial color="#4A2810" roughness={0.88} />
+          </RoundedBox>
+          {/* Hair back volume */}
+          <RoundedBox args={[0.3, 0.1, 0.10]} radius={0.04} smoothness={2} position={[0, 0.28, -0.18]}>
+            <meshStandardMaterial color="#4A2810" roughness={0.88} />
+          </RoundedBox>
           {/* Ears */}
-          <Sphere args={[0.04, 8, 8]} position={[-0.196, 0.18, 0]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <Sphere args={[0.038, 8, 6]} position={[-0.192, 0.19, 0]}>
+            <meshStandardMaterial color="#E09A7C" roughness={0.6} />
           </Sphere>
-          <Sphere args={[0.04, 8, 8]} position={[0.196, 0.18, 0]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <Sphere args={[0.038, 8, 6]} position={[0.192, 0.19, 0]}>
+            <meshStandardMaterial color="#E09A7C" roughness={0.6} />
+          </Sphere>
+          {/* Eye whites */}
+          <Sphere args={[0.038, 8, 6]} position={[-0.07, 0.21, 0.17]}>
+            <meshStandardMaterial color="#EEE8E0" roughness={0.3} />
+          </Sphere>
+          <Sphere args={[0.038, 8, 6]} position={[0.07, 0.21, 0.17]}>
+            <meshStandardMaterial color="#EEE8E0" roughness={0.3} />
+          </Sphere>
+          {/* Irises */}
+          <Sphere args={[0.024, 7, 6]} position={[-0.07, 0.21, 0.182]}>
+            <meshStandardMaterial color="#3D2200" roughness={0.2} />
+          </Sphere>
+          <Sphere args={[0.024, 7, 6]} position={[0.07, 0.21, 0.182]}>
+            <meshStandardMaterial color="#3D2200" roughness={0.2} />
           </Sphere>
           {/* Nose */}
-          <RoundedBox args={[0.04, 0.05, 0.065]} radius={0.018} smoothness={2} position={[0, 0.16, 0.2]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <RoundedBox args={[0.038, 0.048, 0.062]} radius={0.018} smoothness={2} position={[0, 0.15, 0.196]}>
+            <meshStandardMaterial color="#E09A7C" roughness={0.6} />
           </RoundedBox>
         </group>
 
-        {/* ── LEFT ARM (pivot = shoulder) ──────────────────────────── */}
-        <group ref={lArmGroupRef} position={[-0.32, 0.26, 0]}>
-          {/* Upper arm (sleeve) */}
-          <RoundedBox args={[0.148, 0.44, 0.148]} radius={0.05} smoothness={2} position={[0, -0.22, 0]} castShadow>
-            <meshStandardMaterial {...MAT.shirt} />
+        {/* ── Left arm (pivot at shoulder) — char faces –Z so local +X = world –X ── */}
+        <group ref={lArmRef} position={[-0.32, 0.26, 0]}>
+          <RoundedBox args={[0.146, 0.44, 0.146]} radius={0.05} smoothness={2} position={[0, -0.22, 0]} castShadow>
+            <meshStandardMaterial color="#2A5080" roughness={0.78} />
           </RoundedBox>
-          {/* Elbow joint */}
-          <Sphere args={[0.07, 8, 8]} position={[0, -0.44, 0]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <Sphere args={[0.068, 8, 6]} position={[0, -0.44, 0]}>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </Sphere>
-          {/* Forearm */}
-          <RoundedBox args={[0.128, 0.40, 0.128]} radius={0.045} smoothness={2} position={[0, -0.65, 0]} castShadow>
-            <meshStandardMaterial {...MAT.skin} />
+          <RoundedBox args={[0.125, 0.38, 0.125]} radius={0.042} smoothness={2} position={[0, -0.64, 0]} castShadow>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </RoundedBox>
           {/* Hand */}
-          <RoundedBox args={[0.13, 0.10, 0.075]} radius={0.028} smoothness={2} position={[0, -0.9, 0.015]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <RoundedBox args={[0.12, 0.095, 0.072]} radius={0.028} smoothness={2} position={[0, -0.875, 0.012]}>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </RoundedBox>
         </group>
 
-        {/* ── RIGHT ARM (pivot = shoulder) ─────────────────────────── */}
-        <group ref={rArmGroupRef} position={[0.32, 0.26, 0]}>
-          <RoundedBox args={[0.148, 0.44, 0.148]} radius={0.05} smoothness={2} position={[0, -0.22, 0]} castShadow>
-            <meshStandardMaterial {...MAT.shirt} />
+        {/* ── Right arm ──────────────────────────────────────────────── */}
+        <group ref={rArmRef} position={[0.32, 0.26, 0]}>
+          <RoundedBox args={[0.146, 0.44, 0.146]} radius={0.05} smoothness={2} position={[0, -0.22, 0]} castShadow>
+            <meshStandardMaterial color="#2A5080" roughness={0.78} />
           </RoundedBox>
-          <Sphere args={[0.07, 8, 8]} position={[0, -0.44, 0]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <Sphere args={[0.068, 8, 6]} position={[0, -0.44, 0]}>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </Sphere>
-          <RoundedBox args={[0.128, 0.40, 0.128]} radius={0.045} smoothness={2} position={[0, -0.65, 0]} castShadow>
-            <meshStandardMaterial {...MAT.skin} />
+          <RoundedBox args={[0.125, 0.38, 0.125]} radius={0.042} smoothness={2} position={[0, -0.64, 0]} castShadow>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </RoundedBox>
-          <RoundedBox args={[0.13, 0.10, 0.075]} radius={0.028} smoothness={2} position={[0, -0.9, 0.015]}>
-            <meshStandardMaterial {...MAT.skin} />
+          <RoundedBox args={[0.12, 0.095, 0.072]} radius={0.028} smoothness={2} position={[0, -0.875, 0.012]}>
+            <meshStandardMaterial color="#EDAA90" roughness={0.55} />
           </RoundedBox>
         </group>
 
-        {/* ── LEFT LEG (pivot = hip socket) ───────────────────────── */}
-        <group ref={lLegGroupRef} position={[-0.148, -0.42, 0]}>
-          {/* Thigh */}
-          <RoundedBox args={[0.162, 0.50, 0.162]} radius={0.05} smoothness={2} position={[0, -0.26, 0]} castShadow>
-            <meshStandardMaterial {...MAT.pants} />
+        {/* ── Left leg ───────────────────────────────────────────────── */}
+        <group ref={lLegRef} position={[-0.145, -0.42, 0]}>
+          <RoundedBox args={[0.16, 0.50, 0.16]} radius={0.048} smoothness={2} position={[0, -0.26, 0]} castShadow>
+            <meshStandardMaterial color="#1A2A44" roughness={0.85} />
           </RoundedBox>
-          {/* Knee */}
-          <Sphere args={[0.08, 8, 8]} position={[0, -0.52, 0]}>
-            <meshStandardMaterial {...MAT.pants} />
+          <Sphere args={[0.078, 8, 6]} position={[0, -0.52, 0]}>
+            <meshStandardMaterial color="#1A2A44" roughness={0.85} />
           </Sphere>
-          {/* Calf */}
-          <RoundedBox args={[0.145, 0.46, 0.145]} radius={0.045} smoothness={2} position={[0, -0.76, 0]} castShadow>
-            <meshStandardMaterial {...MAT.pants} />
+          <RoundedBox args={[0.145, 0.44, 0.145]} radius={0.044} smoothness={2} position={[0, -0.75, 0]} castShadow>
+            <meshStandardMaterial color="#1A2A44" roughness={0.85} />
           </RoundedBox>
-          {/* Shoe */}
-          <RoundedBox args={[0.155, 0.085, 0.30]} radius={0.025} smoothness={2} position={[0.005, -1.02, -0.06]} castShadow>
-            <meshStandardMaterial {...MAT.shoe} />
-          </RoundedBox>
-          {/* Shoe sole */}
-          <RoundedBox args={[0.16, 0.025, 0.31]} radius={0.012} smoothness={2} position={[0.005, -1.063, -0.06]}>
-            <meshStandardMaterial color="#1A1A24" roughness={0.95} />
+          <RoundedBox args={[0.15, 0.082, 0.29]} radius={0.024} smoothness={2} position={[0, -1.0, -0.06]} castShadow>
+            <meshStandardMaterial color="#181828" roughness={0.9} />
           </RoundedBox>
         </group>
 
-        {/* ── RIGHT LEG (pivot = hip socket) ──────────────────────── */}
-        <group ref={rLegGroupRef} position={[0.148, -0.42, 0]}>
-          <RoundedBox args={[0.162, 0.50, 0.162]} radius={0.05} smoothness={2} position={[0, -0.26, 0]} castShadow>
-            <meshStandardMaterial {...MAT.pants} />
+        {/* ── Right leg ──────────────────────────────────────────────── */}
+        <group ref={rLegRef} position={[0.145, -0.42, 0]}>
+          <RoundedBox args={[0.16, 0.50, 0.16]} radius={0.048} smoothness={2} position={[0, -0.26, 0]} castShadow>
+            <meshStandardMaterial color="#1A2A44" roughness={0.85} />
           </RoundedBox>
-          <Sphere args={[0.08, 8, 8]} position={[0, -0.52, 0]}>
-            <meshStandardMaterial {...MAT.pants} />
+          <Sphere args={[0.078, 8, 6]} position={[0, -0.52, 0]}>
+            <meshStandardMaterial color="#1A2A44" roughness={0.85} />
           </Sphere>
-          <RoundedBox args={[0.145, 0.46, 0.145]} radius={0.045} smoothness={2} position={[0, -0.76, 0]} castShadow>
-            <meshStandardMaterial {...MAT.pants} />
+          <RoundedBox args={[0.145, 0.44, 0.145]} radius={0.044} smoothness={2} position={[0, -0.75, 0]} castShadow>
+            <meshStandardMaterial color="#1A2A44" roughness={0.85} />
           </RoundedBox>
-          <RoundedBox args={[0.155, 0.085, 0.30]} radius={0.025} smoothness={2} position={[0.005, -1.02, -0.06]} castShadow>
-            <meshStandardMaterial {...MAT.shoe} />
-          </RoundedBox>
-          <RoundedBox args={[0.16, 0.025, 0.31]} radius={0.012} smoothness={2} position={[0.005, -1.063, -0.06]}>
-            <meshStandardMaterial color="#1A1A24" roughness={0.95} />
+          <RoundedBox args={[0.15, 0.082, 0.29]} radius={0.024} smoothness={2} position={[0, -1.0, -0.06]} castShadow>
+            <meshStandardMaterial color="#181828" roughness={0.9} />
           </RoundedBox>
         </group>
 
@@ -356,23 +447,22 @@ function CodeParticles() {
   const groupRef = useRef<THREE.Group>(null)
   const particles = useMemo(() =>
     Array.from({ length: 14 }, (_, i) => ({
-      pos: [(Math.random() - 0.5) * 7.5, 0.6 + Math.random() * 3.8, (Math.random() - 0.5) * 3.5] as [number, number, number],
-      speed: 0.16 + Math.random() * 0.25,
+      pos: [(Math.random() - 0.5) * 7, 0.6 + Math.random() * 3.5, (Math.random() - 0.5) * 3.5] as [number, number, number],
+      speed: 0.16 + Math.random() * 0.24,
       phase: Math.random() * Math.PI * 2,
-      scale: 0.05 + Math.random() * 0.04,
+      scale: 0.055 + Math.random() * 0.04,
     })), [])
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return
     const t = scrollState.progress
-    const targetOpacity = (t > 0.44 && t < 0.88) ? 0.55 : 0
+    const target = (t > 0.44 && t < 0.88) ? 0.55 : 0
     groupRef.current.children.forEach((child, i) => {
       const mesh = child as THREE.Mesh
       mesh.position.y = particles[i].pos[1] + Math.sin(clock.elapsedTime * particles[i].speed + particles[i].phase) * 0.3
       mesh.rotation.y = clock.elapsedTime * 0.55 + particles[i].phase
-      mesh.rotation.x = clock.elapsedTime * 0.3 + particles[i].phase * 0.5
       const mat = mesh.material as THREE.MeshStandardMaterial
-      mat.opacity += (targetOpacity - mat.opacity) * 0.12
+      mat.opacity += (target - mat.opacity) * 0.1
     })
   })
 
@@ -381,10 +471,8 @@ function CodeParticles() {
       {particles.map((p, i) => (
         <mesh key={i} position={p.pos} scale={p.scale}>
           <octahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial
-            color="#F97316" emissive="#F97316" emissiveIntensity={0.7}
-            transparent opacity={0} roughness={0.2}
-          />
+          <meshStandardMaterial color="#F97316" emissive="#F97316" emissiveIntensity={0.8}
+            transparent opacity={0} roughness={0.2} />
         </mesh>
       ))}
     </group>
@@ -392,154 +480,212 @@ function CodeParticles() {
 }
 
 // ---------------------------------------------------------------------------
-// Ground plane with subtle grid reflection
+// Ground
 // ---------------------------------------------------------------------------
 function Ground() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
       <planeGeometry args={[22, 22]} />
-      <meshStandardMaterial color="#06090F" roughness={0.95} />
+      <meshStandardMaterial color="#050810" roughness={0.95} />
     </mesh>
   )
 }
 
 // ---------------------------------------------------------------------------
-// Screen colors for each stage
+// Screen colors per stage
 // ---------------------------------------------------------------------------
 const SCREEN_COLORS = [
-  new THREE.Color('#050A18'), // off
-  new THREE.Color('#052E16'), // booting (dark green)
-  new THREE.Color('#14532D'), // coding (green)
-  new THREE.Color('#7C2D12'), // building (dark orange)
-  new THREE.Color('#FFFFFF'), // live (white)
+  new THREE.Color('#040810'),  // off
+  new THREE.Color('#061A10'),  // booting (dark green)
+  new THREE.Color('#0A2A18'),  // coding (green tint)
+  new THREE.Color('#1C0A04'),  // building (dark orange)
+  new THREE.Color('#FFFFFF'),  // live
 ]
 
 // ---------------------------------------------------------------------------
-// Main scene – camera orbit + character animation in useFrame
+// Main scene
 // ---------------------------------------------------------------------------
 function Scene() {
-  const torsoRef      = useRef<THREE.Group>(null)
-  const headGroupRef  = useRef<THREE.Group>(null)
-  const lArmGroupRef  = useRef<THREE.Group>(null)
-  const rArmGroupRef  = useRef<THREE.Group>(null)
-  const lLegGroupRef  = useRef<THREE.Group>(null)
-  const rLegGroupRef  = useRef<THREE.Group>(null)
-  const screenRef     = useRef<THREE.Mesh>(null)
+  const rootRef        = useRef<THREE.Group>(null)
+  const torsoRef       = useRef<THREE.Group>(null)
+  const headGroupRef   = useRef<THREE.Group>(null)
+  const lArmRef        = useRef<THREE.Group>(null)
+  const rArmRef        = useRef<THREE.Group>(null)
+  const lLegRef        = useRef<THREE.Group>(null)
+  const rLegRef        = useRef<THREE.Group>(null)
+  const screenRef      = useRef<THREE.Mesh>(null)
+  const monitorGlowRef = useRef<THREE.PointLight>(null)
+  const faceGlowRef    = useRef<THREE.PointLight>(null)
+  const codeOpacity    = useRef(0)
 
-  const targetColor  = useRef(new THREE.Color('#050A18'))
-  const currentColor = useRef(new THREE.Color('#050A18'))
+  const targetColor  = useRef(new THREE.Color('#040810'))
+  const currentColor = useRef(new THREE.Color('#040810'))
 
   useFrame(({ camera, clock }, delta) => {
     const t = scrollState.progress
+    const dt = Math.min(delta, 0.05)
 
-    // ── Camera orbit 270° ────────────────────────────────────────────────────
-    const startAngle = 0.55
-    const angle      = startAngle + t * Math.PI * 1.5
-    const radius     = 6.2
-    const camH       = lerp(3.6, 2.2, t)
+    // ── Camera orbit 270° ─────────────────────────────────────────────────
+    const angle  = 0.55 + t * Math.PI * 1.5
+    const radius = 6.2
+    const camH   = lerp(3.5, 2.2, t)
     camera.position.set(Math.sin(angle) * radius, camH, Math.cos(angle) * radius)
     camera.lookAt(0, 1.55, 0)
 
-    // ── Sit / stand animation ─────────────────────────────────────────────────
-    const sitT   = Math.max(0, Math.min(1, (t - 0.2) / 0.25))
-    const standT = t > 0.88 ? Math.min(1, (t - 0.88) / 0.12) : 0
+    // ── Sit / stand phases ────────────────────────────────────────────────
+    const sitT   = clamp01((t - 0.20) / 0.25)
+    const standT = clamp01((t - 0.88) / 0.12)
+    // Sub-phases of standing up: push off armrests → lean forward → rise
+    const pushT  = clamp01((t - 0.88) / 0.05)   // arms push back on armrests
+    const leanT  = clamp01((t - 0.89) / 0.05)   // torso leans forward
+    const riseT  = clamp01((t - 0.91) / 0.09)   // body fully rises
     const sitAmt = sitT * (1 - standT)
 
-    // Torso Y: standing = 1.62, seated = 1.18
+    // Torso Y: standing=1.62, seated=1.20
+    // Dips slightly before rising (push-up prep), then rises
+    const torsoBase    = lerp(1.62, 1.20, sitAmt)
+    const standupDip   = lerp(0, -0.05, leanT) * (1 - riseT)  // lean dip before rise
+    const torsoTargetY = torsoBase + standupDip
+    // Torso forward lean when sitting (leaning in) and when pushing up to stand
+    const sittingLeanX  = Math.sin(sitT * Math.PI) * 0.06 * (sitT < 1 ? 1 : 0)
+    const standupLeanX  = lerp(0, 0.14, leanT) * (1 - riseT)
+    const torsoTargetRX = sittingLeanX + standupLeanX
     if (torsoRef.current) {
-      const targetY = lerp(1.62, 1.18, sitAmt)
-      torsoRef.current.position.y += (targetY - torsoRef.current.position.y) * Math.min(1, delta * 5.5)
+      torsoRef.current.position.y += (torsoTargetY - torsoRef.current.position.y) * Math.min(1, dt * 5)
+      torsoRef.current.rotation.x += (torsoTargetRX - torsoRef.current.rotation.x) * Math.min(1, dt * 4)
     }
 
-    // Head subtle breathing bob
+    // Head: look DOWN at monitor when seated (eyes are above screen level),
+    //       slight chin-up when standing and facing camera
     if (headGroupRef.current) {
-      const breathe = Math.sin(clock.elapsedTime * 1.1) * 0.006
-      const nod     = sitAmt * 0.06  // slight forward tilt when sitting
-      headGroupRef.current.rotation.x = -nod + breathe
-      headGroupRef.current.position.y = lerp(0.55, 0.52, sitAmt) + breathe * 0.5
+      const breathe     = Math.sin(clock.elapsedTime * 1.1) * 0.007
+      // Positive rotation.x = chin forward = looking DOWN (correct for monitor below eye-level)
+      const nodAtScreen = lerp(0, 0.30, sitAmt)
+      const chinUp      = lerp(0, -0.06, standT)  // slight chin-up after standing
+      // Subtle reading sway side-to-side when actively typing
+      const typingFrac  = clamp01((t - 0.45) / 0.20) * (1 - standT) * sitAmt
+      const readSway    = Math.sin(clock.elapsedTime * 0.38) * 0.045 * typingFrac
+      headGroupRef.current.rotation.x = nodAtScreen + chinUp + breathe
+      headGroupRef.current.rotation.y = readSway
+      headGroupRef.current.position.y = lerp(0.55, 0.51, sitAmt) + breathe * 0.4
     }
 
-    // ── Typing arms ───────────────────────────────────────────────────────────
-    const typingT   = t > 0.45 && t < 0.88 ? Math.min(1, (t - 0.45) / 0.2) : 0
-    const armFwdRot = lerp(0, -1.05, typingT * sitAmt)
+    // ── Arms: typing → push-off armrests → natural hang at sides ─────────
+    const typingT      = clamp01((t - 0.45) / 0.20) * (1 - standT)
+    const armFwdRot    = lerp(0, 0.90, typingT * sitAmt)
+    // Push phase: arms go slightly backward (negative = elbows back) then release
+    const armPushRot   = lerp(0, -0.28, pushT) * (1 - riseT)
+    // Natural idle sway when standing
+    const idleSway     = Math.sin(clock.elapsedTime * 0.7) * 0.04 * (1 - sitAmt)
+    // Slight swing forward as they stand (walking-start posture)
+    const standSwingL  = lerp(0, 0.10, riseT) * lerp(1, 0, clamp01((t - 0.96) / 0.04))
+    const standSwingR  = lerp(0, -0.08, riseT) * lerp(1, 0, clamp01((t - 0.96) / 0.04))
 
-    // Slight idle arm sway when standing
-    const idleSway = Math.sin(clock.elapsedTime * 0.7) * 0.04 * (1 - sitAmt)
-
-    if (lArmGroupRef.current) {
-      lArmGroupRef.current.rotation.x += (armFwdRot + idleSway - lArmGroupRef.current.rotation.x) * Math.min(1, delta * 6)
+    if (lArmRef.current) {
+      const target = armFwdRot + armPushRot + idleSway + standSwingL
+      lArmRef.current.rotation.x += (target - lArmRef.current.rotation.x) * Math.min(1, dt * 6)
     }
-    if (rArmGroupRef.current) {
-      rArmGroupRef.current.rotation.x += (armFwdRot - idleSway - rArmGroupRef.current.rotation.x) * Math.min(1, delta * 6)
-    }
-
-    // ── Legs: thighs rotate horizontal when seated ────────────────────────────
-    const legRotX = lerp(0, Math.PI / 2.05, sitAmt)
-    const legFwdZ = lerp(0, 0.42, sitAmt)   // thighs push forward under desk
-
-    if (lLegGroupRef.current) {
-      lLegGroupRef.current.rotation.x += (legRotX - lLegGroupRef.current.rotation.x) * Math.min(1, delta * 5.5)
-      lLegGroupRef.current.position.z += (legFwdZ - lLegGroupRef.current.position.z) * Math.min(1, delta * 5.5)
-    }
-    if (rLegGroupRef.current) {
-      rLegGroupRef.current.rotation.x += (legRotX - rLegGroupRef.current.rotation.x) * Math.min(1, delta * 5.5)
-      rLegGroupRef.current.position.z += (legFwdZ - rLegGroupRef.current.position.z) * Math.min(1, delta * 5.5)
+    if (rArmRef.current) {
+      const target = armFwdRot + armPushRot - idleSway + standSwingR
+      rArmRef.current.rotation.x += (target - rArmRef.current.rotation.x) * Math.min(1, dt * 6)
     }
 
-    // ── Monitor screen color ──────────────────────────────────────────────────
+    // ── Legs: thighs horizontal when seated, snap straight when standing ──
+    const legRotX = lerp(0, Math.PI / 2.1, sitAmt)
+    const legFwdZ = lerp(0, 0.40, sitAmt)
+
+    if (lLegRef.current) {
+      lLegRef.current.rotation.x += (legRotX - lLegRef.current.rotation.x) * Math.min(1, dt * 5.5)
+      lLegRef.current.position.z += (legFwdZ - lLegRef.current.position.z) * Math.min(1, dt * 5.5)
+    }
+    if (rLegRef.current) {
+      rLegRef.current.rotation.x += (legRotX - rLegRef.current.rotation.x) * Math.min(1, dt * 5.5)
+      rLegRef.current.position.z += (legFwdZ - rLegRef.current.position.z) * Math.min(1, dt * 5.5)
+    }
+
+    // ── Stand up + step back + turn to face camera at stage 4 ────────────
+    if (rootRef.current) {
+      // Step back from desk — first a small shift during lean, then full step back
+      const stepBackZ = lerp(0.36, 0.88, standT)
+      rootRef.current.position.z += (stepBackZ - rootRef.current.position.z) * Math.min(1, dt * 3.5)
+
+      // Rotate from π (facing monitor) → 0 (facing camera), delayed until mostly risen
+      const faceCamT = clamp01((t - 0.94) / 0.06)
+      const targetRotY = lerp(Math.PI, 0, faceCamT)
+      rootRef.current.rotation.y += (targetRotY - rootRef.current.rotation.y) * Math.min(1, dt * 5)
+    }
+
+    // ── Monitor screen color ──────────────────────────────────────────────
     if (t < 0.30)      targetColor.current.copy(SCREEN_COLORS[0])
     else if (t < 0.52) targetColor.current.copy(SCREEN_COLORS[1])
     else if (t < 0.72) targetColor.current.copy(SCREEN_COLORS[2])
     else if (t < 0.88) targetColor.current.copy(SCREEN_COLORS[3])
     else               targetColor.current.copy(SCREEN_COLORS[4])
 
-    currentColor.current.lerp(targetColor.current, Math.min(1, delta * 2.8))
+    currentColor.current.lerp(targetColor.current, Math.min(1, dt * 2.5))
 
     if (screenRef.current) {
       const mat = screenRef.current.material as THREE.MeshStandardMaterial
       mat.color.copy(currentColor.current)
       mat.emissive.copy(currentColor.current)
-      const isWhite = t >= 0.88
-      mat.emissiveIntensity = isWhite
-        ? 0.95 + Math.sin(clock.elapsedTime * 1.4) * 0.04
-        : t > 0.50 ? 0.5 + Math.sin(clock.elapsedTime * 2.2) * 0.08 : 0.35
+      const isLive = t >= 0.88
+      mat.emissiveIntensity = isLive
+        ? 0.95 + Math.sin(clock.elapsedTime * 1.5) * 0.04
+        : t > 0.50 ? 0.45 + Math.sin(clock.elapsedTime * 2.2) * 0.08 : 0.35
     }
+
+    // ── Dynamic monitor glow — changes color with screen ─────────────────
+    if (monitorGlowRef.current) {
+      monitorGlowRef.current.color.copy(currentColor.current)
+      monitorGlowRef.current.intensity = t > 0.30 ? lerp(1.0, 3.2, clamp01((t - 0.30) / 0.30)) : 0.6
+    }
+
+    // ── Face glow — illuminate character's face with screen color ─────────
+    if (faceGlowRef.current && torsoRef.current) {
+      const faceIntensity = sitAmt * lerp(0, 1.8, clamp01((t - 0.44) / 0.20))
+      faceGlowRef.current.intensity = faceIntensity
+      // Screen is blue when coding, orange when building, white when live
+      if (t < 0.52)      faceGlowRef.current.color.setHex(0x1A4488)
+      else if (t < 0.72) faceGlowRef.current.color.setHex(0x2A6030)
+      else if (t < 0.88) faceGlowRef.current.color.setHex(0x8B3500)
+      else               faceGlowRef.current.color.setHex(0xDDEEFF)
+    }
+
+    // ── Code line opacity on screen ───────────────────────────────────────
+    const codeTarget = (t > 0.50 && t < 0.88) ? 1 : 0
+    codeOpacity.current += (codeTarget - codeOpacity.current) * Math.min(1, dt * 3)
   })
 
   return (
     <>
-      {/* ── Three-point lighting ─────────────────────────────────────── */}
-      {/* Key light — warm, from upper right */}
+      {/* Key light — warm from upper right */}
       <directionalLight
-        position={[5, 9, 4]} intensity={3.5} castShadow
-        color="#FFF8F0"
+        position={[5, 9, 4]} intensity={3.8} castShadow color="#FFF8F0"
         shadow-mapSize-width={1024} shadow-mapSize-height={1024}
         shadow-camera-near={0.5} shadow-camera-far={30}
         shadow-camera-left={-6} shadow-camera-right={6}
         shadow-camera-top={6} shadow-camera-bottom={-2}
       />
-      {/* Fill light — cool blue, from left */}
-      <directionalLight position={[-6, 4, 2]} intensity={1.4} color="#B8D0FF" />
-      {/* Rim / back light — orange accent, from behind character */}
-      <directionalLight position={[0, 3, -5]} intensity={1.2} color="#FF8C40" />
-      {/* Ambient — keeps shadow areas readable */}
-      <ambientLight intensity={1.0} color="#9AB0CC" />
-      {/* Monitor glow */}
-      <pointLight position={[0, 1.7, -0.04]} intensity={1.8} color="#F97316" distance={4} decay={2} />
-      {/* Desk surface warm fill */}
-      <pointLight position={[0, 1.6, 0.5]} intensity={0.8} color="#FFE4B0" distance={3} decay={2} />
+      {/* Fill — cool blue left */}
+      <directionalLight position={[-6, 4, 2]} intensity={1.6} color="#B0CCFF" />
+      {/* Rim — orange from behind character */}
+      <directionalLight position={[0, 3, -6]} intensity={1.4} color="#FF8840" />
+      {/* Ambient */}
+      <ambientLight intensity={0.9} color="#8AACCC" />
+      {/* Monitor glow — color-matched to screen, driven in useFrame */}
+      <pointLight ref={monitorGlowRef} position={[0, 1.7, -0.05]} intensity={1.0} color="#061A10" distance={4.0} decay={2} />
+      {/* Face glow — illuminates character face with screen color when seated */}
+      <pointLight ref={faceGlowRef} position={[0, 1.8, 0.10]} intensity={0} color="#1A4488" distance={2.0} decay={2} />
+      {/* Desk warm fill */}
+      <pointLight position={[0, 1.5, 0.5]} intensity={0.9} color="#FFE4A0" distance={3} decay={2} />
 
       <Ground />
       <Desk />
       <Chair />
-      <Monitor screenRef={screenRef} />
+      <Monitor screenRef={screenRef} codeOpacity={codeOpacity} />
       <Developer
-        torsoRef={torsoRef}
-        headGroupRef={headGroupRef}
-        lArmGroupRef={lArmGroupRef}
-        rArmGroupRef={rArmGroupRef}
-        lLegGroupRef={lLegGroupRef}
-        rLegGroupRef={rLegGroupRef}
+        rootRef={rootRef} torsoRef={torsoRef} headGroupRef={headGroupRef}
+        lArmRef={lArmRef} rArmRef={rArmRef} lLegRef={lLegRef} rLegRef={rLegRef}
       />
       <CodeParticles />
     </>
@@ -550,16 +696,13 @@ function Scene() {
 // Narrative stages
 // ---------------------------------------------------------------------------
 const STAGES = [
-  { range: [0, 0.22] as [number,number],     tag: 'THE PROBLEM', title: 'Your business is\ninvisible online.',    sub: "87% of customers search before calling. If they can't find you, they find your competitor." },
-  { range: [0.22, 0.44] as [number,number],  tag: 'DAY 0',       title: 'Neil gets to\nwork.',                   sub: 'Discovery call booked. Brief taken. Build starts within 24 hours.' },
-  { range: [0.44, 0.66] as [number,number],  tag: 'DAY 1–2',     title: 'Claude writes\nthe code.',              sub: 'React, Tailwind, mobile-first. Built faster than you can write a brief.' },
-  { range: [0.66, 0.88] as [number,number],  tag: 'DAY 3–4',     title: 'Your site\ntakes shape.',               sub: 'Preview link shared. One revision round. Zero surprises.' },
-  { range: [0.88, 1.01] as [number,number],  tag: 'DAY 5',       title: '$650. 5 days.\nYours forever.',         sub: 'Domain live. GitHub repo handed over. You own every line of code.' },
+  { range: [0, 0.22] as [number,number],    tag: 'THE PROBLEM', title: 'Your business is\ninvisible online.',   sub: "87% of customers search before calling. If they can't find you, they find your competitor." },
+  { range: [0.22, 0.44] as [number,number], tag: 'DAY 0',       title: 'Neil gets to\nwork.',                  sub: 'Discovery call booked. Brief taken. Build starts within 24 hours.' },
+  { range: [0.44, 0.66] as [number,number], tag: 'DAY 1–2',     title: 'Claude writes\nthe code.',             sub: 'React, Tailwind, mobile-first. Built faster than you can write a brief.' },
+  { range: [0.66, 0.88] as [number,number], tag: 'DAY 3–4',     title: 'Your site\ntakes shape.',              sub: 'Preview link shared. One revision round. Zero surprises.' },
+  { range: [0.88, 1.01] as [number,number], tag: 'DAY 5',       title: '$650. 5 days.\nYours forever.',        sub: 'Domain live. GitHub repo handed over. You own every line of code.' },
 ]
 
-// ---------------------------------------------------------------------------
-// Progress dots
-// ---------------------------------------------------------------------------
 function ProgressDots({ active }: { active: number }) {
   return (
     <div className="flex gap-2">
@@ -607,10 +750,8 @@ export default function ScrollHero() {
     <section ref={containerRef} className="relative" style={{ height: '500vh' }}>
       <div className="sticky top-0 h-screen overflow-hidden bg-navy-900">
 
-        {/* 3D Canvas */}
         <div className="absolute inset-0">
-          <Canvas
-            shadows
+          <Canvas shadows
             camera={{ position: [5.5, 3.8, 5.5], fov: 42, near: 0.1, far: 60 }}
             gl={{ antialias: true, alpha: false }}
           >
@@ -618,11 +759,9 @@ export default function ScrollHero() {
           </Canvas>
         </div>
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-900/72 via-navy-900/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-900/75 via-navy-900/20 to-transparent pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-900/55 via-transparent to-transparent pointer-events-none" />
 
-        {/* Text overlay */}
         <div className="absolute inset-0 flex flex-col justify-center pointer-events-none">
           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
             <div className="max-w-sm lg:max-w-md">
@@ -649,7 +788,6 @@ export default function ScrollHero() {
           </div>
         </div>
 
-        {/* Scroll indicator + dots */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 pointer-events-none">
           <motion.div style={{ opacity: scrollIndicatorOpacity }}>
             <div className="flex flex-col items-center gap-2">
@@ -663,7 +801,6 @@ export default function ScrollHero() {
           </motion.div>
         </div>
 
-        {/* Scroll % counter */}
         <motion.div className="absolute top-8 right-6 font-mono text-xs text-orange-500/40 hidden lg:block"
           style={{ opacity: percentOpacity }}>
           <motion.span>{percentDisplay}</motion.span>
