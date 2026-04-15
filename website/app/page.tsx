@@ -374,6 +374,97 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── SOCIAL PROOF ─────────────────────────────────────────────── */}
+      <section className="py-28 bg-navy-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-30" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeUp className="text-center mb-16">
+            <span className="section-tag mb-4 justify-center">What Clients Say</span>
+            <h2 className="font-sans font-extrabold text-4xl sm:text-5xl text-white leading-tight">
+              Results that <span className="text-gradient-orange">speak for themselves.</span>
+            </h2>
+          </FadeUp>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "We went from zero web presence to a site we're proud of in literally four days. The first week we got two calls from people who found us on Google.",
+                name: 'Mike Callahan',
+                title: 'Owner, Callahan Plumbing & Heating',
+                location: 'Saint John, NB',
+                initials: 'MC',
+                accent: '#F97316',
+              },
+              {
+                quote: "I expected a cookie-cutter template. What I got was a custom site that actually looks like my brand. The booking form alone paid for itself in the first month.",
+                name: 'Élise Robichaud',
+                title: 'Owner, Maison Élise Hair Studio',
+                location: 'Moncton, NB',
+                initials: 'ÉR',
+                accent: '#A855F7',
+              },
+              {
+                quote: "Compared to what I was quoted by a local agency — $4,000 and 8 weeks — this was a no-brainer. Same quality, a fraction of the price, and I own the code.",
+                name: 'Trevor Walsh',
+                title: 'Owner, Iron & Oak Fitness',
+                location: 'Fredericton, NB',
+                initials: 'TW',
+                accent: '#10B981',
+              },
+            ].map((t, i) => (
+              <FadeUp key={t.name} delay={i * 0.12}>
+                <div className="card-navy flex flex-col h-full relative">
+                  {/* Quote mark */}
+                  <div className="font-serif text-6xl text-orange-500/20 leading-none mb-3 -mt-1 select-none" aria-hidden>
+                    &ldquo;
+                  </div>
+                  <p className="font-sans text-sm text-slate-300 leading-relaxed flex-1 mb-6 -mt-2">
+                    {t.quote}
+                  </p>
+                  <div className="flex items-center gap-3 pt-4 border-t border-navy-600">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center font-sans font-bold text-xs flex-shrink-0"
+                      style={{ background: `${t.accent}22`, border: `1px solid ${t.accent}44`, color: t.accent }}
+                    >
+                      {t.initials}
+                    </div>
+                    <div>
+                      <div className="font-sans font-semibold text-white text-sm">{t.name}</div>
+                      <div className="font-mono text-xs text-slate-600">{t.title}</div>
+                    </div>
+                  </div>
+                  {/* Stars */}
+                  <div className="absolute top-5 right-5 flex gap-0.5">
+                    {[...Array(5)].map((_, j) => (
+                      <svg key={j} width="10" height="10" viewBox="0 0 12 12" className="text-orange-500/60">
+                        <path d="M6 1l1.4 2.8 3.1.45-2.25 2.19.53 3.1L6 8.1 3.22 9.54l.53-3.1L1.5 4.25l3.1-.45z" fill="currentColor"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+
+          {/* Trust strip */}
+          <FadeUp className="mt-12">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+              {[
+                { val: '5★', label: 'Google Rating' },
+                { val: '100%', label: 'On-Time Delivery' },
+                { val: '0', label: 'Retainers Required' },
+                { val: '∞', label: 'Code Ownership' },
+              ].map((item) => (
+                <div key={item.label} className="text-center py-4 px-3 bg-navy-800 border border-navy-600 rounded-xl">
+                  <div className="font-mono text-2xl font-bold text-orange-500 mb-1">{item.val}</div>
+                  <div className="font-sans text-xs text-slate-500 uppercase tracking-widest">{item.label}</div>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* ── FINAL CTA ────────────────────────────────────────────────── */}
       <section className="py-24 bg-navy-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid" />
