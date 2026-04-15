@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "LeadForge Website",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000,
+      "cwd": "${workspaceFolder}/website"
+    },
+    {
+      "name": "LeadForge Agent",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["agent.py"],
+      "port": null,
+      "cwd": "${workspaceFolder}/agent"
+    }
+  ]
+}

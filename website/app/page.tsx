@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { motion, useInView, useMotionValue, animate } from 'framer-motion'
+
+const ScrollHero = dynamic(() => import('@/components/ScrollHero'), { ssr: false })
 
 /* ── Fade-up animation wrapper ─────────────────────────────────────────── */
 function FadeUp({
@@ -126,141 +129,8 @@ function AgentTerminal() {
 export default function HomePage() {
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen bg-navy-900 flex flex-col justify-center overflow-hidden">
-        {/* Grid background */}
-        <div className="absolute inset-0 bg-grid opacity-100" />
-
-        {/* Orange glow radials */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/8 rounded-full blur-3xl animate-glow-pulse" />
-        <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-orange-600/6 rounded-full blur-3xl animate-glow-pulse" style={{ animationDelay: '1.5s' }} />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-            {/* Left — copy */}
-            <div>
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mb-6"
-              >
-                <span className="badge-active">
-                  <span className="dot-orange animate-pulse-slow" />
-                  AI Agent Running — Mon–Fri 6:00 AM
-                </span>
-              </motion.div>
-
-              {/* Headline */}
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="font-sans font-extrabold text-5xl sm:text-6xl lg:text-[64px] leading-[1.05] tracking-tight text-white mb-6"
-              >
-                Autonomous Lead{' '}
-                <span className="text-gradient-orange">Generation,</span>
-                <br />
-                Powered by AI.
-              </motion.h1>
-
-              {/* Sub */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.25 }}
-                className="text-slate-400 text-lg leading-relaxed mb-8 max-w-lg"
-              >
-                We find local businesses with no website. Build them a professional
-                site in React &amp; Next.js —{' '}
-                <span className="text-slate-200 font-medium">all within a week.</span>
-              </motion.p>
-
-              {/* Feature pills */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.35 }}
-                className="flex flex-wrap gap-3 mb-10"
-              >
-                {[
-                  { icon: '📍', label: 'No Website?', sub: 'We Find Them.' },
-                  { icon: '⚡', label: 'Custom Sites', sub: 'Built Fast.' },
-                  { icon: '📅', label: '$650 Flat Rate', sub: '3–5 Day Delivery' },
-                ].map((pill) => (
-                  <div key={pill.label} className="feature-pill">
-                    <span className="text-base">{pill.icon}</span>
-                    <span>
-                      <span className="text-white font-semibold">{pill.label}</span>{' '}
-                      <span className="text-slate-500">{pill.sub}</span>
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.45 }}
-                className="flex flex-wrap gap-4"
-              >
-                <Link href="/contact" className="btn-orange text-base px-8 py-4">
-                  Get Your Site — $650
-                </Link>
-                <Link href="/portfolio" className="btn-outline text-base px-8 py-4">
-                  See Our Work
-                </Link>
-              </motion.div>
-
-              {/* Tech badges */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-                className="mt-10 flex items-center gap-3 flex-wrap"
-              >
-                <span className="font-mono text-xs text-slate-600">Built with</span>
-                {['Next.js 14', 'Tailwind', 'Vercel', 'Claude AI'].map((tech) => (
-                  <span
-                    key={tech}
-                    className="font-mono text-xs text-slate-500 bg-navy-800 border border-navy-600 px-2.5 py-1 rounded-md"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Right — terminal */}
-            <motion.div
-              initial={{ opacity: 0, x: 32 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="animate-float"
-            >
-              <AgentTerminal />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-            className="w-px h-8 bg-gradient-to-b from-orange-500/60 to-transparent"
-          />
-          <span className="font-mono text-xs text-slate-600">scroll</span>
-        </motion.div>
-      </section>
+      {/* ── 3D SCROLL HERO ────────────────────────────────────────────── */}
+      <ScrollHero />
 
       {/* ── KPI STRIP ────────────────────────────────────────────────── */}
       <section className="bg-navy-800 border-y border-navy-600">
