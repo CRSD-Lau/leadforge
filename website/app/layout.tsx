@@ -42,12 +42,19 @@ export const metadata: Metadata = {
   authors: [{ name: 'Neil Mitchell', url: 'https://neil-mitchell.vercel.app' }],
   openGraph: {
     type: 'website',
+    url: 'https://leadforge-ai.ca',
     locale: 'en_CA',
     siteName: 'LeadForge AI',
     title: 'LeadForge AI — Websites for Local Businesses',
     description:
       'Professional websites built fast. $650 flat rate, 3–5 day delivery. Powered by Claude AI.',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'LeadForge AI — Websites for Local Businesses',
+    description: 'Professional websites built fast. $650 flat rate, 3–5 day delivery. Powered by Claude AI.',
+  },
+  metadataBase: new URL('https://leadforge-ai.ca'),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

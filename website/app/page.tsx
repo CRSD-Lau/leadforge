@@ -279,7 +279,9 @@ export default function HomePage() {
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+            {/* Left — copy */}
             <FadeUp>
               <span className="section-tag mb-4 block">The Solution</span>
               <h2 className="font-sans font-extrabold text-4xl sm:text-5xl text-white leading-tight mb-6">
@@ -288,42 +290,42 @@ export default function HomePage() {
               </h2>
               <p className="text-slate-400 text-base leading-relaxed mb-6">
                 LeadForge AI runs a Claude-powered agent every weekday morning at 6 AM. It scans local
-                directories, Google Maps, and social media to find businesses that need a website.
+                directories and Google Maps to find businesses without an effective web presence — then
+                sends a personalised cold email automatically.
               </p>
               <p className="text-slate-400 text-base leading-relaxed mb-8">
-                Once you respond, Neil gets on a 15-minute call, builds your site in 3–5 days using
+                Once you reply, Neil jumps on a 15-minute call, builds your site in 3–5 days using
                 React/Next.js, and hands over a fully deployed production codebase. You own everything.
               </p>
+
+              {/* Mini stats */}
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                {[
+                  { val: '6 AM', label: 'Daily run time' },
+                  { val: '15 min', label: 'Session window' },
+                  { val: '~12', label: 'Emails per run' },
+                ].map((s) => (
+                  <div key={s.label} className="bg-navy-900 border border-navy-600 rounded-xl px-4 py-3 text-center">
+                    <div className="font-mono text-lg font-bold text-orange-500">{s.val}</div>
+                    <div className="font-sans text-xs text-slate-600 mt-0.5">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+
               <Link href="/process" className="btn-orange">
                 See The Full Process →
               </Link>
             </FadeUp>
 
-            {/* Steps */}
-            <div className="space-y-3">
-              {[
-                { num: '01', title: 'Agent Discovers Lead', desc: 'Scans Google Maps for businesses with no website' },
-                { num: '02', title: 'Cold Outreach Sent', desc: 'Personalised email sent via Resend — low friction' },
-                { num: '03', title: 'Reply Handled by AI', desc: 'Claude classifies intent, responds automatically' },
-                { num: '04', title: 'Mockup Generated', desc: 'Tailored HTML preview built and sent in minutes' },
-                { num: '05', title: 'Neil Builds the Site', desc: 'Next.js + Tailwind, live on Vercel in 3–5 days' },
-              ].map((step, i) => (
-                <FadeUp key={step.num} delay={i * 0.1}>
-                  <div className="flex gap-4 items-start card-navy group">
-                    <span className="font-mono text-2xl font-bold text-orange-500/30 group-hover:text-orange-500/60 transition-colors flex-shrink-0 leading-none mt-0.5">
-                      {step.num}
-                    </span>
-                    <div>
-                      <h4 className="font-sans font-semibold text-white text-sm mb-0.5">{step.title}</h4>
-                      <p className="font-sans text-xs text-slate-500">{step.desc}</p>
-                    </div>
-                    <svg className="ml-auto text-orange-500/0 group-hover:text-orange-500/60 transition-colors flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </FadeUp>
-              ))}
-            </div>
+            {/* Right — live agent terminal */}
+            <FadeUp delay={0.15}>
+              <AgentTerminal />
+
+              {/* Caption */}
+              <p className="font-mono text-xs text-slate-600 mt-3 text-center">
+                ↑ Actual agent output — runs Mon–Fri at 6:00 AM Atlantic
+              </p>
+            </FadeUp>
           </div>
         </div>
       </section>
