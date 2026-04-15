@@ -1,11 +1,39 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Suspense } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { motion, useInView, useMotionValue, animate } from 'framer-motion'
 
-const ScrollHero = dynamic(() => import('@/components/ScrollHero'), { ssr: false })
+// Hero loading skeleton — shown instantly while Three.js bootstraps
+function HeroSkeleton() {
+  return (
+    <section className="relative bg-navy-900" style={{ height: '500vh' }}>
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-40" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-orange-500/6 rounded-full blur-3xl" />
+        <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <div className="max-w-sm lg:max-w-md animate-pulse">
+            <div className="h-3 w-28 bg-orange-500/30 rounded-full mb-5" />
+            <div className="h-12 w-80 bg-white/10 rounded-lg mb-3" />
+            <div className="h-12 w-64 bg-white/10 rounded-lg mb-6" />
+            <div className="h-4 w-72 bg-white/5 rounded mb-2" />
+            <div className="h-4 w-56 bg-white/5 rounded" />
+          </div>
+        </div>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <span className="font-mono text-xs text-slate-700 uppercase tracking-widest">Scroll</span>
+          <div className="w-px h-8 bg-gradient-to-b from-orange-500/30 to-transparent" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const ScrollHero = dynamic(() => import('@/components/ScrollHero'), {
+  ssr: false,
+  loading: () => <HeroSkeleton />,
+})
 
 /* ── Fade-up animation wrapper ─────────────────────────────────────────── */
 function FadeUp({
@@ -54,30 +82,54 @@ function CountUp({ to, prefix = '', suffix = '' }: { to: number; prefix?: string
 
 /* ── Agent terminal animation ──────────────────────────────────────────── */
 const terminalLines = [
-  { delay: 0.2, text: '$ leadforge scan --region "Saint John NB"', type: 'cmd' },
-  { delay: 0.8, text: '→ Found: Callahan Plumbing — no website', type: 'found' },
-  { delay: 1.3, text: '→ Found: Harbour Bistro — Facebook only', type: 'found' },
-  { delay: 1.8, text: '→ Found: Iron & Oak Fitness — broken URL', type: 'found' },
-  { delay: 2.3, text: '$ leadforge outreach --send --limit 10', type: 'cmd' },
-  { delay: 2.9, text: '✓ Email sent → callahan@plumbing.ca', type: 'success' },
-  { delay: 3.4, text: '✓ Email sent → info@harbourbistro.ca', type: 'success' },
-  { delay: 3.9, text: '✓ Reply received — Callahan: "Interested!"', type: 'reply' },
-  { delay: 4.5, text: '$ leadforge mockup --business "Callahan"', type: 'cmd' },
-  { delay: 5.1, text: '✓ Mockup generated → routed to Neil', type: 'success' },
+  { delay: 0.0, text: '$ leadforge scan --region "Saint John NB"', type: 'cmd' },
+  { delay: 0.7, text: '→ Found: Callahan Plumbing — no website', type: 'found' },
+  { delay: 1.2, text: '→ Found: Harbour Bistro — Facebook only', type: 'found' },
+  { delay: 1.7, text: '→ Found: Iron & Oak Fitness — broken URL', type: 'found' },
+  { delay: 2.2, text: '→ Found: Ridgeline Lawn & Landscape — none', type: 'found' },
+  { delay: 2.8, text: '$ leadforge outreach --send --limit 12', type: 'cmd' },
+  { delay: 3.3, text: '✓ Email sent → callahan@plumbing.ca', type: 'success' },
+  { delay: 3.7, text: '✓ Email sent → info@harbourbistro.ca', type: 'success' },
+  { delay: 4.1, text: '✓ Email sent → ridgeline@lawncare.ca', type: 'success' },
+  { delay: 4.7, text: '✓ Reply received — Callahan: "Interested!"', type: 'reply' },
+  { delay: 5.2, text: '$ leadforge mockup --business "Callahan Plumbing"', type: 'cmd' },
+  { delay: 5.9, text: '✓ Mockup generated → callahan-preview.html', type: 'success' },
+  { delay: 6.3, text: '✓ Discovery call booked → routed to Neil', type: 'success' },
 ]
+
+const LOOP_DURATION = 8500 // ms before restart
 
 function AgentTerminal() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
   const [visibleLines, setVisibleLines] = useState(0)
+  const [cycle, setCycle] = useState(0)
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   useEffect(() => {
     if (!inView) return
-    terminalLines.forEach((line, i) => {
-      const t = setTimeout(() => setVisibleLines(i + 1), line.delay * 1000)
-      return () => clearTimeout(t)
-    })
-  }, [inView])
+
+    function run() {
+      setVisibleLines(0)
+      timers.current.forEach(clearTimeout)
+      timers.current = []
+
+      terminalLines.forEach((line, i) => {
+        const t = setTimeout(() => setVisibleLines(i + 1), line.delay * 1000)
+        timers.current.push(t)
+      })
+
+      // Loop: clear and restart after all lines finish + pause
+      const loop = setTimeout(() => {
+        setCycle((c) => c + 1)
+      }, LOOP_DURATION)
+      timers.current.push(loop)
+    }
+
+    run()
+    return () => timers.current.forEach(clearTimeout)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, cycle])
 
   return (
     <div ref={ref} className="relative bg-navy-950 rounded-2xl border border-navy-600 overflow-hidden shadow-navy-lg">
@@ -86,37 +138,49 @@ function AgentTerminal() {
         <span className="w-3 h-3 rounded-full bg-red-500/70" />
         <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
         <span className="w-3 h-3 rounded-full bg-green-500/70" />
-        <span className="font-mono text-xs text-slate-500 ml-2">leadforge-agent v1.0 — live</span>
+        <span className="font-mono text-xs text-slate-500 ml-2">leadforge-agent — Mon–Fri 6:00 AM</span>
         <div className="ml-auto flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse-slow" />
-          <span className="font-mono text-xs text-orange-400">ACTIVE</span>
+          <span className="font-mono text-xs text-orange-400">LIVE</span>
         </div>
       </div>
 
       {/* Scan line */}
-      <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent animate-scan" style={{ zIndex: 2 }} />
+      <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/25 to-transparent animate-scan" style={{ zIndex: 2 }} />
 
       {/* Terminal body */}
-      <div className="p-5 font-mono text-xs space-y-2 min-h-[280px]">
+      <div className="p-5 font-mono text-xs space-y-1.5 min-h-[300px]">
         {terminalLines.map((line, i) => (
           <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -8 }}
+            key={`${cycle}-${i}`}
+            initial={{ opacity: 0, x: -6 }}
             animate={i < visibleLines ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className={
-              line.type === 'cmd' ? 'text-slate-300' :
-              line.type === 'found' ? 'text-yellow-400 pl-2' :
-              line.type === 'success' ? 'text-green-400 pl-2' :
-              'text-orange-400 pl-2'
+              line.type === 'cmd'     ? 'text-slate-200 font-medium' :
+              line.type === 'found'   ? 'text-yellow-400 pl-3 border-l border-yellow-500/30' :
+              line.type === 'success' ? 'text-green-400 pl-3 border-l border-green-500/30' :
+              'text-orange-400 pl-3 border-l border-orange-500/40 font-medium'
             }
           >
             {line.text}
-            {i === visibleLines - 1 && (
+            {i === visibleLines - 1 && visibleLines < terminalLines.length && (
               <span className="animate-cursor ml-0.5 text-orange-500">▋</span>
             )}
           </motion.div>
         ))}
+
+        {/* Done state */}
+        {visibleLines >= terminalLines.length && (
+          <motion.div
+            key={`${cycle}-done`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="pt-2 text-slate-600 italic"
+          >
+            — session complete. restarting in {Math.round(LOOP_DURATION / 1000 - terminalLines[terminalLines.length - 1].delay)}s…
+          </motion.div>
+        )}
       </div>
 
       {/* Bottom glow */}
