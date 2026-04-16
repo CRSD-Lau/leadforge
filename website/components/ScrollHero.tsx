@@ -3,7 +3,7 @@
 import { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { RoundedBox, Sphere, Cylinder } from '@react-three/drei'
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'framer-motion'
 import * as THREE from 'three'
 
 // ---------------------------------------------------------------------------
@@ -347,8 +347,8 @@ function Developer({
           <meshStandardMaterial color="#2A5080" roughness={0.78} />
         </RoundedBox>
 
-        {/* ── Neck ───────────────────────────────────────────────────── */}
-        <Cylinder args={[0.062, 0.072, 0.14, 10]} position={[0, 0.38, 0.02]} castShadow>
+        {/* ── Neck — shorter so it doesn't dominate the back-angle view ── */}
+        <Cylinder args={[0.058, 0.066, 0.09, 10]} position={[0, 0.40, 0.02]} castShadow>
           <meshStandardMaterial color="#EDAA90" roughness={0.55} />
         </Cylinder>
 
@@ -518,24 +518,24 @@ function CodeParticles() {
       const x = Math.sin(seed * 127.1) * 43758.5453
       return x - Math.floor(x)
     }
-    return Array.from({ length: 18 }, (_, i) => ({
+    return Array.from({ length: 10 }, (_, i) => ({
       pos: [
-        (rng(i * 3 + 0) - 0.5) * 9,
-        0.8 + rng(i * 3 + 1) * 4.0,
-        (rng(i * 3 + 2) - 0.5) * 4,
+        (rng(i * 3 + 0) - 0.5) * 4,   // tighter spread, near the desk
+        1.2 + rng(i * 3 + 1) * 2.0,   // lower height — don't float above scene
+        (rng(i * 3 + 2) - 0.5) * 2.5,
       ] as [number, number, number],
-      speed: 0.10 + rng(i + 50) * 0.18,
+      speed: 0.08 + rng(i + 50) * 0.12,
       phase: rng(i + 20) * Math.PI * 2,
-      scale: 0.014 + rng(i + 40) * 0.014,  // much smaller — 0.014–0.028
-      rotSpeed: (rng(i + 60) - 0.5) * 0.8,
+      scale: 0.010 + rng(i + 40) * 0.009,  // smaller — 0.010–0.019
+      rotSpeed: (rng(i + 60) - 0.5) * 0.5,
     }))
   }, [])
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return
     const t = scrollState.progress
-    // Only visible during coding stages, max opacity 0.35
-    const target = (t > 0.44 && t < 0.88) ? 0.35 : 0
+    // Only visible during DAY 1-2 coding stage, very subtle max opacity
+    const target = (t > 0.44 && t < 0.66) ? 0.18 : 0
     groupRef.current.children.forEach((child, i) => {
       const mesh = child as THREE.Mesh
       mesh.position.y = particles[i].pos[1] + Math.sin(clock.elapsedTime * particles[i].speed + particles[i].phase) * 0.22
@@ -845,7 +845,7 @@ function ProgressDots({ active }: { active: number }) {
 export default function ScrollHero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [activeStage, setActiveStage] = useState(0)
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted]         = useState(false)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
 
   useEffect(() => {
@@ -862,27 +862,12 @@ export default function ScrollHero() {
     setActiveStage(next)
   })
 
-  // ── Opacity per stage ─────────────────────────────────────────────────────
-  const opacity0 = useTransform(scrollYProgress, [0, 0, STAGES[0].range[1]-0.04, STAGES[0].range[1]], [1,1,1,0])
-  const opacity1 = useTransform(scrollYProgress, [STAGES[1].range[0], STAGES[1].range[0]+0.04, STAGES[1].range[1]-0.04, STAGES[1].range[1]], [0,1,1,0])
-  const opacity2 = useTransform(scrollYProgress, [STAGES[2].range[0], STAGES[2].range[0]+0.04, STAGES[2].range[1]-0.04, STAGES[2].range[1]], [0,1,1,0])
-  const opacity3 = useTransform(scrollYProgress, [STAGES[3].range[0], STAGES[3].range[0]+0.04, STAGES[3].range[1]-0.04, STAGES[3].range[1]], [0,1,1,0])
-  const opacity4 = useTransform(scrollYProgress, [STAGES[4].range[0], STAGES[4].range[0]+0.04, 0.98, 1.0], [0,1,1,1])
-  const opacities = [opacity0, opacity1, opacity2, opacity3, opacity4]
-
-  // ── Y-slide per stage: enters from +22px, exits to -22px ─────────────────
-  const y0 = useTransform(scrollYProgress, [STAGES[0].range[1]-0.05, STAGES[0].range[1]], [0, -22])
-  const y1 = useTransform(scrollYProgress, [STAGES[1].range[0], STAGES[1].range[0]+0.05, STAGES[1].range[1]-0.05, STAGES[1].range[1]], [22, 0, 0, -22])
-  const y2 = useTransform(scrollYProgress, [STAGES[2].range[0], STAGES[2].range[0]+0.05, STAGES[2].range[1]-0.05, STAGES[2].range[1]], [22, 0, 0, -22])
-  const y3 = useTransform(scrollYProgress, [STAGES[3].range[0], STAGES[3].range[0]+0.05, STAGES[3].range[1]-0.05, STAGES[3].range[1]], [22, 0, 0, -22])
-  const y4 = useTransform(scrollYProgress, [STAGES[4].range[0], STAGES[4].range[0]+0.05, 0.98, 1.0], [22, 0, 0, 0])
-  const yTransforms = [y0, y1, y2, y3, y4]
-
-  // ── Misc transforms ───────────────────────────────────────────────────────
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0])
   const dotsOpacity    = useTransform(scrollYProgress, [0.04, 0.12], [0, 1])
   const percentOpacity = useTransform(scrollYProgress, [0, 0.06, 0.95, 1], [0, 1, 1, 0])
   const percentDisplay = useTransform(scrollYProgress, (v) => `${Math.round(v * 100).toString().padStart(3, '0')}%`)
+
+  const stage = STAGES[activeStage]
 
   return (
     <section ref={containerRef} className="relative" style={{ height: '500vh' }}>
@@ -892,7 +877,7 @@ export default function ScrollHero() {
         <div className="absolute inset-0">
           <Canvas shadows
             dpr={[1, 1.5]}
-            camera={{ position: [5.5, 2.8, -4.5], fov: 38, near: 0.1, far: 60 }}
+            camera={{ position: [5.5, 2.8, 4.5], fov: 36, near: 0.1, far: 60 }}
             gl={{ antialias: true, alpha: false }}
           >
             <Scene />
@@ -900,42 +885,33 @@ export default function ScrollHero() {
         </div>
 
         {/* ── Gradient overlays ─────────────────────────────────────────── */}
-        {/* Desktop: dark left panel that frames the text */}
         <div className="absolute inset-0 hidden sm:block bg-gradient-to-r from-[#040810]/92 via-[#040810]/40 to-transparent pointer-events-none" />
-        {/* Mobile: dark bottom panel so text is readable over the scene */}
         <div className="absolute inset-0 sm:hidden bg-gradient-to-t from-[#040810] via-[#040810]/75 to-transparent pointer-events-none" />
-        {/* Universal: subtle top & bottom vignette */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#040810]/55 via-transparent to-transparent pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#040810]/75 via-transparent to-transparent pointer-events-none" />
 
         {/* ── Text overlay ───────────────────────────────────────────────── */}
         {/*
-          Mobile:  justify-end — text sits in the lower portion of the screen,
-                   3D scene visible above.
-          Desktop: justify-center — text centred on the left side.
+          AnimatePresence mode="wait" — only ONE stage text exists in the DOM
+          at any time. Eliminates the overlap / ghost-text bug entirely.
+          Exit animation finishes before enter animation begins.
         */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={mounted ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.85, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-0 flex flex-col justify-end sm:justify-center pointer-events-none"
         >
           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-            {/*
-              Relative container holds the absolutely-stacked stages.
-              min-height keeps the box measurable; pb-[96px] on mobile
-              lifts text above the progress dots (bottom-8 = 32px from edge)
-              and gives comfortable breathing room from the bottom edge.
-            */}
-            <div
-              className="relative pb-[96px] sm:pb-0 max-w-[88vw] sm:max-w-sm lg:max-w-lg"
-              style={{ minHeight: 200 }}
-            >
-              {STAGES.map((stage, i) => (
+            <div className="pb-[96px] sm:pb-0 max-w-[88vw] sm:max-w-sm lg:max-w-lg" style={{ minHeight: 220 }}>
+
+              <AnimatePresence mode="wait">
                 <motion.div
-                  key={i}
-                  style={{ opacity: opacities[i], y: yTransforms[i] }}
-                  className="absolute inset-x-0 top-0"
+                  key={activeStage}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.30, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {/* Stage tag */}
                   <div className="flex items-center gap-2 mb-3 sm:mb-4">
@@ -955,8 +931,8 @@ export default function ScrollHero() {
                     {stage.sub}
                   </p>
 
-                  {/* CTA — only on final stage */}
-                  {i === STAGES.length - 1 && (
+                  {/* CTA — final stage only */}
+                  {activeStage === STAGES.length - 1 && (
                     <div className="mt-7 sm:mt-8 flex flex-col gap-3 pointer-events-auto">
                       <div className="flex flex-wrap gap-3">
                         <motion.a
@@ -979,21 +955,22 @@ export default function ScrollHero() {
                         </motion.a>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 pt-1">
-                        {['React', 'Next.js', 'Vercel', 'Claude AI'].map((tag) => (
-                          <span key={tag} className="font-mono text-[11px] text-slate-600 border border-navy-700 px-2 py-0.5 rounded">
-                            {tag}
+                        {['React', 'Next.js', 'Vercel', 'Claude AI'].map((t) => (
+                          <span key={t} className="font-mono text-[11px] text-slate-600 border border-navy-700 px-2 py-0.5 rounded">
+                            {t}
                           </span>
                         ))}
                       </div>
                     </div>
                   )}
                 </motion.div>
-              ))}
+              </AnimatePresence>
+
             </div>
           </div>
         </motion.div>
 
-        {/* ── Bottom UI: scroll indicator → progress dots ────────────────── */}
+        {/* ── Bottom UI ──────────────────────────────────────────────────── */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-none">
           <motion.div style={{ opacity: scrollIndicatorOpacity }}>
             <div className="flex flex-col items-center gap-2">
@@ -1010,7 +987,7 @@ export default function ScrollHero() {
           </motion.div>
         </div>
 
-        {/* ── Stage counter top-right — desktop only ─────────────────────── */}
+        {/* ── Stage counter — desktop only ───────────────────────────────── */}
         <motion.div
           className="absolute top-6 right-6 items-center gap-3 hidden lg:flex"
           style={{ opacity: percentOpacity }}
