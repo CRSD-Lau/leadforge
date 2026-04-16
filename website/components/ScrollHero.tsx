@@ -52,15 +52,15 @@ function Desk() {
       <Cylinder args={[0.012, 0.012, 0.008, 8]} position={[0.48, 1.036, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
         <meshStandardMaterial color="#263656" />
       </Cylinder>
-      {/* Coffee mug — warm gold/amber */}
+      {/* Coffee mug — bright amber-yellow matching reference image */}
       <group position={[0.9, 1.04, -0.1]}>
         <Cylinder args={[0.055, 0.048, 0.13, 14]} castShadow>
-          <meshStandardMaterial color="#C8941A" roughness={0.45} metalness={0.05} />
+          <meshStandardMaterial color="#D4920A" roughness={0.40} metalness={0.08} />
         </Cylinder>
         {/* Mug handle */}
         <mesh position={[0.072, -0.01, 0]}>
           <torusGeometry args={[0.038, 0.011, 6, 10, Math.PI]} />
-          <meshStandardMaterial color="#C8941A" roughness={0.45} />
+          <meshStandardMaterial color="#D4920A" roughness={0.40} />
         </mesh>
         {/* Coffee liquid */}
         <Cylinder args={[0.044, 0.044, 0.004, 12]} position={[0, 0.067, 0]}>
@@ -229,7 +229,7 @@ function Monitor({ screenRef, codeOpacity }: {
       {/* Screen */}
       <mesh ref={screenRef} position={[0, 0.01, 0.034]}>
         <planeGeometry args={[1.48, 0.84]} />
-        <meshStandardMaterial color="#050A18" emissive="#050A18" emissiveIntensity={0.8} roughness={0.05} />
+        <meshStandardMaterial color="#050A18" emissive="#050A18" emissiveIntensity={1.2} roughness={0.05} />
       </mesh>
       {/* Code lines on screen */}
       {CODE_LINES.map((line, i) => (
@@ -243,7 +243,7 @@ function Monitor({ screenRef, codeOpacity }: {
           ]}
         >
           <planeGeometry args={[line.w * 1.1, 0.023]} />
-          <meshStandardMaterial color={line.color} emissive={line.color} emissiveIntensity={0.9}
+          <meshStandardMaterial color={line.color} emissive={line.color} emissiveIntensity={1.4}
             transparent opacity={0} roughness={0.1} />
         </mesh>
       ))}
@@ -631,14 +631,16 @@ function Scene() {
     const riseT  = clamp01((t - 0.91) / 0.09)   // body fully rises
     const sitAmt = sitT * (1 - standT)
 
-    // ── Camera orbit 270° — starts angled to show face, orbits cinematic arc ──
-    const angle  = 2.4 + t * Math.PI * 1.5
-    const radius = lerp(5.2, 4.8, t)   // closes in slightly as story progresses
-    const camH   = lerp(2.5, 1.95, t)
+    // ── Camera orbit 270° — starts behind-right (back of character + monitor visible) ──
+    // angle 0.75 → sin=0.682 (+X right), cos=0.732 (+Z behind character)
+    // Orbits counterclockwise so by t=1 camera is left-rear as character turns to face us
+    const angle  = 0.75 + t * Math.PI * 1.5
+    const radius = lerp(5.2, 4.8, t)
+    const camH   = lerp(2.35, 1.92, t)
     camera.position.set(Math.sin(angle) * radius, camH, Math.cos(angle) * radius)
-    // Look target tracks upward as character stands — seated looks at chest, standing looks at face
-    const lookY = lerp(1.58, 1.80, standT)
-    camera.lookAt(0, lookY, 0)
+    // Look slightly toward the monitor (–Z) so it stays in frame from the back angle
+    const lookY = lerp(1.55, 1.78, standT)
+    camera.lookAt(0, lookY, -0.15)
 
     // Torso Y: standing=1.62, seated=1.20
     // Dips slightly before rising (push-up prep), then rises
@@ -728,9 +730,11 @@ function Scene() {
     }
 
     // ── Monitor screen color ──────────────────────────────────────────────
-    if (t < 0.30)      targetColor.current.copy(SCREEN_COLORS[0])
-    else if (t < 0.52) targetColor.current.copy(SCREEN_COLORS[1])
-    else if (t < 0.72) targetColor.current.copy(SCREEN_COLORS[2])
+    // Screen is already "on" (dark blue) from the very start so the glow
+    // reads in the opening back-angle shot matching the reference image
+    if (t < 0.22)      targetColor.current.copy(SCREEN_COLORS[1])  // dark blue-green from start
+    else if (t < 0.50) targetColor.current.copy(SCREEN_COLORS[1])
+    else if (t < 0.70) targetColor.current.copy(SCREEN_COLORS[2])
     else if (t < 0.88) targetColor.current.copy(SCREEN_COLORS[3])
     else               targetColor.current.copy(SCREEN_COLORS[4])
 
@@ -749,7 +753,8 @@ function Scene() {
     // ── Dynamic monitor glow — changes color with screen ─────────────────
     if (monitorGlowRef.current) {
       monitorGlowRef.current.color.copy(currentColor.current)
-      monitorGlowRef.current.intensity = t > 0.30 ? lerp(3.0, 7.5, clamp01((t - 0.30) / 0.30)) : 1.8
+      // Glow is always present (screen is on from the start); ramps up during coding stages
+      monitorGlowRef.current.intensity = t > 0.30 ? lerp(4.0, 9.0, clamp01((t - 0.30) / 0.30)) : 2.8
     }
 
     // ── Face glow — illuminate character's face with screen color ─────────
@@ -770,29 +775,31 @@ function Scene() {
 
   return (
     <>
-      {/* Scene background — near-black so no navy bleeds through */}
-      <color attach="background" args={['#030508']} />
+      {/* Scene background — near-black, darker than previous */}
+      <color attach="background" args={['#020305']} />
 
-      {/* Key light — warm from upper right, subtle fill only */}
+      {/* Key light — warm from upper right, fairly subtle (screen is hero light) */}
       <directionalLight
-        position={[5, 9, 4]} intensity={1.6} castShadow color="#FFF8F0"
+        position={[5, 9, 4]} intensity={1.2} castShadow color="#FFF8F0"
         shadow-mapSize-width={1024} shadow-mapSize-height={1024}
         shadow-camera-near={0.5} shadow-camera-far={30}
         shadow-camera-left={-6} shadow-camera-right={6}
         shadow-camera-top={6} shadow-camera-bottom={-2}
       />
       {/* Fill — cool blue left, very dim */}
-      <directionalLight position={[-6, 4, 2]} intensity={0.5} color="#B0CCFF" />
-      {/* Rim — orange from behind character, gives depth */}
-      <directionalLight position={[0, 3, -6]} intensity={1.8} color="#FF8840" />
-      {/* Ambient — nearly off; monitor is the hero light source */}
-      <ambientLight intensity={0.18} color="#8AACCC" />
-      {/* Monitor glow — color-matched to screen, driven in useFrame */}
-      <pointLight ref={monitorGlowRef} position={[0, 1.72, -0.05]} intensity={2.0} color="#061A10" distance={6.0} decay={2} />
-      {/* Face glow — illuminates character face with screen color when seated */}
-      <pointLight ref={faceGlowRef} position={[0, 1.85, 0.15]} intensity={0} color="#1A4488" distance={2.5} decay={2} />
-      {/* Desk lamp light — positioned at lamp shade */}
-      <pointLight position={[-0.52, 1.42, -0.42]} intensity={0.9} color="#FFE8A0" distance={2.2} decay={2} />
+      <directionalLight position={[-6, 4, 2]} intensity={0.35} color="#B0CCFF" />
+      {/* Rim — warm orange from behind character (toward monitor), strong edge light */}
+      <directionalLight position={[0, 3, -6]} intensity={2.6} color="#FF7830" />
+      {/* Back-rim — subtle from behind camera position (back-right), catches shoulders */}
+      <directionalLight position={[4, 5, 6]} intensity={0.6} color="#FFD0A0" />
+      {/* Ambient — nearly off; screen glow does the work */}
+      <ambientLight intensity={0.10} color="#8AACCC" />
+      {/* Monitor glow — colour-matched to screen state, strong cast across desk */}
+      <pointLight ref={monitorGlowRef} position={[0, 1.72, -0.05]} intensity={3.0} color="#061A10" distance={7.5} decay={2} />
+      {/* Face/torso glow from screen — illuminates the back of head & shoulders when seated */}
+      <pointLight ref={faceGlowRef} position={[0, 1.85, 0.15]} intensity={0} color="#1A4488" distance={3.0} decay={2} />
+      {/* Desk lamp — warm accent on left side */}
+      <pointLight position={[-0.52, 1.42, -0.42]} intensity={1.1} color="#FFE8A0" distance={2.4} decay={2} />
 
       <Ground />
       <Desk />
