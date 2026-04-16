@@ -21,16 +21,27 @@ function BrowserPreview({
   category,
   navItems,
   heroColor,
-  sections,
+  heroTagline,
+  heroHeadline,
+  heroSub,
+  ctaLabel,
+  services,
+  stat,
 }: {
   accent: string
   category: string
   navItems: string[]
   heroColor: string
-  sections: { label: string; cols?: number }[]
+  heroTagline: string
+  heroHeadline: string
+  heroSub: string
+  ctaLabel: string
+  services: { icon: string; title: string; desc: string }[]
+  stat: { val: string; label: string }
 }) {
+  const slug = category.toLowerCase().replace(/[^a-z0-9]/g, '-')
   return (
-    <div className="rounded-lg overflow-hidden border border-navy-600 shadow-navy-lg text-[0px] select-none">
+    <div className="rounded-xl overflow-hidden border border-navy-600 shadow-navy-lg select-none" style={{ fontSize: 0 }}>
       {/* Browser chrome */}
       <div className="bg-navy-700 px-3 py-2 flex items-center gap-2">
         <div className="flex gap-1.5">
@@ -38,65 +49,110 @@ function BrowserPreview({
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
           <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
         </div>
-        <div className="flex-1 mx-3 bg-navy-800 rounded text-[10px] font-mono text-slate-600 px-2 py-0.5 leading-4 tracking-wide">
-          {category.toLowerCase().replace(/ /g, '-')}.vercel.app
+        <div className="flex-1 mx-3 bg-navy-800 rounded text-[10px] font-mono text-slate-500 px-2 py-0.5 leading-4 tracking-wide">
+          {slug}.vercel.app
         </div>
-        <div className="w-4 h-4 rounded-sm bg-navy-600 opacity-40" />
+        <div className="w-3 h-3 opacity-30">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </div>
       </div>
 
-      {/* Fake website body */}
-      <div className="bg-white" style={{ fontSize: '0' }}>
+      {/* Site body */}
+      <div style={{ fontSize: 0 }}>
         {/* Nav */}
-        <div className="flex items-center justify-between px-3 py-2" style={{ background: heroColor }}>
-          <div className="flex gap-1 items-center">
-            <div className="w-3 h-3 rounded-sm" style={{ background: accent }} />
-            <div className="w-10 h-1.5 rounded-full bg-white/60" />
+        <div className="flex items-center justify-between px-4 py-2.5" style={{ background: heroColor }}>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3.5 h-3.5 rounded flex items-center justify-center flex-shrink-0" style={{ background: accent }}>
+              <div className="w-1.5 h-1.5 rounded-full bg-white/80" />
+            </div>
+            <div className="w-14 h-2 rounded-full bg-white/50" />
           </div>
-          <div className="flex gap-2">
-            {navItems.slice(0, 3).map((_, i) => (
-              <div key={i} className="w-6 h-1 rounded-full bg-white/40" />
+          <div className="flex items-center gap-3">
+            {navItems.slice(0, 3).map((item, i) => (
+              <div key={i} className="h-1.5 rounded-full bg-white/30" style={{ width: `${18 + i * 6}px` }} />
             ))}
-            <div className="w-8 h-3 rounded px-1 flex items-center justify-center" style={{ background: accent }}>
-              <div className="w-5 h-1 rounded-full bg-white" />
+            <div className="rounded px-2 py-1 flex items-center" style={{ background: accent }}>
+              <div className="w-10 h-1 rounded-full bg-white/90" />
             </div>
           </div>
         </div>
 
-        {/* Hero */}
-        <div className="px-4 py-5 text-center" style={{ background: `${heroColor}dd` }}>
-          <div className="w-28 h-2.5 rounded-full mx-auto mb-2" style={{ background: accent, opacity: 0.8 }} />
-          <div className="w-40 h-1.5 rounded-full mx-auto mb-1 bg-white/60" />
-          <div className="w-32 h-1.5 rounded-full mx-auto mb-3 bg-white/40" />
-          <div className="inline-flex gap-1.5">
-            <div className="w-14 h-4 rounded" style={{ background: accent }} />
-            <div className="w-12 h-4 rounded border border-white/30" />
+        {/* Hero section */}
+        <div className="relative px-4 pt-5 pb-4 overflow-hidden" style={{ background: `linear-gradient(135deg, ${heroColor} 0%, ${heroColor}dd 60%, ${heroColor}88 100%)` }}>
+          {/* Decorative circle */}
+          <div className="absolute right-4 top-2 w-16 h-16 rounded-full opacity-10" style={{ background: accent }} />
+          {/* Tag */}
+          <div className="inline-flex items-center gap-1 mb-2">
+            <div className="w-1 h-1 rounded-full" style={{ background: accent }} />
+            <div className="h-1.5 w-14 rounded-full opacity-70" style={{ background: accent }} />
+          </div>
+          {/* Headline lines */}
+          <div className="w-40 h-3 rounded-full mb-1.5 bg-white/75" />
+          <div className="w-28 h-3 rounded-full mb-3 bg-white/55" />
+          {/* Sub text */}
+          <div className="w-48 h-1.5 rounded-full mb-1 bg-white/25" />
+          <div className="w-36 h-1.5 rounded-full mb-4 bg-white/20" />
+          {/* CTAs */}
+          <div className="flex gap-2 items-center">
+            <div className="h-5 w-20 rounded flex items-center justify-center" style={{ background: accent }}>
+              <div className="w-14 h-1 rounded-full bg-white/90" />
+            </div>
+            <div className="h-5 w-16 rounded border border-white/25 flex items-center justify-center">
+              <div className="w-10 h-1 rounded-full bg-white/40" />
+            </div>
+          </div>
+          {/* Stat badge */}
+          <div className="absolute right-4 bottom-4 rounded-lg px-2 py-1.5 flex flex-col items-center" style={{ background: `${heroColor}cc`, border: `1px solid ${accent}44` }}>
+            <div className="h-3 w-8 rounded-full mb-0.5" style={{ background: accent, opacity: 0.9 }} />
+            <div className="h-1 w-10 rounded-full bg-white/30" />
           </div>
         </div>
 
-        {/* Content sections */}
-        <div className="px-3 py-3 bg-white space-y-2">
-          {sections.map((sec, i) => (
-            <div key={i}>
-              <div className="w-20 h-1 rounded-full bg-slate-200 mb-1.5" />
-              <div className={`grid gap-1.5`} style={{ gridTemplateColumns: `repeat(${sec.cols ?? 3}, 1fr)` }}>
-                {Array.from({ length: sec.cols ?? 3 }).map((_, j) => (
-                  <div key={j} className="rounded bg-slate-100 p-2">
-                    <div className="w-full h-1 rounded-full mb-1" style={{ background: `${accent}44` }} />
-                    <div className="w-3/4 h-0.5 rounded-full bg-slate-200" />
-                    <div className="w-1/2 h-0.5 rounded-full bg-slate-200 mt-1" />
-                  </div>
-                ))}
+        {/* Services section */}
+        <div className="px-4 py-4 bg-white">
+          {/* Section header */}
+          <div className="flex items-center gap-1.5 mb-3">
+            <div className="w-1.5 h-3 rounded-full" style={{ background: accent }} />
+            <div className="h-2 w-16 rounded-full bg-slate-200" />
+          </div>
+          {/* Service cards */}
+          <div className={`grid gap-2`} style={{ gridTemplateColumns: `repeat(${Math.min(services.length, 3)}, 1fr)` }}>
+            {services.slice(0, 3).map((svc, i) => (
+              <div key={i} className="rounded-lg p-2.5 border border-slate-100 bg-slate-50">
+                {/* Icon blob */}
+                <div className="w-6 h-6 rounded-lg mb-2 flex items-center justify-center" style={{ background: `${accent}18` }}>
+                  <div className="w-3 h-3 rounded-sm" style={{ background: `${accent}80` }} />
+                </div>
+                {/* Title bar */}
+                <div className="h-1.5 rounded-full mb-1.5 bg-slate-300" style={{ width: `${60 + i * 10}%` }} />
+                {/* Desc lines */}
+                <div className="h-1 rounded-full mb-1 bg-slate-200 w-full" />
+                <div className="h-1 rounded-full bg-slate-200 w-3/4" />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Footer bar */}
-        <div className="px-3 py-2 flex items-center justify-between" style={{ background: heroColor }}>
-          <div className="w-12 h-1 rounded-full bg-white/30" />
-          <div className="flex gap-1.5">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="w-3 h-3 rounded-full bg-white/20" />
+        {/* Trust bar */}
+        <div className="px-4 py-2.5 flex items-center justify-between border-t border-slate-100 bg-slate-50">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="w-2 h-2 rounded-sm" style={{ background: `${accent}70` }} />
+            ))}
+            <div className="ml-1 h-1.5 w-12 rounded-full bg-slate-200" />
+          </div>
+          <div className="h-1.5 w-20 rounded-full bg-slate-200" />
+        </div>
+
+        {/* Footer */}
+        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: heroColor }}>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-sm" style={{ background: accent, opacity: 0.7 }} />
+            <div className="w-12 h-1 rounded-full bg-white/30" />
+          </div>
+          <div className="flex gap-3">
+            {navItems.map((_, i) => (
+              <div key={i} className="h-1 rounded-full bg-white/20" style={{ width: `${14 + i * 4}px` }} />
             ))}
           </div>
         </div>
@@ -112,9 +168,18 @@ const portfolioItems = [
     location: 'Saint John, NB',
     days: '4 days',
     accent: '#F97316',
-    heroColor: '#1a3a5c',
+    heroColor: '#0d2540',
     navItems: ['Services', 'About', 'Contact'],
-    sections: [{ label: 'Services', cols: 3 }, { label: 'Why Us', cols: 2 }],
+    heroTagline: 'Licensed & Insured',
+    heroHeadline: 'Fast Plumbing, Right First Time',
+    heroSub: 'Emergency response 24/7 across Saint John.',
+    ctaLabel: 'Book a Call',
+    services: [
+      { icon: '🔧', title: 'Emergency Repairs', desc: 'Same-day response' },
+      { icon: '🏠', title: 'Residential', desc: 'Full home service' },
+      { icon: '🔥', title: 'Heating', desc: 'Furnace & boilers' },
+    ],
+    stat: { val: '24/7', label: 'Emergency Line' },
     description: 'Emergency plumbing and heating services for residential and commercial clients.',
     tags: ['Emergency 24/7', 'Online Booking', 'Google Maps'],
   },
@@ -124,9 +189,18 @@ const portfolioItems = [
     location: 'Moncton, NB',
     days: '3 days',
     accent: '#A855F7',
-    heroColor: '#2d1a3a',
+    heroColor: '#1a0d2e',
     navItems: ['Services', 'Gallery', 'Book'],
-    sections: [{ label: 'Services', cols: 3 }, { label: 'Gallery', cols: 4 }],
+    heroTagline: 'Moncton\'s Boutique Studio',
+    heroHeadline: 'Hair That Speaks For Itself',
+    heroSub: 'Cuts, colour, and treatments in a relaxed setting.',
+    ctaLabel: 'Book Online',
+    services: [
+      { icon: '✂️', title: 'Cut & Style', desc: 'Precision cutting' },
+      { icon: '🎨', title: 'Colour', desc: 'Balayage & highlights' },
+      { icon: '💆', title: 'Treatments', desc: 'Keratin & repair' },
+    ],
+    stat: { val: '5★', label: 'Google Rating' },
     description: 'Boutique hair salon offering cuts, colour, and treatments in a relaxed setting.',
     tags: ['Online Booking', 'Gallery', 'Pricing Table'],
   },
@@ -136,9 +210,18 @@ const portfolioItems = [
     location: 'Saint John, NB',
     days: '5 days',
     accent: '#3B82F6',
-    heroColor: '#0f2040',
+    heroColor: '#071428',
     navItems: ['Menu', 'Reservations', 'About'],
-    sections: [{ label: 'Menu', cols: 2 }, { label: 'Specials', cols: 3 }],
+    heroTagline: 'Waterfront Dining · Saint John',
+    heroHeadline: 'Fresh Catch, Maritime Soul',
+    heroSub: 'Local seafood served with a harbour view.',
+    ctaLabel: 'Reserve a Table',
+    services: [
+      { icon: '🦞', title: 'Seafood', desc: 'Daily fresh catch' },
+      { icon: '🍷', title: 'Wine List', desc: 'Curated Maritime' },
+      { icon: '🎉', title: 'Private Events', desc: 'Groups up to 40' },
+    ],
+    stat: { val: '12yr', label: 'Est. 2012' },
     description: 'Fresh local seafood and Maritime cuisine on the Saint John waterfront.',
     tags: ['Full Menu', 'Reservations', 'Hours & Location'],
   },
@@ -148,9 +231,18 @@ const portfolioItems = [
     location: 'Fredericton, NB',
     days: '4 days',
     accent: '#10B981',
-    heroColor: '#0a1f18',
+    heroColor: '#061812',
     navItems: ['Classes', 'Membership', 'Contact'],
-    sections: [{ label: 'Classes', cols: 3 }, { label: 'Plans', cols: 3 }],
+    heroTagline: 'Fredericton\'s Independent Gym',
+    heroHeadline: 'Strength Built Different',
+    heroSub: 'No-fluff training for serious athletes.',
+    ctaLabel: 'Free Trial Day',
+    services: [
+      { icon: '🏋️', title: 'Powerlifting', desc: 'Full rig & racks' },
+      { icon: '🔄', title: 'Classes', desc: '20+ weekly sessions' },
+      { icon: '📋', title: 'Programs', desc: 'Coach-led plans' },
+    ],
+    stat: { val: '$59', label: 'per month' },
     description: 'Independent strength and conditioning gym for serious athletes and beginners.',
     tags: ['Class Schedule', 'Membership Tiers', 'Trainer Bios'],
   },
@@ -160,9 +252,18 @@ const portfolioItems = [
     location: 'Sussex, NB',
     days: '3 days',
     accent: '#22C55E',
-    heroColor: '#0a2010',
+    heroColor: '#061a0a',
     navItems: ['Services', 'Gallery', 'Quote'],
-    sections: [{ label: 'Services', cols: 2 }, { label: 'Gallery', cols: 3 }],
+    heroTagline: 'Sussex & Surrounding Areas',
+    heroHeadline: 'Curb Appeal, Year Round',
+    heroSub: 'Lawn care, cleanup, and landscape design.',
+    ctaLabel: 'Free Quote',
+    services: [
+      { icon: '🌿', title: 'Lawn Care', desc: 'Weekly maintenance' },
+      { icon: '🍂', title: 'Seasonal', desc: 'Spring & fall cleanup' },
+      { icon: '🌳', title: 'Landscaping', desc: 'Design & install' },
+    ],
+    stat: { val: '200+', label: 'Properties Served' },
     description: 'Full-service lawn care, seasonal cleanup, and landscape design for residential properties.',
     tags: ['Free Quote Form', 'Photo Gallery', 'Service Areas'],
   },
@@ -172,9 +273,18 @@ const portfolioItems = [
     location: 'Saint John, NB',
     days: '3 days',
     accent: '#EAB308',
-    heroColor: '#2a1a05',
+    heroColor: '#1a1002',
     navItems: ['Menu', 'Custom Orders', 'Visit Us'],
-    sections: [{ label: 'Today\'s Menu', cols: 3 }, { label: 'Specials', cols: 2 }],
+    heroTagline: 'Baked Fresh Daily',
+    heroHeadline: 'Bread Worth Waking Up For',
+    heroSub: 'Artisan loaves, pastries & custom cakes.',
+    ctaLabel: 'See Today\'s Menu',
+    services: [
+      { icon: '🍞', title: 'Artisan Bread', desc: 'Sourdough & rye' },
+      { icon: '🥐', title: 'Pastries', desc: 'Croissants & more' },
+      { icon: '🎂', title: 'Custom Cakes', desc: 'Order 3 days ahead' },
+    ],
+    stat: { val: '6 AM', label: 'Daily Opening' },
     description: 'Artisan breads, pastries, and custom cakes baked fresh daily from local ingredients.',
     tags: ['Daily Menu', 'Custom Cakes', 'Online Orders'],
   },
@@ -225,7 +335,12 @@ export default function PortfolioPage() {
                       category={item.category}
                       navItems={item.navItems}
                       heroColor={item.heroColor}
-                      sections={item.sections}
+                      heroTagline={item.heroTagline}
+                      heroHeadline={item.heroHeadline}
+                      heroSub={item.heroSub}
+                      ctaLabel={item.ctaLabel}
+                      services={item.services}
+                      stat={item.stat}
                     />
                   </div>
 
@@ -288,14 +403,48 @@ export default function PortfolioPage() {
           </FadeUp>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
-              { icon: '⚡', title: 'Vercel CDN', sub: 'Global edge — sub-100ms' },
-              { icon: '🔒', title: 'SSL Included', sub: 'HTTPS, auto-renewing' },
-              { icon: '📱', title: 'Mobile-First', sub: 'Tested across breakpoints' },
-              { icon: '🔍', title: 'SEO Structure', sub: 'Metadata, sitemap, OpenGraph' },
+              {
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-orange-500">
+                    <path d="M10 2L6 10H10L7 18L16 9H11L14 2H10Z" fill="currentColor"/>
+                  </svg>
+                ),
+                title: 'Vercel CDN', sub: 'Global edge — sub-100ms',
+              },
+              {
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-orange-500">
+                    <rect x="4" y="9" width="12" height="9" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+                    <path d="M7 9V6a3 3 0 016 0v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <circle cx="10" cy="13.5" r="1" fill="currentColor"/>
+                  </svg>
+                ),
+                title: 'SSL Included', sub: 'HTTPS, auto-renewing',
+              },
+              {
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-orange-500">
+                    <rect x="6" y="2" width="8" height="13" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                    <path d="M9 14.5h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M4 17h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                ),
+                title: 'Mobile-First', sub: 'Tested across breakpoints',
+              },
+              {
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-orange-500">
+                    <circle cx="9" cy="9" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
+                    <path d="M13.5 13.5L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M7 9h4M9 7v4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                  </svg>
+                ),
+                title: 'SEO Structure', sub: 'Metadata, sitemap, OpenGraph',
+              },
             ].map((item) => (
               <FadeUp key={item.title}>
                 <div className="text-center card-navy py-5">
-                  <div className="text-2xl mb-2">{item.icon}</div>
+                  <div className="flex justify-center mb-3">{item.icon}</div>
                   <div className="font-sans font-semibold text-white text-sm mb-1">{item.title}</div>
                   <div className="font-sans text-xs text-slate-500">{item.sub}</div>
                 </div>

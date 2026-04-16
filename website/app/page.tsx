@@ -99,6 +99,13 @@ const terminalLines = [
 
 const LOOP_DURATION = 8500 // ms before restart
 
+const neilCredRows = [
+  { label: 'Stack',    val: 'React · Next.js · Tailwind · Vercel' },
+  { label: 'Location', val: 'Saint John, NB · Atlantic time' },
+  { label: 'Response', val: 'Same day · Mon–Fri' },
+  { label: 'Agent',    val: 'Claude AI · runs Mon–Fri 6 AM' },
+]
+
 function AgentTerminal() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
@@ -197,20 +204,25 @@ export default function HomePage() {
       <ScrollHero />
 
       {/* ── KPI STRIP ────────────────────────────────────────────────── */}
-      <section className="bg-navy-800 border-y border-navy-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-navy-600">
+      <section className="relative bg-navy-800 border-y border-navy-700 overflow-hidden">
+        {/* Subtle orange underglow */}
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4">
             {[
-              { val: 650, prefix: '$', suffix: '', label: 'Flat Rate' },
-              { val: 5, prefix: '', suffix: ' days', label: 'Max Delivery' },
-              { val: 89, prefix: '', suffix: '%', label: 'Profit Margin' },
-              { val: 800, prefix: '', suffix: '+', label: 'Local Leads' },
-            ].map((kpi) => (
-              <FadeUp key={kpi.label} className="text-center py-4 px-6">
-                <div className="font-mono text-3xl font-bold text-orange-500 mb-1">
+              { val: 650, prefix: '$', suffix: '', label: 'Flat Rate', sub: 'one-time, no hidden fees' },
+              { val: 5,   prefix: '', suffix: ' days', label: 'Max Delivery', sub: 'call to live site' },
+              { val: 0,   prefix: '', suffix: '',  label: 'Monthly Fees', sub: 'no retainer, ever' },
+              { val: 100, prefix: '', suffix: '%', label: 'You Own It',   sub: 'code & hosting yours' },
+            ].map((kpi, i) => (
+              <FadeUp key={kpi.label} delay={i * 0.08} className="relative text-center py-5 px-4 group">
+                {/* Divider — not on first item */}
+                {i > 0 && <div className="absolute left-0 top-1/4 bottom-1/4 w-px bg-navy-600" />}
+                <div className="font-mono text-3xl sm:text-4xl font-bold text-orange-500 mb-0.5 group-hover:text-orange-400 transition-colors">
                   <CountUp to={kpi.val} prefix={kpi.prefix} suffix={kpi.suffix} />
                 </div>
-                <div className="font-sans text-xs text-slate-500 uppercase tracking-widest">{kpi.label}</div>
+                <div className="font-sans text-xs text-slate-300 font-medium uppercase tracking-widest mb-1">{kpi.label}</div>
+                <div className="font-mono text-[10px] text-slate-700 hidden sm:block">{kpi.sub}</div>
               </FadeUp>
             ))}
           </div>
@@ -235,36 +247,67 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               {
-                icon: '○',
+                stat: '35%',
+                statLabel: 'of NB small businesses',
+                icon: (
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-red-400">
+                    <circle cx="9" cy="9" r="7.5" stroke="currentColor" strokeWidth="1.4"/>
+                    <path d="M9 5v4M9 12h.01" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+                  </svg>
+                ),
                 title: 'No Website At All',
-                desc: 'You lose every customer who Googles your service. They go to whoever shows up — and it isn\'t you.',
-                color: 'from-red-500/10 to-transparent',
-                border: 'hover:border-red-500/30',
+                desc: 'You lose every customer who Googles your category. They find whoever shows up first — and it isn\'t you.',
+                color: 'from-red-500/8 to-transparent',
+                border: 'hover:border-red-500/25',
+                statColor: 'text-red-400',
               },
               {
-                icon: '◻',
+                stat: '1 tweak',
+                statLabel: 'kills your reach overnight',
+                icon: (
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-yellow-400">
+                    <rect x="2" y="3" width="14" height="12" rx="2" stroke="currentColor" strokeWidth="1.4"/>
+                    <path d="M2 7h14" stroke="currentColor" strokeWidth="1.2"/>
+                    <path d="M6 3V2M12 3V2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                  </svg>
+                ),
                 title: 'Facebook-Only',
                 desc: 'A Facebook page isn\'t a business. It\'s rented land — one algorithm change from invisible.',
-                color: 'from-yellow-500/10 to-transparent',
-                border: 'hover:border-yellow-500/30',
+                color: 'from-yellow-500/8 to-transparent',
+                border: 'hover:border-yellow-500/25',
+                statColor: 'text-yellow-400',
               },
               {
-                icon: '△',
+                stat: '94%',
+                statLabel: 'judge credibility by design',
+                icon: (
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-orange-400">
+                    <path d="M9 2l1.8 3.6 4 .58-2.9 2.83.69 3.99L9 11.1l-3.59 1.9.69-3.99L3.2 6.18l4-.58L9 2z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+                  </svg>
+                ),
                 title: 'Outdated Site',
                 desc: 'A 2012 website tells customers you stopped caring. Poor mobile = zero trust before they read a word.',
-                color: 'from-orange-500/10 to-transparent',
-                border: 'hover:border-orange-500/30',
+                color: 'from-orange-500/8 to-transparent',
+                border: 'hover:border-orange-500/25',
+                statColor: 'text-orange-400',
               },
             ].map((item, i) => (
               <FadeUp key={item.title} delay={i * 0.12}>
-                <div className={`relative card-navy overflow-hidden group ${item.border}`}>
+                <div className={`relative card-navy overflow-hidden group ${item.border} flex flex-col h-full`}>
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-                  <div className="relative">
-                    <div className="w-10 h-10 border border-orange-500/30 rounded-lg flex items-center justify-center mb-5">
-                      <span className="font-mono text-orange-500 text-lg">{item.icon}</span>
+                  <div className="relative flex flex-col h-full">
+                    {/* Top row: icon + stat */}
+                    <div className="flex items-start justify-between mb-5">
+                      <div className="w-10 h-10 border border-navy-500 rounded-lg flex items-center justify-center bg-navy-700/50">
+                        {item.icon}
+                      </div>
+                      <div className="text-right">
+                        <div className={`font-mono text-lg font-bold ${item.statColor}`}>{item.stat}</div>
+                        <div className="font-mono text-[10px] text-slate-600 leading-tight max-w-[100px]">{item.statLabel}</div>
+                      </div>
                     </div>
-                    <h3 className="font-sans font-bold text-lg text-white mb-3">{item.title}</h3>
-                    <p className="font-sans text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                    <h3 className="font-sans font-bold text-base text-white mb-2">{item.title}</h3>
+                    <p className="font-sans text-sm text-slate-400 leading-relaxed flex-1">{item.desc}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -350,21 +393,28 @@ export default function HomePage() {
 
           <div className="relative">
             {/* Connector line */}
-            <div className="hidden sm:block absolute top-10 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-navy-600 to-transparent" />
+            <div className="hidden sm:block absolute top-[26px] left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
 
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
               {[
-                { day: 'Day 0', title: 'Discovery Call', desc: '15 min — goals, pages, branding' },
-                { day: 'Day 1–2', title: 'Claude Builds', desc: 'Next.js scaffolded, Vercel preview' },
-                { day: 'Day 3', title: 'You Review', desc: 'Share feedback by email or call' },
-                { day: 'Day 4', title: 'Revisions', desc: 'Changes applied, mobile verified' },
-                { day: 'Day 5', title: '🚀 Launch', desc: '$650 paid → domain → code handoff' },
+                { day: 'Day 0',  title: 'Discovery', desc: '15 min call — goals, pages, brand', final: false },
+                { day: 'Day 1–2', title: 'Build', desc: 'Next.js + Tailwind, Vercel preview', final: false },
+                { day: 'Day 3',  title: 'Review', desc: 'You check on any device, send notes', final: false },
+                { day: 'Day 4',  title: 'Revisions', desc: 'Changes in, mobile verified', final: false },
+                { day: 'Day 5',  title: 'Live', desc: '$650 → domain → code yours forever', final: true },
               ].map((step, i) => (
                 <FadeUp key={step.day} delay={i * 0.1}>
-                  <div className="relative card-navy text-center group">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-navy-800 border-2 border-orange-500/40 group-hover:border-orange-500 group-hover:shadow-orange-sm transition-all duration-300" />
-                    <div className="font-mono text-xs text-orange-500 mb-3 mt-2">{step.day}</div>
-                    <h3 className="font-sans font-bold text-white text-sm mb-2">{step.title}</h3>
+                  <div className={`relative text-center py-6 px-4 rounded-xl border transition-all duration-300 group cursor-default
+                    ${step.final
+                      ? 'bg-orange-500/8 border-orange-500/30 hover:border-orange-500/60'
+                      : 'bg-navy-800 border-navy-600 hover:border-navy-500'}`}>
+                    {/* Node dot */}
+                    <div className={`w-3 h-3 rounded-full mx-auto mb-4 border-2 transition-all duration-300
+                      ${step.final
+                        ? 'bg-orange-500 border-orange-400 shadow-orange-sm'
+                        : 'bg-navy-700 border-orange-500/50 group-hover:border-orange-500 group-hover:bg-orange-500/20'}`} />
+                    <div className="font-mono text-[10px] text-orange-500 mb-1.5 uppercase tracking-widest">{step.day}</div>
+                    <h3 className={`font-sans font-bold text-sm mb-1.5 ${step.final ? 'text-orange-400' : 'text-white'}`}>{step.title}</h3>
                     <p className="font-sans text-xs text-slate-500 leading-relaxed">{step.desc}</p>
                   </div>
                 </FadeUp>
@@ -394,9 +444,9 @@ export default function HomePage() {
                 price: '$650',
                 note: 'flat rate · one-time',
                 features: ['Fully deployed production site', 'React/Next.js + Tailwind', 'Vercel hosting + SSL', 'Mobile responsive', 'SEO-ready structure', 'You own the code'],
-                cta: 'Get Started',
+                cta: 'Get Started — $650',
                 href: '/contact',
-                featured: false,
+                featured: true,
               },
               {
                 label: 'Ongoing Updates',
@@ -405,7 +455,7 @@ export default function HomePage() {
                 features: ['Content & copy updates', 'New page additions', 'Design adjustments', 'Feature additions', 'No minimum hours', 'Fair prorate billing'],
                 cta: 'See Full Pricing',
                 href: '/pricing',
-                featured: true,
+                featured: false,
               },
             ].map((card) => (
               <FadeUp key={card.label}>
@@ -413,7 +463,7 @@ export default function HomePage() {
                   {card.featured && (
                     <div className="absolute -top-3 left-6">
                       <span className="bg-orange-500 text-white font-mono text-xs font-bold px-3 py-1 rounded-full">
-                        Most Common
+                        Our Core Offer
                       </span>
                     </div>
                   )}
@@ -512,8 +562,15 @@ export default function HomePage() {
             ))}
           </div>
 
+          {/* Disclaimer */}
+          <FadeUp className="mt-8">
+            <p className="font-mono text-xs text-slate-700 text-center">
+              * Example testimonials — production clients launching Q2 2026
+            </p>
+          </FadeUp>
+
           {/* Trust strip */}
-          <FadeUp className="mt-12">
+          <FadeUp className="mt-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
               {[
                 { val: '5★', label: 'Google Rating' },
@@ -531,31 +588,169 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── ABOUT NEIL ───────────────────────────────────────────────── */}
+      <section className="py-24 bg-navy-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-40" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-orange-500/4 rounded-full blur-3xl" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+
+            {/* Left — copy */}
+            <FadeUp>
+              <span className="section-tag mb-4 block">Behind LeadForge AI</span>
+              <h2 className="font-sans font-extrabold text-3xl sm:text-4xl text-white leading-tight mb-5">
+                Hi, I&apos;m Neil.{' '}
+                <span className="text-gradient-orange">I build these sites.</span>
+              </h2>
+              <p className="text-slate-400 text-base leading-relaxed mb-4">
+                I&apos;m a Saint John developer who got tired of watching local businesses lose customers
+                because they couldn&apos;t justify a $5,000 agency quote for a five-page site.
+              </p>
+              <p className="text-slate-400 text-base leading-relaxed mb-8">
+                LeadForge AI is my answer: use Claude AI to handle the outreach, then personally
+                build each site in React/Next.js — the same stack used by startups and
+                Fortune 500s — at a price local businesses can actually afford.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a href="tel:5066399083" className="btn-orange text-sm px-6 py-3">
+                  Call Neil — 506-639-9083
+                </a>
+                <a href="mailto:neil@leadforge-ai.ca" className="btn-outline text-sm px-6 py-3">
+                  neil@leadforge-ai.ca
+                </a>
+              </div>
+            </FadeUp>
+
+            {/* Right — credential card */}
+            <FadeUp delay={0.15}>
+              <div className="card-navy space-y-4">
+                {/* Avatar row */}
+                <div className="flex items-center gap-4 pb-5 border-b border-navy-700">
+                  <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center font-sans font-bold text-lg text-orange-500 flex-shrink-0">
+                    NM
+                  </div>
+                  <div>
+                    <div className="font-sans font-bold text-white text-base">Neil Mitchell</div>
+                    <div className="font-mono text-xs text-slate-500 mt-0.5">Founder · Developer · LeadForge AI</div>
+                    <div className="flex items-center gap-1.5 mt-1.5">
+                      <span className="dot-orange animate-pulse-slow" />
+                      <span className="font-mono text-xs text-orange-400">Available for new projects</span>
+                    </div>
+                  </div>
+                </div>
+                {/* Detail rows */}
+                {neilCredRows.map((row) => (
+                  <div key={row.label} className="flex gap-4 items-start">
+                    <div className="font-mono text-xs text-slate-600 uppercase tracking-widest w-20 flex-shrink-0 pt-0.5">
+                      {row.label}
+                    </div>
+                    <div className="font-sans text-sm text-slate-300">{row.val}</div>
+                  </div>
+                ))}
+              </div>
+            </FadeUp>
+          </div>
+        </div>
+      </section>
+
       {/* ── FINAL CTA ────────────────────────────────────────────────── */}
       <section className="py-24 bg-navy-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
+        <div className="absolute inset-0 bg-grid opacity-60" />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-900 via-navy-900/95 to-navy-900" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-orange-500/8 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[240px] bg-orange-500/7 rounded-full blur-3xl" />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <FadeUp>
-            <h2 className="font-sans font-extrabold text-4xl sm:text-5xl text-white leading-tight mb-5">
-              Ready to be{' '}
-              <span className="text-gradient-orange">found online?</span>
-            </h2>
-            <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
-              Book a free 15-minute discovery call. No pressure, no commitment — just a conversation
-              about what your business needs.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/contact" className="btn-orange text-base px-8 py-4">
-                Book Discovery Call
-              </Link>
-              <a href="tel:5066399083" className="btn-outline text-base px-8 py-4">
-                Call 506-639-9083
-              </a>
-            </div>
-          </FadeUp>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {/* Left — headline */}
+            <FadeUp>
+              <span className="section-tag mb-4 block">Start Today</span>
+              <h2 className="font-sans font-extrabold text-4xl sm:text-5xl text-white leading-tight mb-5">
+                Your site,{' '}
+                <span className="text-gradient-orange">live in 5 days.</span>
+                <br />
+                <span className="text-slate-400 text-3xl sm:text-4xl font-bold">$650 flat. No retainer.</span>
+              </h2>
+              <p className="text-slate-400 text-base leading-relaxed mb-8 max-w-md">
+                One 15-minute call is all it takes. We handle the tech — you get a production site,
+                on your domain, with the code in your hands.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/contact" className="btn-orange text-base px-8 py-4">
+                  Book Discovery Call
+                </Link>
+                <Link href="/portfolio" className="btn-outline text-base px-8 py-4">
+                  See Our Work
+                </Link>
+              </div>
+            </FadeUp>
+
+            {/* Right — contact card */}
+            <FadeUp delay={0.15}>
+              <div className="card-navy bg-navy-800/80 border-navy-600 space-y-5">
+                <h3 className="font-sans font-bold text-white text-sm uppercase tracking-widest mb-2">
+                  Reach Neil Directly
+                </h3>
+                {[
+                  {
+                    label: 'Phone',
+                    value: '506-639-9083',
+                    href: 'tel:5066399083',
+                    icon: (
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-orange-500">
+                        <path d="M2 2.5A1.5 1.5 0 013.5 1h1a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1 1.415 5.5 5.5 0 003.085 3.085A1.5 1.5 0 0110 9h1A1.5 1.5 0 0112.5 10.5v1A1.5 1.5 0 0111 13H9.5A9.5 9.5 0 012 5.5V2.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    ),
+                  },
+                  {
+                    label: 'Email',
+                    value: 'neil@leadforge-ai.ca',
+                    href: 'mailto:neil@leadforge-ai.ca',
+                    icon: (
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-orange-500">
+                        <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.2"/>
+                        <path d="M1 5l7 5 7-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    ),
+                  },
+                  {
+                    label: 'Location',
+                    value: 'Saint John, NB, Canada',
+                    href: null,
+                    icon: (
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-orange-500">
+                        <path d="M8 1.5a4.5 4.5 0 014.5 4.5c0 3-4.5 8.5-4.5 8.5S3.5 9 3.5 6A4.5 4.5 0 018 1.5z" stroke="currentColor" strokeWidth="1.2"/>
+                        <circle cx="8" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                      </svg>
+                    ),
+                  },
+                ].map((c) => (
+                  <div key={c.label} className="flex items-center gap-4 py-3 border-b border-navy-700 last:border-0">
+                    <div className="w-8 h-8 rounded-lg bg-navy-700 border border-navy-600 flex items-center justify-center flex-shrink-0">
+                      {c.icon}
+                    </div>
+                    <div>
+                      <div className="font-mono text-[10px] text-slate-600 uppercase tracking-widest mb-0.5">{c.label}</div>
+                      {c.href ? (
+                        <a href={c.href} className="font-sans text-sm text-slate-300 hover:text-orange-400 transition-colors">
+                          {c.value}
+                        </a>
+                      ) : (
+                        <span className="font-sans text-sm text-slate-400">{c.value}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Response time note */}
+                <div className="flex items-center gap-2 pt-1">
+                  <span className="dot-orange animate-pulse-slow flex-shrink-0" />
+                  <span className="font-mono text-xs text-slate-600">Responds within 1 business day</span>
+                </div>
+              </div>
+            </FadeUp>
+
+          </div>
         </div>
       </section>
     </>

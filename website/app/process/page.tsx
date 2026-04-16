@@ -28,7 +28,7 @@ const timeline = [
   { day: 'Day 4', title: 'Revisions', subtitle: 'Feedback implemented',
     description: 'We implement your changes, verify mobile responsiveness across breakpoints, confirm the contact form works, and finalise copy. Updated preview link sent for final sign-off.',
     detail: 'Mobile, tablet, and desktop verified before final approval.' },
-  { day: 'Day 5', title: '🚀 Launch', subtitle: 'Payment · Domain · Handoff',
+  { day: 'Day 5', title: 'Launch', subtitle: 'Payment · Domain · Handoff',
     description: 'You pay $650. We connect your domain, push the site live, and transfer the GitHub repo and Vercel project to you. You own the code and hosting.',
     detail: 'Domain: you buy it (~$15/yr), we configure DNS for free.' },
 ]
@@ -41,6 +41,15 @@ const agentSteps = [
   { num: '05', title: 'Mockup Generation', desc: 'Tailored HTML preview — hero, services, contact — built for your business category in minutes.' },
   { num: '06', title: 'Close Flow', desc: 'Booking message sent routing to 506-639-9083 for a discovery call.' },
   { num: '07', title: 'Terms Explanation', desc: 'Communicates ownership, delivery, and pricing clearly before Neil gets involved.' },
+]
+
+const handoffItems = [
+  { title: 'GitHub Repository',    desc: 'Full Next.js source code transferred to your GitHub account. You own the entire commit history.' },
+  { title: 'Vercel Project',       desc: 'Hosting moved to your Vercel account. Auto-deploys on every push — no config required.' },
+  { title: 'Domain Connected',     desc: 'DNS configured on your domain. SSL auto-renews via Vercel — zero ongoing manual work.' },
+  { title: 'Working Contact Form', desc: 'Tested end-to-end. Submissions land in your inbox. No third-party subscription required.' },
+  { title: 'Mobile Verified',      desc: 'Tested on mobile, tablet, and desktop across Chrome, Safari, and Firefox before handoff.' },
+  { title: 'SEO Foundation',       desc: 'Page metadata, Open Graph tags, sitemap.xml, robots.txt — ready for Google to index.' },
 ]
 
 const stack = [
@@ -113,6 +122,40 @@ export default function ProcessPage() {
                 </FadeUp>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Day 5 Handoff Checklist */}
+      <section className="py-20 bg-navy-900 border-t border-b border-navy-700">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeUp className="mb-10">
+            <span className="section-tag mb-4 block">Day 5 Handoff</span>
+            <h2 className="font-sans font-extrabold text-3xl sm:text-4xl text-white">
+              Everything you{' '}
+              <span className="text-gradient-orange">walk away with.</span>
+            </h2>
+            <p className="text-slate-400 text-base mt-3 max-w-xl">
+              On payment, every item below transfers to you — with zero dependency on LeadForge AI to keep running.
+            </p>
+          </FadeUp>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {handoffItems.map((item, i) => (
+              <FadeUp key={item.title} delay={i * 0.07}>
+                <div className="flex gap-4 card-navy">
+                  <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-orange-500">
+                      <path d="M2 7L5.5 10.5L12 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-sans font-semibold text-white text-sm mb-1">{item.title}</div>
+                    <div className="font-sans text-xs text-slate-500 leading-relaxed">{item.desc}</div>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
           </div>
         </div>
       </section>

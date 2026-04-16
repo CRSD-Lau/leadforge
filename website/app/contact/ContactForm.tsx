@@ -171,13 +171,36 @@ export default function ContactForm() {
                 <h3 className="font-sans font-bold text-white text-base mb-5">Prefer to call?</h3>
                 <div className="space-y-4">
                   {[
-                    { icon: '☎', label: 'Phone',    value: '506-639-9083',       href: 'tel:5066399083' },
-                    { icon: '@', label: 'Email',    value: 'neil@leadforge-ai.ca', href: 'mailto:neil@leadforge-ai.ca' },
-                    { icon: '◎', label: 'Location', value: 'Saint John, NB, Canada', href: null },
+                    {
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-orange-500">
+                          <path d="M2 2.5A1.5 1.5 0 013.5 1h1a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1 1.415 5.5 5.5 0 003.085 3.085A1.5 1.5 0 0110 9h1A1.5 1.5 0 0112.5 10.5v1A1.5 1.5 0 0111 13H9.5A9.5 9.5 0 012 5.5V2.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      ),
+                      label: 'Phone', value: '506-639-9083', href: 'tel:5066399083',
+                    },
+                    {
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-orange-500">
+                          <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.2"/>
+                          <path d="M1 5l7 5 7-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      ),
+                      label: 'Email', value: 'neil@leadforge-ai.ca', href: 'mailto:neil@leadforge-ai.ca',
+                    },
+                    {
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-orange-500">
+                          <path d="M8 1.5a4.5 4.5 0 014.5 4.5c0 3-4.5 8.5-4.5 8.5S3.5 9 3.5 6A4.5 4.5 0 018 1.5z" stroke="currentColor" strokeWidth="1.2"/>
+                          <circle cx="8" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                        </svg>
+                      ),
+                      label: 'Location', value: 'Saint John, NB, Canada', href: null,
+                    },
                   ].map((item) => (
                     <div key={item.label} className="flex items-center gap-3 group">
                       <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0">
-                        <span className="font-mono text-orange-500 text-sm">{item.icon}</span>
+                        {item.icon}
                       </div>
                       <div>
                         <div className="font-mono text-xs text-slate-600 uppercase tracking-wider">{item.label}</div>

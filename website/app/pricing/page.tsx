@@ -31,6 +31,7 @@ const faqs = [
   { q: 'Do I need to buy a domain?', a: 'Yes — you purchase your own domain (~$15/yr from Namecheap or GoDaddy). We configure the DNS for free as part of the launch process.' },
   { q: 'What\'s included in the $650?', a: 'Full Next.js site, Tailwind styling, Vercel deployment, SSL, CDN, mobile responsiveness, SEO structure, contact form, and one revision round.' },
   { q: 'How fast is 3–5 days really?', a: 'It\'s real. Day 0 is the call. Day 1–2 is the build. Day 3 is review. Day 4 revisions. Day 5 launch. We keep scope tight to hit that window every time.' },
+  { q: 'What if I\'m not happy with the preview?', a: 'One revision round is included. You review the preview site on Day 3, note what to change, and we implement it on Day 4. If the delivered result doesn\'t match the discovery call brief, we make it right — no extra charge.' },
 ]
 
 export default function PricingPage() {
@@ -136,6 +137,29 @@ export default function PricingPage() {
               </FadeUp>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Guarantee */}
+      <section className="py-16 bg-navy-900 border-t border-navy-700">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeUp>
+            <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-6 flex flex-col sm:flex-row gap-5 items-center">
+              <div className="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center flex-shrink-0">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" className="text-green-400">
+                  <path d="M13 2L3.5 7.5v5.5c0 6 4.2 11.6 9.5 13 5.3-1.4 9.5-7 9.5-13V7.5L13 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M9 13l3 3 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="font-sans font-bold text-white text-base mb-1.5">Revision guarantee</h3>
+                <p className="font-sans text-sm text-slate-400 leading-relaxed">
+                  One revision round is included. If the preview doesn't match what we discussed on the call,
+                  we revise until it does — at no extra cost. You pay only when you're happy.
+                </p>
+              </div>
+            </div>
+          </FadeUp>
         </div>
       </section>
 

@@ -3,6 +3,25 @@ import Link from 'next/link'
 export default function Footer() {
   return (
     <footer className="bg-navy-950 border-t border-navy-700">
+      {/* Mini CTA strip */}
+      <div className="border-b border-navy-700 bg-navy-900/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="font-sans text-sm text-slate-400">
+            <span className="text-white font-semibold">Ready to get online?</span>{' '}
+            One 15-minute call is all it takes.
+          </p>
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <a href="tel:5066399083" className="font-mono text-sm text-slate-400 hover:text-orange-400 transition-colors">
+              506-639-9083
+            </a>
+            <span className="w-px h-4 bg-navy-600" />
+            <Link href="/contact" className="btn-orange text-sm py-2 px-5">
+              Get Your Site — $650
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
 
