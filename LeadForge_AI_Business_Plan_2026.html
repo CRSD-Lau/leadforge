@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadForge AI — Confidential Business Plan 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark-green: #003F2D;
+    --td-green: #54B848;
+    --gold: #C5A55A;
+    --gold-light: #D4B96A;
+    --warm-bg: #FAF8F5;
+    --light-gold: #F5F0E6;
+    --dark-text: #1A1A1A;
+    --mid-text: #4A4A4A;
+    --light-text: #7A7A7A;
+    --border: #E0DDD6;
+    --card-shadow: 0 2px 20px rgba(0,63,45,0.08);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--dark-text);
+    background: #F0EDEA;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PAGE SYSTEM ────────────────────────── */
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0.5in auto;
+    background: var(--warm-bg);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-inner {
+    padding: 60px 65px;
+  }
+
+  /* ── HEADER BAR ─────────────────────────── */
+  .header-bar {
+    background: var(--dark-green);
+    padding: 14px 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-bar .brand {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .header-bar .subtitle {
+    font-size: 9px;
+    color: #8A9A8A;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+  }
+
+  /* ── COVER PAGE ─────────────────────────── */
+  .cover {
+    background: var(--dark-green);
+    min-height: 11in;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+  }
+  .cover-top {
+    padding: 55px 65px 0;
+  }
+  .cover-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .cover-logo .bolt {
+    width: 36px;
+    height: 36px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .cover-logo .name {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .cover-logo .name span {
+    color: var(--td-green);
+  }
+  .cover-meta {
+    font-size: 9px;
+    color: #8A9A8A;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .cover-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 12px;
+  }
+  .cover-conf {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+
+  .agent-badge {
+    background: rgba(84,184,72,0.15);
+    border: 1px solid rgba(84,184,72,0.3);
+    border-radius: 6px;
+    padding: 8px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .agent-badge .dot {
+    width: 10px;
+    height: 10px;
+    background: var(--td-green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--td-green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .agent-badge .label {
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .cover-content {
+    padding: 0 65px;
+    flex: 1;
+  }
+  .cover-title {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .cover-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .cover-desc {
+    font-size: 14px;
+    color: #B0C0B0;
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 45px;
+  }
+
+  .kpi-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 50px;
+  }
+  .kpi-box {
+    background: rgba(10,90,58,0.6);
+    border: 1px solid rgba(197,165,90,0.15);
+    border-radius: 8px;
+    padding: 18px 14px 14px;
+    flex: 1;
+    text-align: center;
+  }
+  .kpi-box .val {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1.1;
+  }
+  .kpi-box .lbl {
+    font-size: 7.5px;
+    color: #8A9A8A;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  /* ── PROFILE CARD ───────────────────────── */
+  .profile-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+    margin: 0 65px 55px;
+  }
+  .profile-card .photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+  .profile-card .info h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 2px;
+  }
+  .profile-card .info .role {
+    font-size: 11px;
+    color: var(--light-text);
+    margin-bottom: 2px;
+  }
+  .profile-card .info .email {
+    font-size: 11px;
+    color: var(--light-text);
+    margin-bottom: 6px;
+  }
+  .profile-card .info .tagline {
+    font-size: 11px;
+    color: var(--gold);
+    font-style: italic;
+    font-family: var(--serif);
+    font-weight: 600;
+  }
+  .cover-footer {
+    text-align: center;
+    padding: 0 0 35px;
+    font-size: 9px;
+    color: #6A7A6A;
+    letter-spacing: 1px;
+  }
+
+  /* ── SECTION STYLING ────────────────────── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-num {
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--dark-green);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .section-rule {
+    width: 80px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+  .body-text {
+    font-size: 12.5px;
+    color: var(--mid-text);
+    line-height: 1.75;
+    margin-bottom: 16px;
+    max-width: 580px;
+  }
+
+  /* ── TABLE OF CONTENTS ──────────────────── */
+  .toc-list {
+    list-style: none;
+    margin-top: 24px;
+  }
+  .toc-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-list .num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 600;
+    min-width: 28px;
+  }
+  .toc-list .title {
+    font-size: 13px;
+    color: var(--dark-text);
+    font-weight: 500;
+  }
+
+  /* ── KPI INLINE BOXES ───────────────────── */
+  .kpi-inline-row {
+    display: flex;
+    gap: 14px;
+    margin: 28px 0;
+    flex-wrap: wrap;
+  }
+  .kpi-inline {
+    background: var(--light-gold);
+    border-radius: 8px;
+    padding: 16px 18px 12px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+  .kpi-inline .val {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark-green);
+  }
+  .kpi-inline .lbl {
+    font-size: 8px;
+    color: var(--light-text);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* ── PROBLEM ITEMS ──────────────────────── */
+  .problem-item {
+    margin-bottom: 20px;
+    padding-left: 18px;
+    border-left: 3px solid var(--gold);
+  }
+  .problem-item h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 4px;
+  }
+  .problem-item p {
+    font-size: 11.5px;
+    color: var(--mid-text);
+    line-height: 1.65;
+  }
+
+  /* ── TWO COLUMN ─────────────────────────── */
+  .two-col {
+    display: flex;
+    gap: 40px;
+    margin: 20px 0;
+  }
+  .two-col .col { flex: 1; }
+  .two-col h4 {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 12px;
+  }
+  .task-list {
+    list-style: none;
+  }
+  .task-list li {
+    font-size: 11.5px;
+    color: var(--mid-text);
+    padding: 5px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .task-list li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .banner {
+    background: var(--dark-green);
+    color: var(--gold);
+    padding: 14px 24px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 28px;
+  }
+
+  /* ── COMPARISON TABLE ───────────────────── */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 11px;
+  }
+  .comp-table thead th {
+    background: var(--dark-green);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .comp-table thead th:first-child { border-radius: 6px 0 0 0; }
+  .comp-table thead th:last-child { border-radius: 0 6px 0 0; }
+  .comp-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .comp-table tbody td .sub {
+    display: block;
+    font-size: 10px;
+    color: var(--light-text);
+    margin-top: 2px;
+  }
+  .comp-table tbody tr.highlight {
+    background: var(--light-gold);
+  }
+  .comp-table tbody tr.highlight td {
+    font-weight: 600;
+    color: var(--dark-green);
+  }
+
+  /* ── PLAN TABLE ─────────────────────────── */
+  .plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 11px;
+  }
+  .plan-table thead th {
+    background: var(--dark-green);
+    color: #fff;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 8.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .plan-table tbody td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .plan-table tbody tr.hl {
+    background: var(--light-gold);
+    font-weight: 600;
+  }
+
+  /* ── WORKFLOW STEPS ─────────────────────── */
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 22px;
+    align-items: flex-start;
+  }
+  .step-num {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 36px;
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .step-body h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark-green);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+  .step-body p {
+    font-size: 11px;
+    color: var(--mid-text);
+    line-height: 1.6;
+  }
+
+  /* ── INTENT CARDS ───────────────────────── */
+  .intent-row {
+    display: flex;
+    gap: 10px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .intent-card {
+    background: var(--light-gold);
+    border-radius: 8px;
+    padding: 14px;
+    flex: 1;
+    min-width: 100px;
+  }
+  .intent-card h5 {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--dark-green);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .intent-card p {
+    font-size: 10px;
+    color: var(--mid-text);
+    line-height: 1.5;
+  }
+
+  /* ── EMAIL CARD ─────────────────────────── */
+  .email-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin: 20px 0;
+    box-shadow: var(--card-shadow);
+  }
+  .email-meta {
+    font-size: 10.5px;
+    color: var(--light-text);
+    margin-bottom: 4px;
+  }
+  .email-meta strong {
+    color: var(--mid-text);
+    font-weight: 500;
+  }
+  .email-meta .var {
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 10px;
+  }
+  .email-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 0;
+  }
+  .email-body {
+    font-size: 11.5px;
+    color: var(--mid-text);
+    line-height: 1.75;
+    white-space: pre-line;
+  }
+  .email-body .sig {
+    margin-top: 10px;
+    font-weight: 600;
+    color: var(--dark-text);
+  }
+
+  /* ── DELIVERY TIMELINE ──────────────────── */
+  .timeline-item {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 22px;
+    position: relative;
+    padding-left: 12px;
+  }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: -22px;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--gold), var(--border));
+    border-radius: 2px;
+  }
+  .timeline-item:last-child::before { bottom: 0; }
+  .day-label {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 65px;
+  }
+  .day-content h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 3px;
+  }
+  .day-content p {
+    font-size: 11px;
+    color: var(--mid-text);
+    line-height: 1.65;
+  }
+
+  /* ── OVERHEAD TABLE ─────────────────────── */
+  .overhead-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11.5px;
+  }
+  .overhead-row.total {
+    font-weight: 700;
+    color: var(--dark-green);
+    border-bottom: 2px solid var(--gold);
+  }
+  .overhead-row .item { flex: 2; color: var(--mid-text); }
+  .overhead-row .cost { flex: 1; font-weight: 600; color: var(--dark-text); text-align: right; }
+  .overhead-row .note { flex: 2; font-size: 10px; color: var(--light-text); text-align: right; }
+
+  /* ── SCENARIO CARDS ─────────────────────── */
+  .scenario {
+    background: var(--light-gold);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+  .scenario.base {
+    background: var(--dark-green);
+    color: #fff;
+  }
+  .scenario h4 {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .scenario.base h4 { color: var(--gold); }
+  .scenario .metrics {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  .scenario.base .metrics { color: #B0C0B0; }
+  .scenario .note {
+    font-size: 10px;
+    font-style: italic;
+    color: var(--light-text);
+  }
+  .scenario.base .note { color: #8A9A8A; }
+
+  /* ── STACK ITEMS ────────────────────────── */
+  .stack-item {
+    margin-bottom: 16px;
+    padding-left: 16px;
+    border-left: 3px solid var(--gold);
+  }
+  .stack-item h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 2px;
+  }
+  .stack-item p {
+    font-size: 11px;
+    color: var(--mid-text);
+    line-height: 1.6;
+  }
+
+  /* ── LEGAL ITEMS ────────────────────────── */
+  .legal-item {
+    margin-bottom: 18px;
+  }
+  .legal-item h4 {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 4px;
+  }
+  .legal-item p {
+    font-size: 11.5px;
+    color: var(--mid-text);
+    line-height: 1.65;
+  }
+
+  /* ── PHASE ITEMS ────────────────────────── */
+  .phase {
+    margin-bottom: 24px;
+    padding: 18px 22px;
+    background: var(--light-gold);
+    border-radius: 8px;
+    border-left: 4px solid var(--gold);
+  }
+  .phase .label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .phase .timeline {
+    font-size: 10px;
+    color: var(--light-text);
+    margin-bottom: 4px;
+  }
+  .phase h4 {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 6px;
+  }
+  .phase p {
+    font-size: 11px;
+    color: var(--mid-text);
+    line-height: 1.65;
+  }
+
+  /* ── PRICING CARDS ──────────────────────── */
+  .pricing-row {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .pricing-card {
+    flex: 1;
+    border-radius: 10px;
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .pricing-card.standard { background: var(--light-gold); }
+  .pricing-card.featured { background: var(--dark-green); color: #fff; }
+  .pricing-card .badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--dark-green);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 10px;
+  }
+  .pricing-card .tier {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .pricing-card.standard .tier { color: var(--dark-green); }
+  .pricing-card.featured .tier { color: var(--gold); }
+  .pricing-card .price {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pricing-card.featured .price { color: #fff; }
+  .pricing-card .sub {
+    font-size: 10px;
+    color: var(--light-text);
+    margin-bottom: 14px;
+  }
+  .pricing-card.featured .sub { color: #8A9A8A; }
+  .pricing-card .features {
+    list-style: none;
+    text-align: left;
+  }
+  .pricing-card .features li {
+    font-size: 10.5px;
+    padding: 4px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .pricing-card .features li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .pricing-card.featured .features li { color: #ddd; }
+
+  /* ── APPENDIX GRID ──────────────────────── */
+  .appendix-grid {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+  }
+  .appendix-col { flex: 1; }
+  .appendix-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-row .k { color: var(--mid-text); }
+  .spec-row .v { font-weight: 600; color: var(--dark-text); }
+
+  /* ── BACK COVER ─────────────────────────── */
+  .back-cover {
+    background: var(--dark-green);
+    min-height: 11in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 18px;
+  }
+  .back-logo {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .back-logo span { color: var(--td-green); }
+  .back-sub {
+    font-size: 12px;
+    color: #8A9A8A;
+    letter-spacing: 1px;
+  }
+  .back-link {
+    font-size: 11px;
+    color: #B0C0B0;
+  }
+  .back-rule {
+    width: 200px;
+    height: 1px;
+    background: var(--gold);
+    margin: 8px 0;
+  }
+  .back-plan-label {
+    font-size: 9px;
+    color: #6A7A6A;
+    letter-spacing: 1.5px;
+  }
+  .back-cover .profile-card {
+    margin: 30px 0 0;
+    max-width: 420px;
+  }
+
+  /* ── KEYWORDS ───────────────────────────── */
+  .keywords {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--light-text);
+    line-height: 2;
+    margin-top: 16px;
+    word-spacing: 6px;
+  }
+
+  /* ── INSIGHT BOX ────────────────────────── */
+  .insight {
+    background: var(--light-gold);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 11px;
+    color: var(--mid-text);
+    line-height: 1.65;
+  }
+
+  /* ── FOOTER ─────────────────────────────── */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 65px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8px;
+    color: var(--light-text);
+    border-top: 1px solid var(--border);
+    background: var(--warm-bg);
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- COVER PAGE                                  -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-top">
+    <div class="cover-logo">
+      <div class="bolt">⚡</div>
+      <div class="name">LeadForge <span>AI</span></div>
+    </div>
+    <div class="cover-meta">Automated Web Lead Generation &nbsp;·&nbsp; Neil Mitchell &nbsp;·&nbsp; 2026</div>
+    <div class="cover-divider"></div>
+    <div class="cover-conf">Confidential Business Plan &nbsp;·&nbsp; 2026</div>
+    <div class="agent-badge">
+      <div class="dot"></div>
+      <div class="label">Agent Active &nbsp;·&nbsp; Weekdays 6:00–6:15 AM</div>
+    </div>
+  </div>
+
+  <div class="cover-content">
+    <h1 class="cover-title">Autonomous outbound lead generation, <em>powered by Claude.</em></h1>
+    <p class="cover-desc">A Claude AI agent runs every weekday morning for 15 minutes — finding businesses without websites, sending cold outreach, handling replies, and booking calls. Fully costed, including Claude Max 20x overhead. $650 per site, 3–5 day delivery.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-box"><div class="val">15</div><div class="lbl">Minutes / Day</div></div>
+      <div class="kpi-box"><div class="val">$650</div><div class="lbl">Per Site Built</div></div>
+      <div class="kpi-box"><div class="val">~$438</div><div class="lbl">Net Margin / Site</div></div>
+      <div class="kpi-box"><div class="val">$200</div><div class="lbl">Claude Max / Mo</div></div>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <img class="photo" src="data:image/jpeg;base64,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" alt="Neil Mitchell">
+    <div class="info">
+      <h3>Neil Mitchell</h3>
+      <div class="role">President &amp; CEO &nbsp;·&nbsp; CTO</div>
+      <div class="email">LeadForge AI &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5e303b37321e323b3f3a38312c393b733f37703d3f">[email&#160;protected]</a></div>
+      <div class="tagline">Real solutions, scalable results — at a fraction of the cost.</div>
+    </div>
+  </div>
+
+  <div class="cover-footer">neil-mitchell.vercel.app &nbsp;·&nbsp; 506-639-9083 &nbsp;·&nbsp; Saint John, New Brunswick</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS                           -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar">
+    <div class="brand">LEADFORGE AI</div>
+    <div class="subtitle">CONFIDENTIAL BUSINESS PLAN &nbsp;·&nbsp; 2026</div>
+  </div>
+  <div class="page-inner">
+    <div class="section-tag" style="margin-bottom: 14px;">TABLE OF CONTENTS</div>
+    <div class="section-title">Contents</div>
+    <div class="section-rule"></div>
+    <ul class="toc-list">
+      <li><span class="num">01</span><span class="title">Executive Summary</span></li>
+      <li><span class="num">02</span><span class="title">Problem</span></li>
+      <li><span class="num">03</span><span class="title">Solution</span></li>
+      <li><span class="num">04</span><span class="title">Market Opportunity — Saint John &amp; New Brunswick</span></li>
+      <li><span class="num">05</span><span class="title">Competitive Landscape &amp; Pricing Analysis</span></li>
+      <li><span class="num">06</span><span class="title">Overhead &amp; Rate Limits</span></li>
+      <li><span class="num">07</span><span class="title">Agent Workflow</span></li>
+      <li><span class="num">08</span><span class="title">Cold Email Template</span></li>
+      <li><span class="num">09</span><span class="title">Reply Automation Logic</span></li>
+      <li><span class="num">10</span><span class="title">Delivery Process</span></li>
+      <li><span class="num">11</span><span class="title">Financial Model (Fully Costed)</span></li>
+      <li><span class="num">12</span><span class="title">Automation Architecture &amp; Tech Stack</span></li>
+      <li><span class="num">13</span><span class="title">Legal &amp; Ownership Model</span></li>
+      <li><span class="num">14</span><span class="title">Growth &amp; Scaling Strategy</span></li>
+      <li><span class="num">15</span><span class="title">Pricing Structure &amp; Appendix</span></li>
+      <li><span class="num">16</span><span class="title">Marketing &amp; Lead Acquisition Strategy</span></li>
+      <li><span class="num">17</span><span class="title">Acquisition Cost &amp; Updated Financials</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 01 — EXECUTIVE SUMMARY                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">01 &nbsp;·&nbsp; EXECUTIVE SUMMARY</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">01</div><div class="section-tag">Executive Summary</div></div>
+    <div class="section-title">The opportunity, fully costed.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">LeadForge AI is a one-person micro-agency powered by a Claude agent that executes a complete outbound sales cycle every weekday morning in under 15 minutes. The agent finds businesses without websites, sends personalised cold outreach, handles replies, and routes qualified leads to Neil Mitchell — who delivers a professional React / Next.js site in 3–5 days for a flat $650.</p>
+    <p class="body-text">The model has real overhead: the Claude Max 20x plan at $200/month is the operational backbone, covering both the daily agent runtime and Claude Code for the site builds. At 3 sites/month, total monthly overhead runs approximately $212, leaving a net cash profit of ~$1,738 — an 89% margin. That margin improves with scale, since the $200 Claude plan is a fixed ceiling regardless of build volume.</p>
+    <p class="body-text">The primary market is the Greater Saint John region in New Brunswick, where approximately 3,000 active businesses operate — many of them micro-enterprises with fewer than five employees and no meaningful web presence. With an estimated 35% of Canadian small businesses lacking an effective website, the local serviceable market exceeds 800 businesses within driving distance.</p>
+    <div class="kpi-inline-row">
+      <div class="kpi-inline"><div class="val">~89%</div><div class="lbl">Net Margin (3 Sites/Mo)</div></div>
+      <div class="kpi-inline"><div class="val">$212</div><div class="lbl">Total Monthly Overhead</div></div>
+      <div class="kpi-inline"><div class="val">$200</div><div class="lbl">Claude Max 20x / Mo</div></div>
+      <div class="kpi-inline"><div class="val">Fixed</div><div class="lbl">Cost Doesn't Scale</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 02 — PROBLEM                                -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">02 &nbsp;·&nbsp; PROBLEM</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">02</div><div class="section-tag">Problem</div></div>
+    <div class="section-title">Millions of local businesses are invisible online.</div>
+    <div class="section-rule"></div>
+    <div class="problem-item"><h4>No Website at All</h4><p>Millions of Canadian small businesses rely on word-of-mouth and a bare Google Business profile with no link to click. In Saint John alone, hundreds of service-based businesses operate without any web presence.</p></div>
+    <div class="problem-item"><h4>Facebook-Only Presence</h4><p>A Facebook page is not a website. These businesses are invisible to search engines and cannot run SEO campaigns. This is especially prevalent among restaurants, salons, and trades in the Saint John region.</p></div>
+    <div class="problem-item"><h4>Broken or Outdated Sites</h4><p>Many businesses list a site that returns 404s, loads broken images, or was built in 2009 — actively hurting credibility with potential customers.</p></div>
+    <div class="problem-item"><h4>Instagram Only</h4><p>Social-only businesses have no owned platform, no Google indexability, and are one algorithm change from invisibility.</p></div>
+    <div class="problem-item"><h4>Agencies Are Inaccessible</h4><p>Traditional agencies charge $3,000–$15,000 for a basic site. Canadian freelancers average $2,000–$5,000. The market is massively underserved at the entry level — especially in Atlantic Canada where local supply is thin.</p></div>
+    <div class="problem-item"><h4>No One Is Asking Them</h4><p>These businesses have accepted their digital invisibility. The solution must find them — proactively, every weekday morning.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 03 — SOLUTION                               -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">03 &nbsp;·&nbsp; SOLUTION</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">03</div><div class="section-tag">Solution</div></div>
+    <div class="section-title">Automate the entire top of funnel.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">A Claude agent handles every step from discovery to booking. Neil only builds. One subscription covers both the agent runtime and the build tool.</p>
+    <div class="two-col">
+      <div class="col">
+        <h4>What the Agent Does</h4>
+        <ul class="task-list">
+          <li>Searches Google Maps by category &amp; region</li>
+          <li>Detects missing or broken websites</li>
+          <li>Extracts business name, email, phone, city</li>
+          <li>Sends personalised cold outreach emails</li>
+          <li>Reads and classifies replies</li>
+          <li>Generates rough HTML mockups on request</li>
+          <li>Books a call and routes to Neil</li>
+          <li>Logs everything to a JSON lead database</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>What Neil Does</h4>
+        <ul class="task-list">
+          <li>Takes the 15–20 min discovery call</li>
+          <li>Builds the site using Claude Code</li>
+          <li>Deploys to Vercel</li>
+          <li>Collects payment and transfers ownership</li>
+          <li>Handles post-launch updates at $75/hr</li>
+        </ul>
+      </div>
+    </div>
+    <div class="banner">SINGLE SUBSCRIPTION COVERS BOTH &nbsp;·&nbsp; Agent runtime + Claude Code builds = Claude Max 20x &nbsp;·&nbsp; $200/mo</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 04 — MARKET OPPORTUNITY                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">04 &nbsp;·&nbsp; MARKET OPPORTUNITY</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">04</div><div class="section-tag">Market Opportunity</div></div>
+    <div class="section-title">Saint John &amp; New Brunswick: A massive, untapped local market.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">Canada has over 1.2 million small businesses, with 98.1% classified as small. New Brunswick had approximately 17,300 active businesses as of late 2025, and the Saint John region accounts for just under 3,000 of those. The city's population of 130,000 supports a concentrated market of service-based micro-enterprises — restaurants, salons, trades, professional services — many of which operate without any web presence.</p>
+    <p class="body-text">Nationally, an estimated 27–35% of small businesses still don't have a website. For micro-businesses with fewer than five employees, that figure rises to nearly 60%. In Atlantic Canada, digital adoption lags behind Ontario, BC, and Alberta, creating an even wider gap. The CFIB's September 2025 survey found that nine in ten businesses that do maintain a website use it primarily for information rather than sales — meaning even those with websites often have basic, outdated, or ineffective ones.</p>
+    <p class="body-text">The competitive landscape for web design in New Brunswick is thin. Clutch lists only a handful of web design firms in the province, most charging $10,000+ for basic projects. Local freelancer supply is minimal. One regional competitor advertises sites starting at $380 with government ABF grant subsidies — confirming there are buyers at this price point, but supply is severely constrained.</p>
+    <div class="kpi-inline-row">
+      <div class="kpi-inline"><div class="val">~3,000</div><div class="lbl">Active Businesses in SJ</div></div>
+      <div class="kpi-inline"><div class="val">~35%</div><div class="lbl">No Effective Web Presence</div></div>
+      <div class="kpi-inline"><div class="val">~1,000</div><div class="lbl">Serviceable Local Leads</div></div>
+    </div>
+    <div class="insight"><strong>Expansion Radius:</strong> Phase 1 targets Greater Saint John (E2J–E2S). Phase 2 extends to the Fundy corridor: St. Stephen, Sussex, Hampton, and the Kingston Peninsula. Phase 3 reaches Fredericton, Moncton, and province-wide. At 17,300 active NB businesses with a 35% no-website rate, the provincial serviceable market exceeds 6,000 leads.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 05 — COMPETITIVE LANDSCAPE                  -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">05 &nbsp;·&nbsp; COMPETITIVE LANDSCAPE</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">05</div><div class="section-tag">Competitive Landscape &amp; Pricing</div></div>
+    <div class="section-title">Where $650 sits in the market.</div>
+    <div class="section-rule"></div>
+    <table class="comp-table">
+      <thead><tr><th>Option</th><th>Cost</th><th>Delivery</th><th>Quality</th><th>Ongoing</th></tr></thead>
+      <tbody>
+        <tr><td>DIY (Wix / Squarespace)<span class="sub">Self-service builder</span></td><td>$16–$50/mo<span class="sub">($192–$600/yr)</span></td><td>Self-build<span class="sub">20–40+ hrs</span></td><td>Template-based<span class="sub">No custom code</span></td><td>$16–$50/mo<span class="sub">forever</span></td></tr>
+        <tr><td>Freelancer (Canada)<span class="sub">Independent contractor</span></td><td>$1,500–$8,000<span class="sub">one-time</span></td><td>4–6 weeks<span class="sub">typical</span></td><td>Custom but variable<span class="sub">Often WordPress</span></td><td>$50–$150/hr<span class="sub">if available</span></td></tr>
+        <tr><td>Small Agency (NB)<span class="sub">Regional firm</span></td><td>$7,000–$30,000<span class="sub">one-time</span></td><td>6–12 weeks</td><td>Professional<span class="sub">Process-heavy</span></td><td>$100–$200/hr<span class="sub">retainers</span></td></tr>
+        <tr class="highlight"><td>LeadForge AI<span class="sub">Neil Mitchell</span></td><td>$650<span class="sub">flat rate</span></td><td>3–5 business days</td><td>React / Next.js<span class="sub">Custom build</span></td><td>$75/hr<span class="sub">prorated 10-min</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight">The $650 flat rate is 55–70% cheaper than the floor of Canadian freelancer pricing ($1,500–$8,000) while delivering a superior tech stack (React/Next.js vs. WordPress templates). Delivery in 3–5 days vs. 4–6 weeks eliminates the biggest friction point for time-poor small business owners.</div>
+    <div class="insight">DIY builders (Wix at $17–$50/mo) appear cheap but accumulate $192–$600/year in perpetuity, plus the owner's time investment of 20–40+ hours. At implied $50/hr labour cost, that's $1,000–$2,000 in time alone — making LeadForge AI's $650 one-time fee the better total-cost-of-ownership option within 12 months.</div>
+    <div class="insight">One local NB competitor advertises sites starting at $380 with ABF grant subsidies, confirming active buyers at this price point in your region. Your $650 without grant dependency is cleaner, more sustainable, and delivers a dramatically superior product.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 06 — OVERHEAD & RATE LIMITS                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">06 &nbsp;·&nbsp; OVERHEAD &amp; RATE LIMITS</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">06</div><div class="section-tag">Overhead &amp; Rate Limits</div></div>
+    <div class="section-title">The real cost of running on Claude.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">This model depends on Anthropic's infrastructure at two points: the daily agent runtime and the site build via Claude Code. Both are covered by one plan — but that plan has hard limits that must be factored honestly.</p>
+    <p class="body-text">Claude Max 20x ($200/month) provides an estimated 240–480 hours of Sonnet 4 and 24–40 hours of Opus 4 per week, governed by a 5-hour rolling window and a weekly ceiling (introduced August 2025). Claude Code sessions for full site builds are token-heavy and consume capacity faster than simple chat.</p>
+    <table class="plan-table">
+      <thead><tr><th>Plan</th><th>Cost/Mo</th><th>Sonnet 4/Wk</th><th>Opus 4/Wk</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Pro</td><td>$20</td><td>40–80 hrs</td><td>—</td><td>Will hit limits mid-build</td></tr>
+        <tr><td>Max 5x</td><td>$100</td><td>140–280 hrs</td><td>15–35 hrs</td><td>Viable at 1–2 builds/mo</td></tr>
+        <tr class="hl"><td><strong>Max 20x</strong></td><td><strong>$200</strong></td><td><strong>240–480 hrs</strong></td><td><strong>24–40 hrs</strong></td><td><strong>Recommended headroom</strong></td></tr>
+        <tr><td>API (PAYG)</td><td>Variable</td><td>Unlimited</td><td>Unlimited</td><td>Evaluate at 6+ builds/mo</td></tr>
+      </tbody>
+    </table>
+    <h3 style="font-family:var(--serif);font-size:18px;color:var(--dark-green);margin:24px 0 14px;">Six Mitigation Strategies</h3>
+    <div class="problem-item"><h4>Time Separation</h4><p>Run agent at 6:00 AM. Schedule Claude Code builds at 12:00 PM+ to avoid competing for the same 5-hour rolling window.</p></div>
+    <div class="problem-item"><h4>Model Selection</h4><p>Use Sonnet 4 for agent tasks and most scaffolding. Reserve Opus 4 for complex decisions only.</p></div>
+    <div class="problem-item"><h4>Stagger Builds</h4><p>Don't stack multiple builds on the same day. At 3 sites/month, space builds — one per week maximum.</p></div>
+    <div class="problem-item"><h4>Monitor Logs</h4><p>Check ~/.claude/ session logs regularly. Third-party tools can parse token counts.</p></div>
+    <div class="problem-item"><h4>Overflow Budget</h4><p>Maintain a $30–$50/month API overage buffer. At scale, evaluate migrating the agent to pure API calls.</p></div>
+    <div class="problem-item"><h4>5x as Fallback</h4><p>If volume stays below 2 builds/month in the first 60 days, Max 5x at $100/mo may suffice — saving $100/mo.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 07 — AGENT WORKFLOW                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">07 &nbsp;·&nbsp; AGENT WORKFLOW</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">07</div><div class="section-tag">Agent Workflow</div></div>
+    <div class="section-title">Seven steps. Fifteen minutes.</div>
+    <div class="section-rule"></div>
+    <div class="step"><div class="step-num">01</div><div class="step-body"><h4>Lead Discovery</h4><p>Queries Google Maps using category-based searches across the Saint John region, province, and Canada. Detects businesses with no website, broken URL, or social-only presence.</p></div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-body"><h4>Cold Outreach</h4><p>Crafts and sends a personalised email using the extracted business name and category. Standard template with variable substitution — low token cost per send.</p></div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-body"><h4>Lead Tracking</h4><p>Every outreach event is recorded to a structured JSON lead store. Statuses progress through: Sent › Replied › Interested › Not Interested › Follow Up › Closed Won.</p></div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-body"><h4>Reply Handling</h4><p>Reads inbound replies, classifies intent, and generates a conversational response. Five intent types handled autonomously.</p></div></div>
+    <div class="step"><div class="step-num">05</div><div class="step-body"><h4>Mockup Generation</h4><p>Generates a rough HTML mockup — hero, services, contact — tailored to the business category for interested leads.</p></div></div>
+    <div class="step"><div class="step-num">06</div><div class="step-body"><h4>Close Flow</h4><p>Sends closing message routing directly to a phone call: 506-639-9083. Low token cost — short and direct.</p></div></div>
+    <div class="step"><div class="step-num">07</div><div class="step-body"><h4>Terms Explanation</h4><p>Communicates ownership, delivery, and pricing clearly. React/Next.js build, Vercel deployment, code transfer on payment.</p></div></div>
+    <div class="keywords">restaurants &nbsp; plumber &nbsp; roofing &nbsp; auto detailing &nbsp; salon &nbsp; dentist &nbsp; landscaping &nbsp; gym &nbsp; construction &nbsp; electrician &nbsp; flooring &nbsp; painting &nbsp; hvac &nbsp; moving company &nbsp; pet grooming &nbsp; physiotherapy &nbsp; massage &nbsp; childcare &nbsp; bakery &nbsp; alterations &nbsp; fence company &nbsp; snow removal &nbsp; cleaning service &nbsp; tutoring &nbsp; yoga studio &nbsp; mechanic &nbsp; martial arts &nbsp; optometrist &nbsp; accounting &nbsp; photography</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 08 — COLD EMAIL TEMPLATE                    -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">08 &nbsp;·&nbsp; COLD EMAIL TEMPLATE</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">08</div><div class="section-tag">Cold Email Template</div></div>
+    <div class="section-title">The email that starts the conversation.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">Personalised, direct, low-friction. The goal is a reply — not a hard sell. Every double-brace field is dynamically populated by the agent.</p>
+    <div class="email-card">
+      <div class="email-meta"><strong>From</strong> &nbsp; Neil Mitchell &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="18767d717458747d797c7e776a7f7d357971367b79">[email&#160;protected]</a>&gt;</div>
+      <div class="email-meta"><strong>To</strong> &nbsp; <span class="var">{{BusinessEmail}}</span></div>
+      <div class="email-meta"><strong>Subject</strong> &nbsp; Quick website for <span class="var">{{BusinessName}}</span> in 3–5 days</div>
+      <div class="email-divider"></div>
+      <div class="email-body">Hello <span class="var">{{BusinessName}}</span>,
+
+I came across your business and noticed you currently don't have a website (or it appears outdated).
+
+I specialise in designing modern, scalable, and aesthetically pleasing websites for local businesses. I have over 10 years of experience and can deliver a fully deployed professional website within 3–5 business days.
+
+You can view my own professional site here: neil-mitchell.vercel.app
+
+I offer:
+  · Flat rate: $650 per site
+  · Delivered in 3–5 business days
+  · Fully deployed production site
+  · Modern responsive design
+  · SEO-friendly structure
+
+After launch:
+  · $75/hour for updates
+  · No minimum time
+  · Prorated to 10-minute intervals
+
+If you'd like, I can even send a quick mockup tailored to your business.
+
+Let me know!
+
+<span class="sig">Neil Mitchell
+President &amp; CEO · CTO
+LeadForge AI &nbsp;·&nbsp; neil-mitchell.vercel.app &nbsp;·&nbsp; 506-639-9083</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 09 — REPLY AUTOMATION                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">09 &nbsp;·&nbsp; REPLY AUTOMATION</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">09</div><div class="section-tag">Reply Automation Logic</div></div>
+    <div class="section-title">Every reply gets a real response.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">The agent classifies inbound replies into five intent buckets and generates a contextually appropriate conversational response — all within the 15-minute runtime window.</p>
+    <div class="intent-row">
+      <div class="intent-card"><h5>Interested</h5><p>Celebrates, asks about the business, offers a rough mockup within minutes.</p></div>
+      <div class="intent-card"><h5>Question</h5><p>Answers directly. Process, hosting, or timeline questions handled conversationally.</p></div>
+      <div class="intent-card"><h5>Price Objection</h5><p>Acknowledges, reinforces value vs. agency pricing ($3–15K), offers a quick call.</p></div>
+      <div class="intent-card"><h5>Unsure</h5><p>Offers a free mockup concept to remove risk and create a tangible next step.</p></div>
+      <div class="intent-card"><h5>Not Interested</h5><p>Replies graciously. Updates lead status to "Not Interested" in the database.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 10 — DELIVERY PROCESS                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">10 &nbsp;·&nbsp; DELIVERY PROCESS</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">10</div><div class="section-tag">Delivery Process</div></div>
+    <div class="section-title">Discovery call to live site in five days.</div>
+    <div class="section-rule"></div>
+    <div class="timeline-item"><div class="day-label">Day 0</div><div class="day-content"><h4>Discovery Call · 15–20 minutes</h4><p>Client calls 506-639-9083. Discuss business goals, design preferences, required pages, branding assets, and domain situation. Conversational, no lengthy brief.</p></div></div>
+    <div class="timeline-item"><div class="day-label">Day 1–2</div><div class="day-content"><h4>Build · Claude Code scaffolds the site</h4><p>Claude Code scaffolds the Next.js project, generates page components, styles with Tailwind. Scheduled in the afternoon (12 PM+) to avoid competing with the morning agent's rolling window. Typical build: 4–6 hours. Deploy preview URL to Vercel on completion.</p></div></div>
+    <div class="timeline-item"><div class="day-label">Day 3</div><div class="day-content"><h4>Review · Client feedback round</h4><p>Share the Vercel preview link. Collect feedback via email or call. One revision round included. Additional changes billed at $75/hr after that.</p></div></div>
+    <div class="timeline-item"><div class="day-label">Day 4</div><div class="day-content"><h4>Revisions · Claude Code applies changes</h4><p>Implement feedback. Confirm mobile responsiveness, final copy, contact form function. Send for final approval.</p></div></div>
+    <div class="timeline-item"><div class="day-label">Day 5</div><div class="day-content"><h4>Launch · Payment › Domain › Transfer</h4><p>Client pays $650. Domain connected. Site goes live. GitHub repo and Vercel project transferred post-payment. Hosting managed by Neil or handed to client.</p></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 11 — FINANCIAL MODEL                        -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">11 &nbsp;·&nbsp; FINANCIAL MODEL</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">11</div><div class="section-tag">Financial Model (Fully Costed)</div></div>
+    <div class="section-title">Real margins. Real overhead.</div>
+    <div class="section-rule"></div>
+    <h3 style="font-family:var(--serif);font-size:16px;color:var(--dark-green);margin-bottom:14px;">Monthly Fixed Overhead</h3>
+    <div class="overhead-row"><div class="item">Claude Max 20x Plan</div><div class="cost">$200.00</div><div class="note">Agent runtime + Claude Code builds</div></div>
+    <div class="overhead-row"><div class="item">Email sending (Resend free tier)</div><div class="cost">$0</div><div class="note">Free tier covers ~3,000 sends/month</div></div>
+    <div class="overhead-row"><div class="item">Vercel hosting (builder account)</div><div class="cost">$0</div><div class="note">Free tier covers hobby projects</div></div>
+    <div class="overhead-row"><div class="item">Domain — neilmitchell.ca</div><div class="cost">~$1.50</div><div class="note">Amortised monthly (~$18/yr)</div></div>
+    <div class="overhead-row"><div class="item">Cron scheduler (GitHub Actions)</div><div class="cost">$0</div><div class="note">Free tier 2,000 min/month</div></div>
+    <div class="overhead-row"><div class="item">JSON lead store</div><div class="cost">$0</div><div class="note">No database hosting required</div></div>
+    <div class="overhead-row total"><div class="item">Total Fixed Monthly Overhead</div><div class="cost">~$201.50</div><div class="note">Hard floor regardless of build count</div></div>
+
+    <h3 style="font-family:var(--serif);font-size:16px;color:var(--dark-green);margin:28px 0 14px;">Three Scenarios</h3>
+    <div class="scenario"><h4>Conservative — 1 site/month</h4><div class="metrics">$650 revenue &nbsp;|&nbsp; $438.50 net profit &nbsp;|&nbsp; ~67% margin</div><div class="note">Covers costs but momentum is the goal.</div></div>
+    <div class="scenario base"><h4>Base Case — 3 sites/month ★</h4><div class="metrics">$1,950 revenue &nbsp;|&nbsp; $1,738.50 net profit &nbsp;|&nbsp; ~89% margin</div><div class="note">Claude plan amortised to ~$71/build.</div></div>
+    <div class="scenario"><h4>Growth — 6 sites/month</h4><div class="metrics">$3,900 revenue &nbsp;|&nbsp; $3,638.50 net profit &nbsp;|&nbsp; ~93% margin</div><div class="note">Claude cost now ~$35/build. Evaluate API migration.</div></div>
+
+    <div class="insight" style="margin-top:20px;"><strong>Break-even:</strong> ~0.31 sites/month. One sale every ~10 weeks covers all costs. Builder time: 6 hrs/site × 3 sites/mo = 18 hrs/month. At implied $50/hr, this is $10,800/year in labour — making effective annual earnings ~$12,804 net of time cost at base case. Recurring update revenue compounds as client base grows.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 12 — TECH STACK                             -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">12 &nbsp;·&nbsp; TECH STACK</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">12</div><div class="section-tag">Automation Architecture</div></div>
+    <div class="section-title">Every layer purpose-built.</div>
+    <div class="section-rule"></div>
+    <div class="stack-item"><h4>Claude Agent + Claude Code (Anthropic)</h4><p>The entire operational backbone. Handles daily agent workflow and full site builds — all under the single Max 20x subscription at $200/month.</p></div>
+    <div class="stack-item"><h4>Google Maps API / Scrape</h4><p>Lead discovery layer. Queries Maps by category and geography, detecting absent or broken website links in business listings.</p></div>
+    <div class="stack-item"><h4>Email Automation (Resend)</h4><p>Free-tier outbound email. The agent sends, logs, and reads replies within its runtime window.</p></div>
+    <div class="stack-item"><h4>JSON Lead Database (SQLite / flat file)</h4><p>Tracks all leads with status, timestamps, contact data, and conversation history. No hosting cost.</p></div>
+    <div class="stack-item"><h4>HTML Mockup Generator (Claude)</h4><p>Claude generates rough landing page concepts in HTML — category-aware, with hero, services, and contact sections.</p></div>
+    <div class="stack-item"><h4>React / Next.js (via Claude Code)</h4><p>All client deliverables built using Claude Code with Next.js App Router and Tailwind CSS. Accelerates builds to 4–6 hours per site.</p></div>
+    <div class="stack-item"><h4>Vercel</h4><p>One-click deployment for every client site. Free tier handles CDN, SSL, and CI/CD. Projects transfer to client post-payment.</p></div>
+    <div class="stack-item"><h4>Scheduled Execution (GitHub Actions)</h4><p>Cron trigger fires Mon–Fri at 6:00 AM with a hard 15-minute timeout. Free tier covers ~2,000 min/month; agent uses ~300.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 13 — LEGAL & OWNERSHIP                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">13 &nbsp;·&nbsp; LEGAL &amp; OWNERSHIP</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">13</div><div class="section-tag">Legal &amp; Ownership Model</div></div>
+    <div class="section-title">Clear terms. No grey areas.</div>
+    <div class="section-rule"></div>
+    <div class="legal-item"><h4>1. Code Ownership Until Payment</h4><p>LeadForge AI retains full ownership of the codebase until $650 is received. The client gets a Vercel preview during review but no code transfer until payment clears.</p></div>
+    <div class="legal-item"><h4>2. Domain Purchased by Client</h4><p>The client purchases their own domain. Neil assists with DNS configuration at no extra charge as part of the launch process.</p></div>
+    <div class="legal-item"><h4>3. Site Transfer After Payment</h4><p>On payment confirmation, Neil transfers the Vercel project, GitHub repo, and all assets. The client controls their deployment and hosting thereafter.</p></div>
+    <div class="legal-item"><h4>4. Hosting Handled by Neil or Client</h4><p>Client may retain Neil's Vercel account or transfer to their own. Vercel's free tier covers all small business traffic needs.</p></div>
+    <div class="legal-item"><h4>5. CASL Compliance (Cold Email — Canada)</h4><p>All cold outreach complies with Canada's Anti-Spam Legislation. Each email includes sender identification, a business address, and an opt-out mechanism. B2B prospecting to business email addresses falls under CASL's business card exemption when handled correctly.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 14 — GROWTH & SCALING                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">14 &nbsp;·&nbsp; GROWTH &amp; SCALING</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">14</div><div class="section-tag">Growth &amp; Scaling Strategy</div></div>
+    <div class="section-title">Start lean. Scale deliberately.</div>
+    <div class="section-rule"></div>
+    <div class="phase"><div class="label">Phase 1</div><div class="timeline">Month 1–3</div><h4>Foundation — Prove the model at Max 5x</h4><p>Start with Max 5x ($100/mo) if volume stays at 1–2 builds/month. Target Greater Saint John (E2J–E2S postal codes). Close the first 5 sites, collect testimonials. Monitor Claude Code token consumption carefully. Upgrade to Max 20x ($200/mo) when builds exceed 2/month.</p></div>
+    <div class="phase"><div class="label">Phase 2</div><div class="timeline">Month 4–6</div><h4>Expansion — Wider geography and follow-up sequences</h4><p>Extend agent searches across New Brunswick: Fredericton, Moncton, Sussex, St. Stephen. Test Day 3 and Day 7 follow-up sequences. Add a Calendly link to reduce call-booking friction. At 3+ builds/month, the $200 plan is fully justified at ~$71/build overhead.</p></div>
+    <div class="phase"><div class="label">Phase 3</div><div class="timeline">Month 7–12</div><h4>Leverage — Recurring update revenue compounds</h4><p>With 20–30 deployed sites, focus on ongoing update revenue. Offer optional monthly care plans ($99/month for up to 2 hours of updates). The agent continues generating new leads while existing clients provide compounding income.</p></div>
+    <div class="phase"><div class="label">Phase 4</div><div class="timeline">Year 2+</div><h4>Scale — API migration and outsourced builds</h4><p>At 6+ builds/month, migrate the agent to direct Anthropic API billing (pay-per-token). Hire a contract builder for overflow. Raise the site build price to $850 as the portfolio strengthens. Explore licensing the LeadForge AI system to other solo developers.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 15 — PRICING + APPENDIX                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">15 &nbsp;·&nbsp; PRICING &amp; APPENDIX</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">15</div><div class="section-tag">Pricing Structure</div></div>
+    <div class="section-title">Simple. Flat. No surprises.</div>
+    <div class="section-rule"></div>
+    <div class="pricing-row">
+      <div class="pricing-card standard">
+        <div class="tier">Website Build</div>
+        <div class="price">$650</div>
+        <div class="sub">flat rate · one-time</div>
+        <ul class="features">
+          <li>Fully deployed production site</li>
+          <li>Modern responsive design</li>
+          <li>SEO-friendly structure</li>
+          <li>React / Next.js codebase</li>
+          <li>Vercel deployment included</li>
+          <li>3–5 business day delivery</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <div class="badge">Most Common</div>
+        <div class="tier">Build + Support</div>
+        <div class="price">$650 + $75/hr</div>
+        <div class="sub">build + ongoing</div>
+        <ul class="features">
+          <li>Everything in Website Build</li>
+          <li>Post-launch updates at $75/hr</li>
+          <li>Billed to the 10-minute interval</li>
+          <li>No minimum commitment</li>
+          <li>Prorate-fair billing always</li>
+          <li>Priority response for clients</li>
+        </ul>
+      </div>
+      <div class="pricing-card standard">
+        <div class="tier">Hourly Updates</div>
+        <div class="price">$75/hr</div>
+        <div class="sub">post-launch</div>
+        <ul class="features">
+          <li>Content updates</li>
+          <li>New page additions</li>
+          <li>Design adjustments</li>
+          <li>Feature additions</li>
+          <li>Prorated to 10-min intervals</li>
+          <li>No monthly retainer required</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="appendix-grid" style="margin-top:30px;">
+      <div class="appendix-col">
+        <h4>Agent Runtime Spec</h4>
+        <div class="spec-row"><span class="k">Schedule</span><span class="v">Monday–Friday</span></div>
+        <div class="spec-row"><span class="k">Runtime limit</span><span class="v">15 min hard cap</span></div>
+        <div class="spec-row"><span class="k">Trigger</span><span class="v">Cron / GitHub Actions</span></div>
+        <div class="spec-row"><span class="k">Execution</span><span class="v">Fully autonomous</span></div>
+        <div class="spec-row"><span class="k">Model — agent</span><span class="v">Sonnet 4</span></div>
+        <div class="spec-row"><span class="k">Model — builds</span><span class="v">Sonnet 4 / Opus 4</span></div>
+        <div class="spec-row"><span class="k">Human entry</span><span class="v">Post-qual only</span></div>
+      </div>
+      <div class="appendix-col">
+        <h4>Monthly Overhead Summary</h4>
+        <div class="spec-row"><span class="k">Claude Max 20x</span><span class="v">$200.00</span></div>
+        <div class="spec-row"><span class="k">Domain (amortised)</span><span class="v">$1.50</span></div>
+        <div class="spec-row"><span class="k">Email sending</span><span class="v">$0 (free)</span></div>
+        <div class="spec-row"><span class="k">Vercel hosting</span><span class="v">$0 (free)</span></div>
+        <div class="spec-row"><span class="k">Cron scheduler</span><span class="v">$0 (free)</span></div>
+        <div class="spec-row"><span class="k">API overflow</span><span class="v">~$10–$30</span></div>
+        <div class="spec-row"><span class="k"><strong>Total (base)</strong></span><span class="v"><strong>~$211.50</strong></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- BACK COVER                                  -->
+<!-- ═══════════════════════════════════════════ -->
+<!-- 16 — MARKETING & LEAD ACQUISITION -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">16 &middot; MARKETING &amp; LEAD ACQUISITION</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">16</div><div class="section-tag">Marketing &amp; Lead Acquisition</div></div>
+    <div class="section-title">The agent is the floor, not the ceiling.</div>
+    <div class="section-rule"></div>
+    <p class="body-text">Cold email is the automated foundation &#8212; but it's only one channel. A diversified acquisition strategy turns LeadForge AI from a cold outreach experiment into a discoverable, credible business. The agent's runtime should expand from 15 minutes to 60 minutes to accommodate these additional channels.</p>
+
+    <h3 style="font-family:var(--serif);font-size:18px;color:var(--dark-green);margin:20px 0 14px;">Expanded Agent Runtime &#8212; 60 Minutes</h3>
+    <p class="body-text">Increasing the daily agent window from 15 to 60 minutes unlocks four additional capabilities beyond cold email. GitHub Actions free tier still covers this comfortably. The agent runs sequentially: lead discovery and outreach first, then social engagement, then follow-ups.</p>
+
+    <div class="problem-item"><h4>1. Social Lead Mining (15 min/day)</h4><p>The agent scans Facebook Groups, local community boards (Saint John Buy &amp; Sell, NB Small Business Network), and Google Business listings for businesses posting without a website link. It flags these as warm leads &#8212; they're already active online but missing the one piece that would make them findable. The agent auto-drafts a personalised DM or comment for Neil to review and send.</p></div>
+    <div class="problem-item"><h4>2. Follow-Up Sequences (10 min/day)</h4><p>Day 3 and Day 7 automated follow-ups for non-responders. The agent checks the lead database for stale "Sent" statuses, drafts a follow-up with a different angle (mockup offer, social proof, urgency), and sends. Industry benchmarks show follow-ups double response rates from 2&#8211;3% to 5&#8211;7%.</p></div>
+    <div class="problem-item"><h4>3. Portfolio Case Study Generation (10 min/day)</h4><p>After each completed build, the agent auto-generates a short case study: business name, category, before/after, build timeline, and a testimonial request template. These feed directly into the LeadForge AI website and social content pipeline.</p></div>
+    <div class="problem-item"><h4>4. Google Business Profile Audit (10 min/day)</h4><p>The agent identifies businesses with incomplete or low-rated Google Business Profiles and includes a GBP optimisation offer in the outreach &#8212; a natural upsell at $75/hr that demonstrates immediate value before the website conversation even starts.</p></div>
+
+    <h3 style="font-family:var(--serif);font-size:18px;color:var(--dark-green);margin:28px 0 14px;">LeadForge AI Website &#8212; Your Own Storefront</h3>
+    <p class="body-text">The business needs its own site: <strong>leadforge-ai.ca</strong>. Built with the same Next.js stack you're selling, it serves as living proof of your craft.</p>
+    <div class="two-col">
+      <div class="col">
+        <ul class="task-list">
+          <li><strong>Home</strong> &#8212; Hero with value prop, KPIs, CTA</li>
+          <li><strong>Portfolio</strong> &#8212; Before/after gallery of builds</li>
+          <li><strong>Pricing</strong> &#8212; Transparent $650 flat rate</li>
+          <li><strong>Process</strong> &#8212; Visual 5-day timeline</li>
+        </ul>
+      </div>
+      <div class="col">
+        <ul class="task-list">
+          <li><strong>About</strong> &#8212; Your story, 10+ years experience</li>
+          <li><strong>Blog</strong> &#8212; SEO: "website small business Saint John"</li>
+          <li><strong>Contact</strong> &#8212; Calendly embed + phone</li>
+          <li><strong>Testimonials</strong> &#8212; Client quotes and case studies</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight">The website doubles as a live demo. Every prospect who receives a cold email or sees a social post lands on a site built with the exact same tech stack you're offering &#8212; that's your most powerful sales tool.</div>
+
+    <h3 style="font-family:var(--serif);font-size:18px;color:var(--dark-green);margin:28px 0 14px;">Social Media Presence</h3>
+    <div class="problem-item"><h4>Facebook &#8212; Primary Channel</h4><p>Local business owners in Saint John live on Facebook. Join 5&#8211;10 local business groups. Post weekly: before/after site reveals, build timelapses, "Did you know?" stats. Budget: $50&#8211;$100/month boosted posts targeting "small business owner" within 50km.</p></div>
+    <div class="problem-item"><h4>Instagram &#8212; Visual Portfolio</h4><p>Reels showing 30-second build timelapses. Carousel posts with before/after mockups. Tag local businesses. Cross-post from Facebook. Budget: $0 organic.</p></div>
+    <div class="problem-item"><h4>LinkedIn &#8212; Professional Credibility</h4><p>Weekly posts on AI and small business. Share the LeadForge AI story. Target: Chamber of Commerce members, Enterprise Saint John network. Budget: $0.</p></div>
+    <div class="problem-item"><h4>Google Business Profile &#8212; Local SEO</h4><p>Create a GBP for LeadForge AI. Optimise for "website design Saint John NB." Collect reviews from every client. Highest-ROI free channel for local services.</p></div>
+  </div>
+</div>
+
+<!-- 17 — ACQUISITION COST & UPDATED FINANCIALS -->
+<div class="page">
+  <div class="header-bar"><div class="brand">LEADFORGE AI</div><div class="subtitle">17 &middot; ACQUISITION COST</div></div>
+  <div class="page-inner">
+    <div class="section-label"><div class="section-num">17</div><div class="section-tag">Acquisition Cost &amp; Updated Financials</div></div>
+    <div class="section-title">Multi-channel economics at $650/site.</div>
+    <div class="section-rule"></div>
+
+    <h3 style="font-family:var(--serif);font-size:16px;color:var(--dark-green);margin-bottom:14px;">Monthly Marketing Budget (Phase 2+)</h3>
+    <div class="overhead-row"><div class="item">Facebook boosted posts</div><div class="cost">$75</div><div class="note">Targeted within 50km of Saint John</div></div>
+    <div class="overhead-row"><div class="item">Calendly / Google Business</div><div class="cost">$0</div><div class="note">Free tiers</div></div>
+    <div class="overhead-row"><div class="item">Domain &#8212; leadforge-ai.ca</div><div class="cost">~$1.50</div><div class="note">Amortised monthly</div></div>
+    <div class="overhead-row total"><div class="item">Total Marketing Spend</div><div class="cost">~$76.50</div><div class="note">Added to $201.50 base</div></div>
+
+    <h3 style="font-family:var(--serif);font-size:16px;color:var(--dark-green);margin:24px 0 14px;">Updated Total Overhead (Phase 2+)</h3>
+    <div class="overhead-row"><div class="item">Operational (Claude, domain, tools)</div><div class="cost">$201.50</div><div class="note">From Section 11</div></div>
+    <div class="overhead-row"><div class="item">Marketing</div><div class="cost">$76.50</div><div class="note">Facebook + domain</div></div>
+    <div class="overhead-row"><div class="item">API overflow (60-min agent)</div><div class="cost">~$20</div><div class="note">Expanded window</div></div>
+    <div class="overhead-row total"><div class="item">Total Monthly (Phase 2+)</div><div class="cost">~$298</div><div class="note">Still under $300 all-in</div></div>
+
+    <h3 style="font-family:var(--serif);font-size:16px;color:var(--dark-green);margin:24px 0 14px;">Lead Acquisition Channels &#8212; Expected Mix</h3>
+    <table class="comp-table">
+      <thead><tr><th>Channel</th><th>Cost/Mo</th><th>Leads/Mo</th><th>Close Rate</th><th>Sites/Mo</th></tr></thead>
+      <tbody>
+        <tr><td>Cold email (agent)</td><td>$0</td><td>3&#8211;5 replies</td><td>25&#8211;35%</td><td>1&#8211;2</td></tr>
+        <tr><td>Social lead mining</td><td>$0</td><td>2&#8211;4 warm</td><td>30&#8211;40%</td><td>1</td></tr>
+        <tr><td>Facebook organic + paid</td><td>$75</td><td>2&#8211;3 inbound</td><td>40&#8211;50%</td><td>1</td></tr>
+        <tr><td>Google / SEO</td><td>$0</td><td>1&#8211;2 inbound</td><td>50&#8211;60%</td><td>0.5&#8211;1</td></tr>
+        <tr><td>Referrals (post Mo 3)</td><td>$0</td><td>1&#8211;2 warm</td><td>60&#8211;70%</td><td>0.5&#8211;1</td></tr>
+        <tr class="highlight"><td><strong>Total Pipeline</strong></td><td><strong>~$75</strong></td><td><strong>9&#8211;16</strong></td><td><strong>~35%</strong></td><td><strong>3&#8211;6</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="insight">The agent-only model targets 3 sites/month from cold email alone. Adding social mining, a website, and light paid spend creates a pipeline of 9&#8211;16 leads/month &#8212; enough to consistently hit 3&#8211;6 closes while being selective. The $75/month in Facebook spend pays for itself with one extra close every two months.</div>
+
+    <h3 style="font-family:var(--serif);font-size:16px;color:var(--dark-green);margin:24px 0 14px;">Annual Projection &#8212; Updated ($650, multi-channel)</h3>
+    <div class="overhead-row"><div class="item">Site builds (3/mo &#215; $650)</div><div class="cost">$23,400</div><div class="note"></div></div>
+    <div class="overhead-row"><div class="item">Ongoing updates ($75/hr, growing base)</div><div class="cost">$4,500</div><div class="note">~5 hrs/mo by Q4</div></div>
+    <div class="overhead-row"><div class="item">Total revenue</div><div class="cost">$27,900</div><div class="note"></div></div>
+    <div class="overhead-row"><div class="item">Total overhead (annual)</div><div class="cost">-$3,576</div><div class="note"></div></div>
+    <div class="overhead-row total"><div class="item">Net annual profit (before builder time)</div><div class="cost">$24,324</div><div class="note">+$7,920 vs. old $450 model</div></div>
+    <div class="insight" style="margin-top:14px;"><strong>The $650 price point adds ~$7,900/year</strong> while keeping you 55&#8211;70% below the freelancer floor. The $75/hr update rate compounds faster as the client base grows. By Month 12 with 30+ sites, update revenue alone could hit $300&#8211;$600/month.</div>
+  </div>
+</div>
+
+<!-- BACK COVER -->
+<div class="page back-cover">
+  <div class="back-logo">LeadForge <span>AI</span></div>
+  <div class="back-sub">Automated Web Lead Generation &nbsp;·&nbsp; Neil Mitchell &nbsp;·&nbsp; 2026</div>
+  <div class="back-link">neil-mitchell.vercel.app &nbsp;·&nbsp; 506-639-9083</div>
+  <div class="back-rule"></div>
+  <div class="back-sub" style="font-size:10px;">Claude Max 20x &nbsp;·&nbsp; $200/mo &nbsp;·&nbsp; Agent runtime + Claude Code builds &nbsp;·&nbsp; Single subscription</div>
+
+  <div class="profile-card">
+    <img class="photo" src="data:image/jpeg;base64,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" alt="Neil Mitchell">
+    <div class="info">
+      <h3>Neil Mitchell</h3>
+      <div class="role">President &amp; CEO &middot; CTO</div>
+      <div class="email">LeadForge AI &nbsp;|&nbsp; neil@leadforge-ai.ca</div>
+      <div class="tagline">Real solutions, scalable results &#8212; at a fraction of the cost.</div>
+    </div>
+  </div>
+
+  <div class="back-plan-label">Confidential Business Plan</div>
+</div>
+
+</body>
+</html>
