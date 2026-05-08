@@ -4,6 +4,10 @@
 
 A Claude AI agent runs every weekday morning at 6:00 AM — finding businesses without websites, sending personalised cold outreach, handling replies, generating mockups, and routing warm leads to Neil Mitchell — who delivers a professional React/Next.js site in 3–5 days for a flat $650.
 
+## Website Preview
+
+![LeadForge AI website hero screenshot](docs/assets/readme-screenshot.png)
+
 ---
 
 ## Repository Structure
